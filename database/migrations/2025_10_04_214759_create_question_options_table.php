@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('question_options', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
+            $table->text('text');
+            $table->string('image')->nullable();
+            $table->boolean('is_correct')->default(false); // for choice/true_false
+            $table->enum('side', ['left', 'right'])->nullable(); // for connect type
+            $table->foreignId('match_id')->nullable()->constrained('question_options')->onDelete('set null'); // for connect type
+            $table->integer('arrange_order')->nullable(); // for arrange type
+            $table->integer('xp')->nullable(); // specific xp for this option
+            $table->integer('coins')->nullable(); // specific coins for this option
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('question_options');
+    }
+};
