@@ -14,10 +14,10 @@ class CookieService
             (int) config('jwt.refresh_ttl'),
             '/',
             null,
-            config('session.secure', true), // Secure in production
-            true, // HttpOnly
+            config('session.secure', true),
+            true,
             false,
-            'strict' // SameSite
+            'strict'
         );
     }
 

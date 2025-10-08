@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Presentation\Http\Middleware\LocalizationMiddleware::class,
         ]);
 
+        $middleware->api(prepend: [
+            \Illuminate\Http\Middleware\HandleCors::class,
+        ]);
+
         $middleware->api(append: [
             \App\Presentation\Http\Middleware\LocalizationMiddleware::class,
         ]);
