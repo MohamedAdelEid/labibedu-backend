@@ -31,8 +31,12 @@ class AuthService implements AuthServiceInterface
     {
         $user = $this->userRepository->findByUserName($dto->userName);
 
-        if (!$user || !Hash::check($dto->password, $user->password)) {
-            throw new InvalidCredentialsException(__('auth.failed'));
+        if (!$user) {
+            throw new InvalidCredentialsException(__('auth.user_not_found'));
+        }
+
+        if (!Hash::check($dto->password, $user->password)) {
+            throw new InvalidCredentialsException(__('auth.invalid_password'));
         }
 
         $accessToken = JWTAuth::fromUser($user);

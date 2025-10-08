@@ -2,10 +2,11 @@
 
 return [
     'failed' => 'These credentials do not match our records.',
+    'user_not_found' => 'User not found. Please check your username.',
+    'invalid_password' => 'Incorrect password. Please try again.',
     'invalid_token' => 'Invalid or expired token.',
     'token_expired' => 'Token has expired.',
     'invalid_otp' => 'Invalid or expired OTP.',
-    'user_not_found' => 'User not found.',
     'no_refresh_token' => 'Refresh token not provided.',
     'login_success' => 'Login successful.',
     'logout_success' => 'Logout successful.',
