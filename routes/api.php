@@ -5,13 +5,17 @@ use App\Presentation\Http\Controllers\Api\ExamController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
-    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+    Route::middleware('throttle:10,1')->group(function () {
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
+        Route::post('/confirm-otp', [AuthController::class, 'confirmOtp']);
+        Route::post('/resend-otp', [AuthController::class, 'resendOtp']);
+    });
+
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.auth');
-    Route::post('/forget-password', [AuthController::class, 'forgetPassword'])->middleware('throttle:3,1');
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-    Route::post('/confirm-otp', [AuthController::class, 'confirmOtp'])->middleware('throttle:5,1');
-    Route::post('/resend-otp', [AuthController::class, 'resendOtp'])->middleware('throttle:3,1');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.auth');
 });
 
 // Protected routes
