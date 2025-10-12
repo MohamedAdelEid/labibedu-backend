@@ -2,11 +2,14 @@
 
 namespace App\Infrastructure\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuestionOption extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'question_id',
         'text',
@@ -17,10 +20,15 @@ class QuestionOption extends Model
         'arrange_order',
         'xp',
         'coins',
+        'marks',
     ];
 
     protected $casts = [
         'is_correct' => 'boolean',
+        'arrange_order' => 'integer',
+        'xp' => 'integer',
+        'coins' => 'integer',
+        'marks' => 'integer',
     ];
 
     public function question(): BelongsTo

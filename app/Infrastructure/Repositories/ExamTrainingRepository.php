@@ -13,9 +13,14 @@ class ExamTrainingRepository extends BaseRepository implements ExamTrainingRepos
         parent::__construct($model);
     }
 
+    public function findOrFail(int $id, array $columns = ['*']): ExamTraining
+    {
+        return $this->model->findOrFail($id, $columns);
+    }
+
     public function getForStudent(int $studentId, ?string $type, int $perPage): LengthAwarePaginator
     {
-        $query = $this->model->with(['subject', 'video', 'book', 'creator']);
+        $query = $this->model->with(['subject', 'creator']);
 
         if ($type) {
             $query->where('type', $type);
@@ -24,17 +29,4 @@ class ExamTrainingRepository extends BaseRepository implements ExamTrainingRepos
         return $query->paginate($perPage);
     }
 
-    public function getDetailsWithQuestions(int $id, int $perPage): array
-    {
-        $examTraining = $this->model
-            ->with(['subject', 'video', 'book', 'questions.options'])
-            ->findOrFail($id);
-
-        $questions = $examTraining->questions()->with('options')->paginate($perPage);
-
-        return [
-            'examTraining' => $examTraining,
-            'questions' => $questions,
-        ];
-    }
 }

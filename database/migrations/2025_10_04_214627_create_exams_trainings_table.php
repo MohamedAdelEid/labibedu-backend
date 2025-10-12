@@ -21,11 +21,8 @@ return new class extends Migration
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->integer('duration')->nullable(); // in minutes, only for exams
-            $table->timestamp('locked_after_duration')->nullable();
             $table->foreignId('created_by')->constrained('teachers')->onDelete('cascade');
             $table->foreignId('subject_id')->nullable()->constrained('subjects')->onDelete('cascade');
-            $table->foreignId('video_id')->nullable()->constrained('videos')->onDelete('set null');
-            $table->foreignId('book_id')->nullable()->constrained('books')->onDelete('set null');
             $table->foreignId('group_id')->nullable()->constrained('groups')->onDelete('cascade');
             $table->timestamps();
         });

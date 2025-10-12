@@ -14,9 +14,15 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('title_ar');
-            $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
             $table->string('url');
+            $table->integer('pages_count');
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
+            $table->integer('xp')->default(0);
+            $table->integer('coins')->default(0);
+            $table->integer('marks')->default(0);
+            $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('related_training_id')->nullable()->constrained('exams_trainings')->nullOnDelete();
             $table->timestamps();
         });
     }

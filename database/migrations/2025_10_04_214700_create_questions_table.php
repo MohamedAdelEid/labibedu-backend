@@ -18,6 +18,8 @@ return new class extends Migration
             $table->enum('type', ['choice', 'true_false', 'connect', 'arrange' , 'written']);
             $table->integer('xp')->default(0);
             $table->integer('coins')->default(0);
+            $table->integer('marks')->default(0);
+            $table->string('language', 2)->default('ar');
             $table->timestamps();
         });
     }

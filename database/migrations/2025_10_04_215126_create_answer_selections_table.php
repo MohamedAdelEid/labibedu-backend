@@ -16,8 +16,6 @@ return new class extends Migration
             $table->foreignId('answer_id')->constrained('answers')->onDelete('cascade');
             $table->foreignId('option_id')->constrained('question_options')->onDelete('cascade');
             $table->boolean('is_correct')->default(false);
-            $table->integer('gained_xp')->default(0);
-            $table->integer('gained_coins')->default(0);
             $table->integer('order')->nullable(); // for arrange type
             $table->timestamps();
         });

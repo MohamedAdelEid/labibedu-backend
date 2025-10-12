@@ -9,21 +9,28 @@ class VideoSeeder extends Seeder
 {
     public function run(): void
     {
-        $videos = [
-            ['title' => 'Introduction to Algebra', 'title_ar' => 'مقدمة في الجبر', 'subject_id' => 1],
-            ['title' => 'The Scientific Method', 'title_ar' => 'المنهج العلمي', 'subject_id' => 2],
-            ['title' => 'English Tenses Explained', 'title_ar' => 'شرح الأزمنة الإنجليزية', 'subject_id' => 3],
-            ['title' => 'Arabic Poetry Analysis', 'title_ar' => 'تحليل الشعر العربي', 'subject_id' => 4],
-            ['title' => 'Ancient Civilizations', 'title_ar' => 'الحضارات القديمة', 'subject_id' => 5],
-        ];
+        Video::create([
+            'title' => 'Introduction to Algebra',
+            'url' => 'https://youtube.com/watch?v=algebra101',
+            'duration' => 1800, // 30 minutes
+            'xp' => 50,
+            'coins' => 25,
+            'marks' => 10,
+            'subject_id' => 1,
+            'start_date' => now()->subDays(10),
+            'end_date' => now()->addDays(20),
+        ]);
 
-        foreach ($videos as $video) {
-            Video::create([
-                'title' => $video['title'],
-                'title_ar' => $video['title_ar'],
-                'subject_id' => $video['subject_id'],
-                'url' => 'https://youtube.com/watch?v=' . bin2hex(random_bytes(5)),
-            ]);
-        }
+        Video::create([
+            'title' => 'The Scientific Method',
+            'url' => 'https://youtube.com/watch?v=science101',
+            'duration' => 2400, // 40 minutes
+            'xp' => 60,
+            'coins' => 30,
+            'marks' => 12,
+            'subject_id' => 2,
+            'start_date' => now()->subDays(5),
+            'end_date' => now()->addDays(15),
+        ]);
     }
 }

@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
-            $table->text('user_answer')->nullable();
-            $table->integer('gained_xp')->default(0);
-            $table->integer('gained_coins')->default(0);
-            $table->timestamp('submitted_at');
+            $table->text('user_answer')->nullable(); // for written type
+            $table->timestamp('submitted_at')->nullable();
             $table->timestamps();
         });
     }

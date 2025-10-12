@@ -4,15 +4,11 @@ namespace App\Presentation\Http\Controllers\Api;
 
 use App\Application\DTOs\Exam\SubmitAnswerDTO;
 use App\Application\DTOs\Exam\SubmitEntireExamDTO;
-use App\Application\Services\ExamService;
+use App\Infrastructure\Facades\ExamFacade;
 use App\Infrastructure\Helpers\ApiResponse;
-use App\Presentation\Http\Requests\Exam\SubmitAnswerRequest;
-use App\Presentation\Http\Requests\Exam\SubmitEntireExamRequest;
-use App\Presentation\Http\Resources\ExamTrainingResource;
-use App\Presentation\Http\Resources\ExamTrainingDetailResource;
-use App\Presentation\Http\Resources\Question\QuestionResource;
-use App\Presentation\Http\Resources\Question\TrainingQuestionResource;
-use App\Presentation\Http\Resources\AnswerResource;
+use App\Presentation\Http\Requests\SubmitAnswerRequest;
+use App\Presentation\Http\Requests\SubmitEntireExamRequest;
+use App\Presentation\Http\Resources\Exam\ExamDetailsResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -20,74 +16,61 @@ use Illuminate\Routing\Controller;
 class ExamController extends Controller
 {
     public function __construct(
-        private ExamService $examService
+        private ExamFacade $examFacade
     ) {}
-
-    public function index(Request $request): JsonResponse
-    {
-        $studentId = auth()->user()->student->id;
-        $type = $request->query('type');
-        $perPage = $request->query('per_page', 15);
-
-        $examsTrainings = $this->examService->getExamsAndTrainings($studentId, $type, $perPage);
-
-        return ApiResponse::paginated(
-            ExamTrainingResource::collection($examsTrainings),
-            __('messages.retrieved_successfully')
-        );
-    }
 
     public function show(int $id, Request $request): JsonResponse
     {
-        $perPage = $request->query('per_page', 10);
-        
-        $data = $this->examService->getDetails($id, $perPage);
-        $examTraining = $data['examTraining'];
-        $questions = $data['questions'];
+        $request->validate([
+            'per_page' => 'nullable|integer|min:1|max:100',
+        ]);
 
-        // <CHANGE> Determine which question resource to use based on type
-        $questionResource = $examTraining->type->value === 'training' 
-            ? TrainingQuestionResource::class 
-            : QuestionResource::class;
+        $studentId = auth()->id();
+        $perPage = $request->input('per_page', 10);
 
-        // <CHANGE> Get exam/training details without wrapper
-        $examDetails = (new ExamTrainingDetailResource($examTraining))->resolve();
+        $data = $this->examFacade->getExamDetails($id, $studentId, $perPage);
 
-        // <CHANGE> Use ApiResponse::paginated for questions
-        $response = ApiResponse::paginated(
-            $questionResource::collection($questions),
-            __('messages.retrieved_successfully')
+        return ApiResponse::success(
+            new ExamDetailsResource($data),
+            'Exam details retrieved successfully.'
         );
+    }
 
-        // <CHANGE> Merge exam details with paginated questions
-        $responseData = $response->getData(true);
-        $responseData['data'] = array_merge($examDetails, ['questions' => $responseData['data']]);
+    public function start(int $id): JsonResponse
+    {
+        $studentId = auth()->id();
 
-        return response()->json($responseData, $response->status());
+        $result = $this->examFacade->startExam($id, $studentId);
+
+        return ApiResponse::success($result, $result['message']);
     }
 
     public function submitAnswer(SubmitAnswerRequest $request): JsonResponse
     {
-        $studentId = auth()->user()->student->id;
-        $dto = SubmitAnswerDTO::fromRequest($request->validated(), $studentId);
+        $dto = new SubmitAnswerDTO(
+            studentId: auth()->id(),
+            questionId: $request->input('question_id'),
+            selectedOptionIds: $request->input('selected_option_ids'),
+            connectPairs: $request->input('connect_pairs'),
+            arrangeOptionIds: $request->input('arrange_option_ids'),
+            writtenAnswer: $request->input('written_answer'),
+            timeSpent: $request->input('time_spent', 0),
+        );
 
-        $result = $this->examService->submitAnswer($dto);
+        $result = $this->examFacade->submitAnswer($dto);
 
-        return ApiResponse::success([
-            'answer' => new AnswerResource($result['answer']),
-            'is_correct' => $result['is_correct'],
-            'gained_xp' => $result['gained_xp'],
-            'gained_coins' => $result['gained_coins'],
-        ], __('messages.answer_submitted'));
+        return ApiResponse::success($result, 'Answer submitted successfully.');
     }
 
     public function submitEntireExam(SubmitEntireExamRequest $request): JsonResponse
     {
-        $studentId = auth()->user()->student->id;
-        $dto = SubmitEntireExamDTO::fromRequest($request->validated(), $studentId);
+        $dto = new SubmitEntireExamDTO(
+            studentId: auth()->id(),
+            examTrainingId: $request->input('exam_training_id'),
+        );
 
-        $result = $this->examService->submitEntireExam($dto);
+        $result = $this->examFacade->submitEntireExam($dto);
 
-        return ApiResponse::success($result, __('messages.exam_submitted_successfully'));
+        return ApiResponse::success($result, 'Exam submitted successfully.');
     }
 }

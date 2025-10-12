@@ -2,6 +2,7 @@
 
 use App\Presentation\Http\Controllers\Api\AuthController;
 use App\Presentation\Http\Controllers\Api\ExamController;
+use App\Presentation\Http\Controllers\Api\AssignmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -26,5 +27,10 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::get('/{id}', [ExamController::class, 'show']);
         Route::post('/answer', [ExamController::class, 'submitAnswer']);
         Route::post('/submit-entire', [ExamController::class, 'submitEntireExam']);
+    });
+        
+    // Assignments
+    Route::prefix('assignments')->group(function () {
+        Route::get('/', [AssignmentController::class, 'index']);
     });
 });

@@ -2,11 +2,14 @@
 
 namespace App\Infrastructure\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AnswerSelection extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'answer_id',
         'option_id',
@@ -18,6 +21,9 @@ class AnswerSelection extends Model
 
     protected $casts = [
         'is_correct' => 'boolean',
+        'gained_xp' => 'integer',
+        'gained_coins' => 'integer',
+        'order' => 'integer',
     ];
 
     public function answer(): BelongsTo
@@ -27,6 +33,6 @@ class AnswerSelection extends Model
 
     public function option(): BelongsTo
     {
-        return $this->belongsTo(QuestionOption::class);
+        return $this->belongsTo(QuestionOption::class, 'option_id');
     }
 }

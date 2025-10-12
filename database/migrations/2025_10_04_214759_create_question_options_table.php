@@ -16,12 +16,10 @@ return new class extends Migration
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
             $table->text('text');
             $table->string('image')->nullable();
-            $table->boolean('is_correct')->default(false); // for choice/true_false
+            $table->boolean('is_correct')->default(false);
             $table->enum('side', ['left', 'right'])->nullable(); // for connect type
             $table->foreignId('match_id')->nullable()->constrained('question_options')->onDelete('set null'); // for connect type
             $table->integer('arrange_order')->nullable(); // for arrange type
-            $table->integer('xp')->nullable(); // specific xp for this option
-            $table->integer('coins')->nullable(); // specific coins for this option
             $table->timestamps();
         });
     }

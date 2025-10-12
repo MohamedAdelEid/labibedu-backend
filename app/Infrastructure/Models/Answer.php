@@ -2,12 +2,16 @@
 
 namespace App\Infrastructure\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Answer extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'student_id',
         'question_id',
@@ -17,26 +21,9 @@ class Answer extends Model
         'submitted_at',
     ];
 
-    public function getIsCorrectAttribute(): bool
-    {
-        $question = $this->question;
-
-        // For written questions, correctness must be manually graded
-        if ($question->type->value === 'written') {
-            return false; // Default to false until manually graded
-        }
-
-        // For other types, check if all selections are correct
-        $selections = $this->selections;
-
-        if ($selections->isEmpty()) {
-            return false;
-        }
-
-        return $selections->every(fn($selection) => $selection->is_correct);
-    }
-
     protected $casts = [
+        'gained_xp' => 'integer',
+        'gained_coins' => 'integer',
         'submitted_at' => 'datetime',
     ];
 
@@ -53,5 +40,10 @@ class Answer extends Model
     public function selections(): HasMany
     {
         return $this->hasMany(AnswerSelection::class);
+    }
+
+    public function grade(): HasOne
+    {
+        return $this->hasOne(AnswerGrade::class);
     }
 }

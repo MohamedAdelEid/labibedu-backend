@@ -7,17 +7,20 @@ class SubmitAnswerDTO
     public function __construct(
         public readonly int $studentId,
         public readonly int $questionId,
-        public readonly array $selections,
-        public readonly ?string $userAnswer = null,
+        public readonly ?array $selectedOptionIds,
+        public readonly ?array $connectPairs,
+        public readonly ?array $arrangeOptionIds,
+        public readonly ?string $writtenAnswer,
+        public readonly int $timeSpent = 0,
     ) {}
 
-    public static function fromRequest(array $data, int $studentId): self
+    public function toAnswerArray(): array
     {
-        return new self(
-            studentId: $studentId,
-            questionId: $data['question_id'],
-            selections: $data['selections'] ?? [],
-            userAnswer: $data['user_answer'] ?? null,
-        );
+        return array_filter([
+            'selected_option_ids' => $this->selectedOptionIds,
+            'connect_pairs' => $this->connectPairs,
+            'arrange_option_ids' => $this->arrangeOptionIds,
+            'written_answer' => $this->writtenAnswer,
+        ], fn($value) => $value !== null);
     }
 }

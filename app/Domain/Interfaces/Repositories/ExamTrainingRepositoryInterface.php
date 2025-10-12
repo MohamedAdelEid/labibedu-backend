@@ -2,10 +2,13 @@
 
 namespace App\Domain\Interfaces\Repositories;
 
+use App\Infrastructure\Models\ExamTraining;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-interface ExamTrainingRepositoryInterface extends BaseRepositoryInterface
+interface ExamTrainingRepositoryInterface
 {
+    public function findOrFail(int $id, array $columns = ['*']): ExamTraining;
+
     public function getForStudent(int $studentId, ?string $type, int $perPage): LengthAwarePaginator;
-    public function getDetailsWithQuestions(int $id, int $perPage): array;
+
 }
