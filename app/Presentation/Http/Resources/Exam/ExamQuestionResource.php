@@ -19,6 +19,10 @@ class ExamQuestionResource extends JsonResource
             'id' => $question->id,
             'title' => $question->title,
             'type' => $question->type->value,
+            'language' => $question->language->value,
+            'xp' => $question->xp,
+            'coins' => $question->coins,
+            'marks' => $question->marks,
             'options' => $this->formatOptions($question),
             'answered' => $answeredData,
         ];
