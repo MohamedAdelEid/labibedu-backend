@@ -22,7 +22,7 @@ class AnswerEvaluationService
             'is_correct' => $isCorrect,
             'correct_answer_data' => $this->getCorrectAnswerData($question, $answer),
             'answered_data' => $answer ? $this->getAnsweredData($question, $answer) : null,
-            'show_correct_answers' => $attempt && $attempt->isFinished() || $question->examTraining->isTraining(),,
+            'show_correct_answers' => $attempt && $attempt->isFinished() || $question->examTraining->isTraining(),
         ];
     }
 
