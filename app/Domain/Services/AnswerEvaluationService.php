@@ -9,7 +9,8 @@ class AnswerEvaluationService
 {
     public function __construct(
         private AnswerCheckerFactory $answerCheckerFactory
-    ) {}
+    ) {
+    }
 
     public function evaluateQuestion($question, $answer, $attempt): array
     {
@@ -50,7 +51,7 @@ class AnswerEvaluationService
                     ->toArray(),
             ],
             QuestionType::WRITTEN->value => [
-                'is_correct' => $answer && $answer->grade 
+                'is_correct' => $answer && $answer->grade
                     ? $answer->grade->is_correct
                     : false,
                 'text' => $question->model_answer ?? '',

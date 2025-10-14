@@ -45,4 +45,14 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class);
     }
+
+    public function getOptionPairsAttribute()
+    {
+        $optionIds = $this->options()->pluck('id');
+
+        return QuestionOptionPair::where(function ($query) use ($optionIds) {
+            $query->whereIn('left_option_id', $optionIds)
+                ->orWhereIn('right_option_id', $optionIds);
+        })->get();
+    }
 }
