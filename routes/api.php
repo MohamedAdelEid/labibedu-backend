@@ -22,13 +22,14 @@ Route::prefix('auth')->group(function () {
 // Protected routes
 Route::middleware(['jwt.auth'])->group(function () {
     // Exams & Trainings
-    Route::prefix('exams')->group(function () {
-        Route::get('/', [ExamController::class, 'index']);
-        Route::get('/{id}', [ExamController::class, 'show']);
-        Route::post('/answer', [ExamController::class, 'submitAnswer']);
-        Route::post('/submit-entire', [ExamController::class, 'submitEntireExam']);
+    Route::prefix('exams')->controller(ExamController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{id}', 'show');
+        Route::post('/{id}/start', 'start');
+        Route::post('/submit-answer', 'submitAnswer');
+        Route::post('/submit', 'submitEntireExam');
     });
-        
+
     // Assignments
     Route::prefix('assignments')->group(function () {
         Route::get('/', [AssignmentController::class, 'index']);

@@ -8,8 +8,6 @@ use App\Domain\Enums\QuestionType;
 use App\Domain\Interfaces\Repositories\AnswerRepositoryInterface;
 use App\Domain\Interfaces\Repositories\ExamAttemptRepositoryInterface;
 use App\Domain\Interfaces\Repositories\QuestionRepositoryInterface;
-use App\Infrastructure\Models\Answer;
-use App\Infrastructure\Models\AnswerSelection;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -22,14 +20,13 @@ class AnswerService
         private AnswerCheckerFactory $answerCheckerFactory
     ) {}
 
-    /**
-     * Submit an answer for a question
-     */
     public function submitAnswer(SubmitAnswerDTO $dto): array
     {
         return DB::transaction(function () use ($dto) {
             $question = $this->questionRepository->findOrFail($dto->questionId);
             $examTraining = $question->examTraining;
+
+            $this->validateAnswerData($dto, $question);
 
             $attempt = null;
 
@@ -49,24 +46,29 @@ class AnswerService
             $gainedCoins = $isCorrect && $examTraining->isTraining() ? $question->coins : 0;
 
             if ($existingAnswer) {
-                $existingAnswer->selections()->delete();
-                $answer = $this->answerRepository->updateAnswer($existingAnswer->id, [
-                    'user_answer' => $dto->writtenAnswer,
-                    'submitted_at' => now(),
-                ]);
+                $this->deleteOldAnswerData($existingAnswer, $question->type);
+                
+                $answer = $this->answerRepository->updateAnswer(
+                    $existingAnswer->id, 
+                    $this->prepareAnswerData($dto, $question->type)
+                );
             } else {
-                $answer = $this->answerRepository->createAnswer([
-                    'student_id' => $dto->studentId,
-                    'question_id' => $dto->questionId,
-                    'user_answer' => $dto->writtenAnswer,
-                    'submitted_at' => now(),
-                ]);
+                $answer = $this->answerRepository->createAnswer(
+                    array_merge(
+                        [
+                            'student_id' => $dto->studentId,
+                            'question_id' => $dto->questionId,
+                            'submitted_at' => now(),
+                        ],
+                        $this->prepareAnswerData($dto, $question->type)
+                    )
+                );
             }
 
-            $this->saveAnswerSelections($answer, $question, $dto, $isCorrect);
+            $this->saveAnswerRelations($answer, $question, $dto);
 
             return [
-                'answer' => $answer->load('selections.option'),
+                'answer' => $answer->load(['option', 'pairs.leftOption', 'pairs.rightOption', 'orders.option']),
                 'is_correct' => $isCorrect,
                 'gained_xp' => $gainedXp,
                 'gained_coins' => $gainedCoins,
@@ -75,9 +77,107 @@ class AnswerService
         });
     }
 
-    /**
-     * Validate exam attempt
-     */
+    private function validateAnswerData(SubmitAnswerDTO $dto, $question): void
+    {
+        if ($dto->selectedOptionIds !== null) {
+            foreach ($dto->selectedOptionIds as $optionId) {
+                $optionExists = $question->options->contains('id', $optionId);
+                if (!$optionExists) {
+                    throw new Exception('Selected option does not belong to this question.');
+                }
+            }
+        }
+
+        if ($dto->connectPairs !== null) {
+            foreach ($dto->connectPairs as $pair) {
+                $leftExists = $question->options->contains('id', $pair['left_option_id']);
+                $rightExists = $question->options->contains('id', $pair['right_option_id']);
+                if (!$leftExists || !$rightExists) {
+                    throw new Exception('Connect pair options do not belong to this question.');
+                }
+            }
+        }
+
+        if ($dto->arrangeOptionIds !== null) {
+            foreach ($dto->arrangeOptionIds as $optionId) {
+                $optionExists = $question->options->contains('id', $optionId);
+                if (!$optionExists) {
+                    throw new Exception('Arrange option does not belong to this question.');
+                }
+            }
+        }
+
+        if ($dto->trueFalseAnswer !== null && !in_array($dto->trueFalseAnswer, [true, false])) {
+            throw new Exception('True/false answer must be a boolean value.');
+        }
+    }
+
+    private function prepareAnswerData(SubmitAnswerDTO $dto, QuestionType $type): array
+    {
+        return match ($type) {
+            QuestionType::CHOICE => [
+                'option_id' => $dto->selectedOptionIds[0] ?? null,
+                'true_false_answer' => null,
+                'user_answer' => null,
+            ],
+            QuestionType::TRUE_FALSE => [
+                'option_id' => null,
+                'true_false_answer' => $dto->trueFalseAnswer,
+                'user_answer' => null,
+            ],
+            QuestionType::WRITTEN => [
+                'option_id' => null,
+                'true_false_answer' => null,
+                'user_answer' => $dto->writtenAnswer,
+            ],
+            QuestionType::CONNECT, QuestionType::ARRANGE => [
+                'option_id' => null,
+                'true_false_answer' => null,
+                'user_answer' => null,
+            ],
+        };
+    }
+
+    private function deleteOldAnswerData($answer, QuestionType $type): void
+    {
+        match ($type) {
+            QuestionType::CONNECT => $this->answerRepository->deletePairs($answer->id),
+            QuestionType::ARRANGE => $this->answerRepository->deleteOrders($answer->id),
+            default => null,
+        };
+    }
+
+    private function saveAnswerRelations($answer, $question, SubmitAnswerDTO $dto): void
+    {
+        match ($question->type) {
+            QuestionType::CONNECT => $this->saveConnectPairs($answer, $dto),
+            QuestionType::ARRANGE => $this->saveArrangeOrders($answer, $dto),
+            default => null,
+        };
+    }
+
+    private function saveConnectPairs($answer, SubmitAnswerDTO $dto): void
+    {
+        foreach ($dto->connectPairs ?? [] as $pair) {
+            $this->answerRepository->createPair(
+                $answer->id,
+                $pair['left_option_id'],
+                $pair['right_option_id']
+            );
+        }
+    }
+
+    private function saveArrangeOrders($answer, SubmitAnswerDTO $dto): void
+    {
+        foreach ($dto->arrangeOptionIds ?? [] as $index => $optionId) {
+            $this->answerRepository->createOrder(
+                $answer->id,
+                $optionId,
+                $index + 1
+            );
+        }
+    }
+
     private function validateAttempt(int $studentId, $examTraining, int $timeSpent)
     {
         $attempt = $this->examAttemptRepository->findActiveAttempt($studentId, $examTraining->id);
@@ -105,90 +205,51 @@ class AnswerService
         return $attempt;
     }
 
-    /**
-     * Create temporary answer object for checking
-     */
     private function createTempAnswer(SubmitAnswerDTO $dto, $question)
     {
         $tempAnswer = new \stdClass();
         $tempAnswer->user_answer = $dto->writtenAnswer;
-        $tempAnswer->selections = collect();
+        $tempAnswer->option_id = $dto->selectedOptionIds[0] ?? null;
+        $tempAnswer->true_false_answer = $dto->trueFalseAnswer;
+        $tempAnswer->option = null;
+        $tempAnswer->pairs = collect();
+        $tempAnswer->orders = collect();
+        $tempAnswer->grade = null;
+
+        // Load the actual option if option_id is set
+        if ($tempAnswer->option_id) {
+            $tempAnswer->option = $question->options->firstWhere('id', $tempAnswer->option_id);
+        }
 
         match ($question->type) {
-            QuestionType::CHOICE, QuestionType::TRUE_FALSE => 
-                $tempAnswer->selections = collect($dto->selectedOptionIds ?? [])->map(fn($id) => (object)['option_id' => $id]),
-            QuestionType::CONNECT => 
-                $tempAnswer->selections = $this->buildConnectSelections($dto->connectPairs ?? []),
-            QuestionType::ARRANGE => 
-                $tempAnswer->selections = collect($dto->arrangeOptionIds ?? [])->map(fn($id, $index) => (object)['option_id' => $id, 'order' => $index + 1]),
+            QuestionType::CONNECT => $tempAnswer->pairs = $this->buildTempPairs($dto->connectPairs ?? [], $question),
+            QuestionType::ARRANGE => $tempAnswer->orders = $this->buildTempOrders($dto->arrangeOptionIds ?? []),
             default => null,
         };
 
         return $tempAnswer;
     }
 
-    /**
-     * Build connect selections with order
-     */
-    private function buildConnectSelections(array $pairs)
+    private function buildTempPairs(array $pairs, $question)
     {
-        $selections = collect();
-        foreach ($pairs as $index => $pair) {
-            $selections->push((object)['option_id' => $pair['left_option_id'], 'order' => $index * 2]);
-            $selections->push((object)['option_id' => $pair['right_option_id'], 'order' => $index * 2 + 1]);
-        }
-        return $selections;
-    }
-
-    /**
-     * Save answer selections to database
-     */
-    private function saveAnswerSelections(Answer $answer, $question, SubmitAnswerDTO $dto, bool $isCorrect): void
-    {
-        match ($question->type) {
-            QuestionType::CHOICE, QuestionType::TRUE_FALSE => $this->saveChoiceSelections($answer, $dto),
-            QuestionType::CONNECT => $this->saveConnectSelections($answer, $dto),
-            QuestionType::ARRANGE => $this->saveArrangeSelections($answer, $dto),
-            QuestionType::WRITTEN => null,
-            default => null,
-        };
-    }
-
-    private function saveChoiceSelections(Answer $answer, SubmitAnswerDTO $dto): void
-    {
-        foreach ($dto->selectedOptionIds ?? [] as $optionId) {
-            AnswerSelection::create([
-                'answer_id' => $answer->id,
-                'option_id' => $optionId,
-            ]);
-        }
-    }
-
-    private function saveConnectSelections(Answer $answer, SubmitAnswerDTO $dto): void
-    {
-        foreach ($dto->connectPairs ?? [] as $index => $pair) {
-            AnswerSelection::create([
-                'answer_id' => $answer->id,
-                'option_id' => $pair['left_option_id'],
-                'order' => $index * 2,
-            ]);
+        return collect($pairs)->map(function($pair) use ($question) {
+            $leftOption = $question->options->firstWhere('id', $pair['left_option_id']);
+            $rightOption = $question->options->firstWhere('id', $pair['right_option_id']);
             
-            AnswerSelection::create([
-                'answer_id' => $answer->id,
-                'option_id' => $pair['right_option_id'],
-                'order' => $index * 2 + 1,
-            ]);
-        }
+            return (object) [
+                'left_option_id' => $pair['left_option_id'],
+                'right_option_id' => $pair['right_option_id'],
+                'leftOption' => $leftOption,
+                'rightOption' => $rightOption,
+            ];
+        });
     }
 
-    private function saveArrangeSelections(Answer $answer, SubmitAnswerDTO $dto): void
+    private function buildTempOrders(array $optionIds)
     {
-        foreach ($dto->arrangeOptionIds ?? [] as $index => $optionId) {
-            AnswerSelection::create([
-                'answer_id' => $answer->id,
-                'option_id' => $optionId,
-                'order' => $index + 1,
-            ]);
-        }
+        return collect($optionIds)->map(fn($id, $index) => (object) [
+            'option_id' => $id,
+            'order' => $index + 1,
+        ]);
     }
 }

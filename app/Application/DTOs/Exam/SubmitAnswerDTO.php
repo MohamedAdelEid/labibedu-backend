@@ -8,6 +8,7 @@ class SubmitAnswerDTO
         public readonly int $studentId,
         public readonly int $questionId,
         public readonly ?array $selectedOptionIds,
+        public readonly ?bool $trueFalseAnswer,
         public readonly ?array $connectPairs,
         public readonly ?array $arrangeOptionIds,
         public readonly ?string $writtenAnswer,
@@ -18,6 +19,7 @@ class SubmitAnswerDTO
     {
         return array_filter([
             'selected_option_ids' => $this->selectedOptionIds,
+            'true_false_answer' => $this->trueFalseAnswer,
             'connect_pairs' => $this->connectPairs,
             'arrange_option_ids' => $this->arrangeOptionIds,
             'written_answer' => $this->writtenAnswer,

@@ -5,12 +5,12 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Infrastructure\Models\ExamAttempt;
 use App\Infrastructure\Models\Answer;
-use App\Infrastructure\Models\AnswerSelection;
+use App\Infrastructure\Models\AnswerOrder;
+use App\Infrastructure\Models\AnswerPair;
 use App\Infrastructure\Models\AnswerGrade;
 use App\Infrastructure\Models\Question;
 use App\Infrastructure\Models\QuestionOption;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class ExamAttemptAnswerSeeder extends Seeder
 {
@@ -29,24 +29,21 @@ class ExamAttemptAnswerSeeder extends Seeder
         ]);
 
         // Question 1: Choice - CORRECT answer
-        $q1 = Question::find(1); // "What is the value of x in 2x + 5 = 15?"
-        $correctOption = QuestionOption::where('question_id', 1)->where('is_correct', true)->first();
+        $q1CorrectOption = QuestionOption::where('question_id', 1)
+            ->where('is_correct', true)
+            ->first();
         
         $answer1 = Answer::create([
             'student_id' => 1,
             'question_id' => 1,
+            'option_id' => $q1CorrectOption->id,
             'submitted_at' => Carbon::now()->subHours(1)->subMinutes(50),
-        ]);
-
-        AnswerSelection::create([
-            'answer_id' => $answer1->id,
-            'option_id' => $correctOption->id,
-            'is_correct' => true,
         ]);
 
         AnswerGrade::create([
             'answer_id' => $answer1->id,
             'graded_by' => 1,
+            'is_correct' => true,
             'gained_xp' => 10,
             'gained_coins' => 5,
             'gained_marks' => 2,
@@ -55,23 +52,22 @@ class ExamAttemptAnswerSeeder extends Seeder
         ]);
 
         // Question 2: True/False - CORRECT answer
-        $q2TrueOption = QuestionOption::where('question_id', 2)->where('is_correct', true)->first();
+        $q2TrueOption = QuestionOption::where('question_id', 2)
+            ->where('is_correct', true)
+            ->first();
         
         $answer2 = Answer::create([
             'student_id' => 1,
             'question_id' => 2,
-            'submitted_at' => Carbon::now()->subHours(1)->subMinutes(48),
-        ]);
-
-        AnswerSelection::create([
-            'answer_id' => $answer2->id,
             'option_id' => $q2TrueOption->id,
-            'is_correct' => true,
+            'true_false_answer' => true,
+            'submitted_at' => Carbon::now()->subHours(1)->subMinutes(48),
         ]);
 
         AnswerGrade::create([
             'answer_id' => $answer2->id,
             'graded_by' => 1,
+            'is_correct' => true,
             'gained_xp' => 5,
             'gained_coins' => 3,
             'gained_marks' => 1,
@@ -91,50 +87,30 @@ class ExamAttemptAnswerSeeder extends Seeder
         ]);
 
         // Correct pair 1: Square -> 4 equal sides
-        AnswerSelection::create([
+        AnswerPair::create([
             'answer_id' => $answer3->id,
-            'option_id' => $leftOptions->where('text', 'Square')->first()->id,
-            'is_correct' => true,
-            'order' => 1,
-        ]);
-        AnswerSelection::create([
-            'answer_id' => $answer3->id,
-            'option_id' => $rightOptions->where('text', '4 equal sides')->first()->id,
-            'is_correct' => true,
-            'order' => 2,
+            'left_option_id' => $leftOptions->where('text', 'Square')->first()->id,
+            'right_option_id' => $rightOptions->where('text', '4 equal sides')->first()->id,
         ]);
 
         // Correct pair 2: Circle -> No corners
-        AnswerSelection::create([
+        AnswerPair::create([
             'answer_id' => $answer3->id,
-            'option_id' => $leftOptions->where('text', 'Circle')->first()->id,
-            'is_correct' => true,
-            'order' => 3,
-        ]);
-        AnswerSelection::create([
-            'answer_id' => $answer3->id,
-            'option_id' => $rightOptions->where('text', 'No corners')->first()->id,
-            'is_correct' => true,
-            'order' => 4,
+            'left_option_id' => $leftOptions->where('text', 'Circle')->first()->id,
+            'right_option_id' => $rightOptions->where('text', 'No corners')->first()->id,
         ]);
 
         // WRONG pair 3: Triangle -> 4 equal sides (should be "3 sides")
-        AnswerSelection::create([
+        AnswerPair::create([
             'answer_id' => $answer3->id,
-            'option_id' => $leftOptions->where('text', 'Triangle')->first()->id,
-            'is_correct' => false,
-            'order' => 5,
-        ]);
-        AnswerSelection::create([
-            'answer_id' => $answer3->id,
-            'option_id' => $rightOptions->where('text', '3 sides')->first()->id,
-            'is_correct' => false,
-            'order' => 6,
+            'left_option_id' => $leftOptions->where('text', 'Triangle')->first()->id,
+            'right_option_id' => $rightOptions->where('text', '4 equal sides')->first()->id,
         ]);
 
         AnswerGrade::create([
             'answer_id' => $answer3->id,
             'graded_by' => 1,
+            'is_correct' => false, // Not fully correct
             'gained_xp' => 10, // Partial credit
             'gained_coins' => 6,
             'gained_marks' => 2,
@@ -152,34 +128,31 @@ class ExamAttemptAnswerSeeder extends Seeder
         ]);
 
         // Wrong order: 7, 3, 15, 22 (should be 3, 7, 15, 22)
-        AnswerSelection::create([
+        AnswerOrder::create([
             'answer_id' => $answer4->id,
             'option_id' => $q4Options->where('text', '7')->first()->id,
-            'is_correct' => false,
             'order' => 1,
         ]);
-        AnswerSelection::create([
+        AnswerOrder::create([
             'answer_id' => $answer4->id,
             'option_id' => $q4Options->where('text', '3')->first()->id,
-            'is_correct' => false,
             'order' => 2,
         ]);
-        AnswerSelection::create([
+        AnswerOrder::create([
             'answer_id' => $answer4->id,
             'option_id' => $q4Options->where('text', '15')->first()->id,
-            'is_correct' => false,
             'order' => 3,
         ]);
-        AnswerSelection::create([
+        AnswerOrder::create([
             'answer_id' => $answer4->id,
             'option_id' => $q4Options->where('text', '22')->first()->id,
-            'is_correct' => false,
             'order' => 4,
         ]);
 
         AnswerGrade::create([
             'answer_id' => $answer4->id,
             'graded_by' => 1,
+            'is_correct' => false,
             'gained_xp' => 0,
             'gained_coins' => 0,
             'gained_marks' => 0,
@@ -198,6 +171,7 @@ class ExamAttemptAnswerSeeder extends Seeder
         AnswerGrade::create([
             'answer_id' => $answer5->id,
             'graded_by' => 1,
+            'is_correct' => true,
             'gained_xp' => 18,
             'gained_coins' => 9,
             'gained_marks' => 4,
@@ -221,63 +195,58 @@ class ExamAttemptAnswerSeeder extends Seeder
         // Only answered 2 questions so far
 
         // Question 1: Choice - WRONG answer
-        $wrongOption = QuestionOption::where('question_id', 1)->where('text', '10')->first();
+        $wrongOption = QuestionOption::where('question_id', 1)
+            ->where('text', '10')
+            ->first();
         
         $answer6 = Answer::create([
             'student_id' => 2,
             'question_id' => 1,
+            'option_id' => $wrongOption->id,
             'submitted_at' => Carbon::now()->subMinutes(28),
         ]);
 
-        AnswerSelection::create([
-            'answer_id' => $answer6->id,
-            'option_id' => $wrongOption->id,
-            'is_correct' => false,
-        ]);
+        // No grade yet (in progress)
 
         // Question 2: True/False - CORRECT answer
         $answer7 = Answer::create([
             'student_id' => 2,
             'question_id' => 2,
+            'option_id' => $q2TrueOption->id,
+            'true_false_answer' => true,
             'submitted_at' => Carbon::now()->subMinutes(25),
         ]);
 
-        AnswerSelection::create([
-            'answer_id' => $answer7->id,
-            'option_id' => $q2TrueOption->id,
-            'is_correct' => true,
-        ]);
+        // No grade yet (in progress)
 
         // ============================================
         // SCENARIO 3: Student 1 - Finished Training 1 (Algebra Practice)
         // ============================================
         $attempt3 = ExamAttempt::create([
             'student_id' => 1,
-            'exam_training_id' => 2, // Algebra Practice Training
+            'exam_training_id' => 4, // Algebra Practice Training
             'start_time' => Carbon::now()->subDays(1),
             'end_time' => Carbon::now()->subDays(1)->addMinutes(15),
             'remaining_seconds' => 0,
             'status' => 'finished',
         ]);
 
-        // Question 6: Choice - CORRECT answer (Simplify: 3x + 2x = 5x)
-        $q6CorrectOption = QuestionOption::where('question_id', 6)->where('is_correct', true)->first();
+        // Question 16: Choice - CORRECT answer (Simplify: 3x + 2x = 5x)
+        $q16CorrectOption = QuestionOption::where('question_id', 16)
+            ->where('is_correct', true)
+            ->first();
         
         $answer8 = Answer::create([
             'student_id' => 1,
-            'question_id' => 6,
+            'question_id' => 16,
+            'option_id' => $q16CorrectOption->id,
             'submitted_at' => Carbon::now()->subDays(1)->addMinutes(5),
-        ]);
-
-        AnswerSelection::create([
-            'answer_id' => $answer8->id,
-            'option_id' => $q6CorrectOption->id,
-            'is_correct' => true,
         ]);
 
         AnswerGrade::create([
             'answer_id' => $answer8->id,
             'graded_by' => 1,
+            'is_correct' => true,
             'gained_xp' => 8,
             'gained_coins' => 4,
             'gained_marks' => 1,
@@ -301,18 +270,14 @@ class ExamAttemptAnswerSeeder extends Seeder
         $answer9 = Answer::create([
             'student_id' => 3,
             'question_id' => 1,
+            'option_id' => $q1CorrectOption->id,
             'submitted_at' => Carbon::now()->subHours(4)->subMinutes(50),
-        ]);
-
-        AnswerSelection::create([
-            'answer_id' => $answer9->id,
-            'option_id' => $correctOption->id,
-            'is_correct' => true,
         ]);
 
         AnswerGrade::create([
             'answer_id' => $answer9->id,
             'graded_by' => 1,
+            'is_correct' => true,
             'gained_xp' => 10,
             'gained_coins' => 5,
             'gained_marks' => 2,
@@ -324,18 +289,15 @@ class ExamAttemptAnswerSeeder extends Seeder
         $answer10 = Answer::create([
             'student_id' => 3,
             'question_id' => 2,
-            'submitted_at' => Carbon::now()->subHours(4)->subMinutes(48),
-        ]);
-
-        AnswerSelection::create([
-            'answer_id' => $answer10->id,
             'option_id' => $q2TrueOption->id,
-            'is_correct' => true,
+            'true_false_answer' => true,
+            'submitted_at' => Carbon::now()->subHours(4)->subMinutes(48),
         ]);
 
         AnswerGrade::create([
             'answer_id' => $answer10->id,
             'graded_by' => 1,
+            'is_correct' => true,
             'gained_xp' => 5,
             'gained_coins' => 3,
             'gained_marks' => 1,
@@ -351,46 +313,28 @@ class ExamAttemptAnswerSeeder extends Seeder
         ]);
 
         // All correct pairs
-        AnswerSelection::create([
+        AnswerPair::create([
             'answer_id' => $answer11->id,
-            'option_id' => $leftOptions->where('text', 'Square')->first()->id,
-            'is_correct' => true,
-            'order' => 1,
+            'left_option_id' => $leftOptions->where('text', 'Square')->first()->id,
+            'right_option_id' => $rightOptions->where('text', '4 equal sides')->first()->id,
         ]);
-        AnswerSelection::create([
+        
+        AnswerPair::create([
             'answer_id' => $answer11->id,
-            'option_id' => $rightOptions->where('text', '4 equal sides')->first()->id,
-            'is_correct' => true,
-            'order' => 2,
+            'left_option_id' => $leftOptions->where('text', 'Circle')->first()->id,
+            'right_option_id' => $rightOptions->where('text', 'No corners')->first()->id,
         ]);
-        AnswerSelection::create([
+        
+        AnswerPair::create([
             'answer_id' => $answer11->id,
-            'option_id' => $leftOptions->where('text', 'Circle')->first()->id,
-            'is_correct' => true,
-            'order' => 3,
-        ]);
-        AnswerSelection::create([
-            'answer_id' => $answer11->id,
-            'option_id' => $rightOptions->where('text', 'No corners')->first()->id,
-            'is_correct' => true,
-            'order' => 4,
-        ]);
-        AnswerSelection::create([
-            'answer_id' => $answer11->id,
-            'option_id' => $leftOptions->where('text', 'Triangle')->first()->id,
-            'is_correct' => true,
-            'order' => 5,
-        ]);
-        AnswerSelection::create([
-            'answer_id' => $answer11->id,
-            'option_id' => $rightOptions->where('text', '3 sides')->first()->id,
-            'is_correct' => true,
-            'order' => 6,
+            'left_option_id' => $leftOptions->where('text', 'Triangle')->first()->id,
+            'right_option_id' => $rightOptions->where('text', '3 sides')->first()->id,
         ]);
 
         AnswerGrade::create([
             'answer_id' => $answer11->id,
             'graded_by' => 1,
+            'is_correct' => true,
             'gained_xp' => 15,
             'gained_coins' => 8,
             'gained_marks' => 3,
@@ -406,34 +350,31 @@ class ExamAttemptAnswerSeeder extends Seeder
         ]);
 
         // Correct order: 3, 7, 15, 22
-        AnswerSelection::create([
+        AnswerOrder::create([
             'answer_id' => $answer12->id,
             'option_id' => $q4Options->where('text', '3')->first()->id,
-            'is_correct' => true,
             'order' => 1,
         ]);
-        AnswerSelection::create([
+        AnswerOrder::create([
             'answer_id' => $answer12->id,
             'option_id' => $q4Options->where('text', '7')->first()->id,
-            'is_correct' => true,
             'order' => 2,
         ]);
-        AnswerSelection::create([
+        AnswerOrder::create([
             'answer_id' => $answer12->id,
             'option_id' => $q4Options->where('text', '15')->first()->id,
-            'is_correct' => true,
             'order' => 3,
         ]);
-        AnswerSelection::create([
+        AnswerOrder::create([
             'answer_id' => $answer12->id,
             'option_id' => $q4Options->where('text', '22')->first()->id,
-            'is_correct' => true,
             'order' => 4,
         ]);
 
         AnswerGrade::create([
             'answer_id' => $answer12->id,
             'graded_by' => 1,
+            'is_correct' => true,
             'gained_xp' => 12,
             'gained_coins' => 6,
             'gained_marks' => 2,
@@ -452,6 +393,7 @@ class ExamAttemptAnswerSeeder extends Seeder
         AnswerGrade::create([
             'answer_id' => $answer13->id,
             'graded_by' => 1,
+            'is_correct' => true,
             'gained_xp' => 20,
             'gained_coins' => 10,
             'gained_marks' => 5,

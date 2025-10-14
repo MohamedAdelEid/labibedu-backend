@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,20 +9,17 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Answer extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'student_id',
         'question_id',
+        'option_id',
+        'true_false_answer',
         'user_answer',
-        'gained_xp',
-        'gained_coins',
         'submitted_at',
     ];
 
     protected $casts = [
-        'gained_xp' => 'integer',
-        'gained_coins' => 'integer',
+        'true_false_answer' => 'boolean',
         'submitted_at' => 'datetime',
     ];
 
@@ -37,9 +33,19 @@ class Answer extends Model
         return $this->belongsTo(Question::class);
     }
 
-    public function selections(): HasMany
+    public function option(): BelongsTo
     {
-        return $this->hasMany(AnswerSelection::class);
+        return $this->belongsTo(QuestionOption::class, 'option_id');
+    }
+
+    public function pairs(): HasMany
+    {
+        return $this->hasMany(AnswerPair::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(AnswerOrder::class);
     }
 
     public function grade(): HasOne

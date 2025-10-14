@@ -6,20 +6,35 @@ class ArrangeAnswerChecker implements AnswerCheckerInterface
 {
     /**
      * Check if arrange answer is correct
-     * All options must be in correct order
+     * The order must exactly match the correct arrange_order
      */
     public function check($question, $answer): bool
     {
-        $selections = $answer->selections->sortBy('order');
-        
-        foreach ($selections as $index => $selection) {
-            $option = $question->options->firstWhere('id', $selection->option_id);
-            
-            if (!$option || $option->arrange_order !== ($index + 1)) {
-                return false;
-            }
+        $studentOrders = $answer->orders->sortBy('order');
+
+        if ($studentOrders->isEmpty()) {
+            return false;
         }
 
-        return true;
+        // Get correct order from question options
+        $correctOrder = $question->options
+            ->sortBy('arrange_order')
+            ->pluck('id')
+            ->toArray();
+
+        if (empty($correctOrder)) {
+            return false;
+        }
+
+        // Get student's order
+        $studentOrder = $studentOrders->pluck('option_id')->toArray();
+
+        // Check if counts match
+        if (count($studentOrder) !== count($correctOrder)) {
+            return false;
+        }
+
+        // Check if order matches exactly
+        return $studentOrder === $correctOrder;
     }
 }

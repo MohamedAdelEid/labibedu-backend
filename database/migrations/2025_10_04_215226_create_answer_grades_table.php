@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('answer_id')->constrained('answers')->onDelete('cascade');
             $table->foreignId('graded_by')->nullable()->constrained('teachers')->onDelete('set null');
+            $table->boolean('is_correct')->default(false);
             $table->integer('gained_xp')->default(0);
             $table->integer('gained_coins')->default(0);
             $table->integer('gained_marks')->default(0);

@@ -11,14 +11,6 @@ class AnswerEvaluationService
         private AnswerCheckerFactory $answerCheckerFactory
     ) {}
 
-    /**
-     * Evaluate a question and prepare all answer data
-     * 
-     * @param mixed $question
-     * @param mixed $answer
-     * @param mixed $attempt
-     * @return array
-     */
     public function evaluateQuestion($question, $answer, $attempt): array
     {
         $isCorrect = $answer ? $this->answerCheckerFactory->check($question, $answer) : null;
@@ -29,13 +21,10 @@ class AnswerEvaluationService
             'is_correct' => $isCorrect,
             'correct_answer_data' => $this->getCorrectAnswerData($question, $answer),
             'answered_data' => $answer ? $this->getAnsweredData($question, $answer) : null,
-            'show_correct_answers' => $attempt && $attempt->isFinished() || $question->examTraining->isTraining(),
+            'show_correct_answers' => $attempt && $attempt->isFinished(),
         ];
     }
-    
-    /**
-     * Get the correct answer data for a question
-     */
+
     private function getCorrectAnswerData($question, $answer): mixed
     {
         return match ($question->type->value) {
@@ -46,11 +35,10 @@ class AnswerEvaluationService
                 'correct' => $question->options->where('is_correct', true)->first()?->is_correct ?? false,
             ],
             QuestionType::CONNECT->value => [
-                'correct_pairs' => $question->options
-                    ->where('side', 'left')
-                    ->map(fn($opt) => [
-                        'left_id' => $opt->id,
-                        'right_id' => $opt->match_id,
+                'correct_pairs' => $question->optionPairs
+                    ->map(fn($pair) => [
+                        'left_id' => $pair->left_option_id,
+                        'right_id' => $pair->right_option_id,
                     ])
                     ->values()
                     ->toArray(),
@@ -63,7 +51,7 @@ class AnswerEvaluationService
             ],
             QuestionType::WRITTEN->value => [
                 'is_correct' => $answer && $answer->grade 
-                    ? $answer->grade->gained_marks > 0 
+                    ? $answer->grade->is_correct
                     : false,
                 'text' => $question->model_answer ?? '',
             ],
@@ -71,31 +59,26 @@ class AnswerEvaluationService
         };
     }
 
-    /**
-     * Get the student's answered data for a question
-     */
     private function getAnsweredData($question, $answer): mixed
     {
         return match ($question->type->value) {
             QuestionType::CHOICE->value => [
-                'option_id' => $answer->selections->first()?->option_id,
+                'option_id' => $answer->option_id,
             ],
             QuestionType::TRUE_FALSE->value => [
-                'is_correct' => $answer->selections->first()?->option->is_correct ?? false,
+                'is_correct' => $answer->true_false_answer ?? false,
             ],
             QuestionType::CONNECT->value => [
-                'pairs' => $answer->selections
-                    ->sortBy('order')
-                    ->chunk(2)
+                'pairs' => $answer->pairs
                     ->map(fn($pair) => [
-                        'left_id' => $pair->first()->option_id,
-                        'right_id' => $pair->last()->option_id,
+                        'left_id' => $pair->left_option_id,
+                        'right_id' => $pair->right_option_id,
                     ])
                     ->values()
                     ->toArray(),
             ],
             QuestionType::ARRANGE->value => [
-                'order' => $answer->selections
+                'order' => $answer->orders
                     ->sortBy('order')
                     ->pluck('option_id')
                     ->toArray(),

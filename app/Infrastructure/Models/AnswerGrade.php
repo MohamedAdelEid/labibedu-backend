@@ -13,6 +13,7 @@ class AnswerGrade extends Model
     protected $fillable = [
         'answer_id',
         'graded_by',
+        'is_correct',
         'gained_xp',
         'gained_coins',
         'gained_marks',
@@ -25,6 +26,7 @@ class AnswerGrade extends Model
         'gained_xp' => 'integer',
         'gained_coins' => 'integer',
         'gained_marks' => 'integer',
+        'is_correct' => 'boolean',
         'graded_at' => 'datetime',
     ];
 

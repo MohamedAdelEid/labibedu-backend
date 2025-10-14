@@ -6,22 +6,36 @@ class ConnectAnswerChecker implements AnswerCheckerInterface
 {
     /**
      * Check if connect answer is correct
-     * All pairs must match correctly
+     * All pairs must match the correct pairs defined in question_option_pairs
      */
     public function check($question, $answer): bool
     {
-        $selections = $answer->selections->sortBy('order');
-        $pairs = $selections->chunk(2);
+        $studentPairs = $answer->pairs;
 
-        foreach ($pairs as $pair) {
-            if ($pair->count() !== 2) {
-                return false;
-            }
-            
-            $leftOption = $question->options->firstWhere('id', $pair->first()->option_id);
-            $rightOptionId = $pair->last()->option_id;
+        if ($studentPairs->isEmpty()) {
+            return false;
+        }
 
-            if (!$leftOption || $leftOption->match_id !== $rightOptionId) {
+        // Get correct pairs from question_option_pairs table
+        $correctPairs = $question->optionPairs;
+
+        if (empty($correctPairs) || $correctPairs->isEmpty()) {
+            return false;
+        }
+
+        // Check if counts match
+        if ($studentPairs->count() !== $correctPairs->count()) {
+            return false;
+        }
+
+        // Check each student pair against correct pairs
+        foreach ($studentPairs as $studentPair) {
+            $matchFound = $correctPairs->contains(function ($correctPair) use ($studentPair) {
+                return $correctPair->left_option_id === $studentPair->left_option_id
+                    && $correctPair->right_option_id === $studentPair->right_option_id;
+            });
+
+            if (!$matchFound) {
                 return false;
             }
         }

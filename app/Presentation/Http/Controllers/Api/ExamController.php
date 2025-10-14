@@ -6,8 +6,8 @@ use App\Application\DTOs\Exam\SubmitAnswerDTO;
 use App\Application\DTOs\Exam\SubmitEntireExamDTO;
 use App\Infrastructure\Facades\ExamFacade;
 use App\Infrastructure\Helpers\ApiResponse;
-use App\Presentation\Http\Requests\SubmitAnswerRequest;
-use App\Presentation\Http\Requests\SubmitEntireExamRequest;
+use App\Presentation\Http\Requests\Exam\SubmitEntireExamRequest;
+use App\Presentation\Http\Requests\Exam\SubmitAnswerRequest;
 use App\Presentation\Http\Resources\Exam\ExamDetailsResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +17,8 @@ class ExamController extends Controller
 {
     public function __construct(
         private ExamFacade $examFacade
-    ) {}
+    ) {
+    }
 
     public function show(int $id, Request $request): JsonResponse
     {
@@ -51,6 +52,7 @@ class ExamController extends Controller
             studentId: auth()->id(),
             questionId: $request->input('question_id'),
             selectedOptionIds: $request->input('selected_option_ids'),
+            trueFalseAnswer: $request->input('true_false_answer'),
             connectPairs: $request->input('connect_pairs'),
             arrangeOptionIds: $request->input('arrange_option_ids'),
             writtenAnswer: $request->input('written_answer'),

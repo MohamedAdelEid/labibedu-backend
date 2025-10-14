@@ -4,6 +4,7 @@ namespace App\Domain\Factories;
 
 use App\Domain\Services\AnswerCheckers\AnswerCheckerInterface;
 use App\Domain\Services\AnswerCheckers\ChoiceAnswerChecker;
+use App\Domain\Services\AnswerCheckers\TrueFalseAnswerChecker;
 use App\Domain\Services\AnswerCheckers\ConnectAnswerChecker;
 use App\Domain\Services\AnswerCheckers\ArrangeAnswerChecker;
 use App\Domain\Services\AnswerCheckers\WrittenAnswerChecker;
@@ -15,12 +16,13 @@ class AnswerCheckerFactory
 
     public function __construct(
         ChoiceAnswerChecker $choiceChecker,
+        TrueFalseAnswerChecker $trueFalseChecker,
         ConnectAnswerChecker $connectChecker,
         ArrangeAnswerChecker $arrangeChecker,
         WrittenAnswerChecker $writtenChecker
     ) {
         $this->checkers[QuestionType::CHOICE->value] = $choiceChecker;
-        $this->checkers[QuestionType::TRUE_FALSE->value] = $choiceChecker;
+        $this->checkers[QuestionType::TRUE_FALSE->value] = $trueFalseChecker;
         $this->checkers[QuestionType::CONNECT->value] = $connectChecker;
         $this->checkers[QuestionType::ARRANGE->value] = $arrangeChecker;
         $this->checkers[QuestionType::WRITTEN->value] = $writtenChecker;
@@ -28,7 +30,7 @@ class AnswerCheckerFactory
 
     /**
      * Check if an answer is correct based on question type
-     * 
+     *
      * @param mixed $question
      * @param mixed $answer
      * @return bool

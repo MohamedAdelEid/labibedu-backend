@@ -4,7 +4,8 @@ namespace App\Infrastructure\Repositories;
 
 use App\Domain\Interfaces\Repositories\AnswerRepositoryInterface;
 use App\Infrastructure\Models\Answer;
-use App\Infrastructure\Models\AnswerSelection;
+use App\Infrastructure\Models\AnswerPair;
+use App\Infrastructure\Models\AnswerOrder;
 use Illuminate\Support\Collection;
 
 class AnswerRepository extends BaseRepository implements AnswerRepositoryInterface
@@ -19,7 +20,7 @@ class AnswerRepository extends BaseRepository implements AnswerRepositoryInterfa
         return $this->model
             ->where('student_id', $studentId)
             ->where('question_id', $questionId)
-            ->with(['selections.option', 'grade'])
+            ->with(['option', 'pairs.leftOption', 'pairs.rightOption', 'orders.option', 'grade'])
             ->first();
     }
 
@@ -30,7 +31,7 @@ class AnswerRepository extends BaseRepository implements AnswerRepositoryInterfa
             ->whereHas('question', function ($query) use ($examTrainingId) {
                 $query->where('exam_training_id', $examTrainingId);
             })
-            ->with(['question', 'selections.option', 'grade'])
+            ->with(['question', 'option', 'pairs.leftOption', 'pairs.rightOption', 'orders.option', 'grade'])
             ->get();
     }
 
@@ -43,17 +44,35 @@ class AnswerRepository extends BaseRepository implements AnswerRepositoryInterfa
     {
         $answer = $this->model->findOrFail($id);
         $answer->update($data);
-        return $answer->fresh(['selections.option', 'grade']);
+        return $answer->fresh(['option', 'pairs.leftOption', 'pairs.rightOption', 'orders.option', 'grade']);
     }
 
-    public function createSelection(array $data): AnswerSelection
+    public function createPair(int $answerId, int $leftOptionId, int $rightOptionId): void
     {
-        return AnswerSelection::create($data);
+        AnswerPair::create([
+            'answer_id' => $answerId,
+            'left_option_id' => $leftOptionId,
+            'right_option_id' => $rightOptionId,
+        ]);
     }
 
-    public function deleteSelections(int $answerId): void
+    public function createOrder(int $answerId, int $optionId, int $order): void
     {
-        AnswerSelection::where('answer_id', $answerId)->delete();
+        AnswerOrder::create([
+            'answer_id' => $answerId,
+            'option_id' => $optionId,
+            'order' => $order,
+        ]);
+    }
+
+    public function deletePairs(int $answerId): void
+    {
+        AnswerPair::where('answer_id', $answerId)->delete();
+    }
+
+    public function deleteOrders(int $answerId): void
+    {
+        AnswerOrder::where('answer_id', $answerId)->delete();
     }
 
     public function getAnswersCount(int $studentId, array $questionIds): int

@@ -16,9 +16,8 @@ return new class extends Migration
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
             $table->text('text');
             $table->string('image')->nullable();
-            $table->boolean('is_correct')->default(false);
+            $table->boolean('is_correct')->default(false); // for types "choice,true_false"
             $table->enum('side', ['left', 'right'])->nullable(); // for connect type
-            $table->foreignId('match_id')->nullable()->constrained('question_options')->onDelete('set null'); // for connect type
             $table->integer('arrange_order')->nullable(); // for arrange type
             $table->timestamps();
         });
