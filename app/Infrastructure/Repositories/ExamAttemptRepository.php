@@ -37,7 +37,7 @@ class ExamAttemptRepository extends BaseRepository implements ExamAttemptReposit
             'student_id' => $studentId,
             'exam_training_id' => $examTrainingId,
             'start_time' => now(),
-            'remaining_seconds' => $duration * 60,
+            'remaining_seconds' => $duration > 0 ? $duration * 60 : 0, // 0 means unlimited time for training
             'status' => AttemptStatus::IN_PROGRESS,
         ]);
     }
@@ -46,6 +46,7 @@ class ExamAttemptRepository extends BaseRepository implements ExamAttemptReposit
     {
         $this->model
             ->where('status', AttemptStatus::IN_PROGRESS)
+            ->where('remaining_seconds', '>', 0) // Only process exams (training has remaining_seconds = 0)
             ->where('remaining_seconds', '<=', 0)
             ->update([
                 'status' => AttemptStatus::FINISHED,

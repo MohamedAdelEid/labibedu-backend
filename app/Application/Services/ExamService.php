@@ -52,7 +52,7 @@ class ExamService
         }
 
         $answersMap = $previousAnswers->keyBy('question_id');
-        $evaluatedQuestions = $questions->map(function ($question) use ($answersMap, $attemptData) {
+        $evaluatedQuestions = collect($questions->items())->map(function ($question) use ($answersMap, $attemptData) {
             $answer = $answersMap->get($question->id);
             return $this->answerEvaluationService->evaluateQuestion($question, $answer, $attemptData);
         });
@@ -70,40 +70,45 @@ class ExamService
     {
         $examTraining = $this->examTrainingRepository->findOrFail($examId);
 
-        if (!$examTraining->isExam()) {
-            throw new Exception('This is not an exam.');
-        }
+        // For exams, check start/end dates
+        if ($examTraining->isExam()) {
+            if (!$examTraining->hasStarted()) {
+                throw new Exception('Exam has not started yet.');
+            }
 
-        if (!$examTraining->hasStarted()) {
-            throw new Exception('Exam has not started yet.');
-        }
-
-        if ($examTraining->hasEnded()) {
-            throw new Exception('Exam has already ended.');
+            if ($examTraining->hasEnded()) {
+                throw new Exception('Exam has already ended.');
+            }
         }
 
         $existingAttempt = $this->examAttemptRepository->findLatestAttempt($studentId, $examId);
 
         if ($existingAttempt && $existingAttempt->isFinished()) {
-            throw new Exception('You have already completed this exam.');
+            $message = $examTraining->isExam() ? 'You have already completed this exam.' : 'You have already completed this training.';
+            throw new Exception($message);
         }
 
         if ($existingAttempt && $existingAttempt->isInProgress()) {
+            $message = $examTraining->isExam() ? 'Exam already in progress.' : 'Training already in progress.';
             return [
                 'attempt' => $existingAttempt,
-                'message' => 'Exam already in progress.',
+                'message' => $message,
             ];
         }
+
+        // For exams, use duration. For training, use 0 (unlimited time)
+        $duration = $examTraining->isExam() ? $examTraining->duration : 0;
 
         $attempt = $this->examAttemptRepository->createAttempt(
             $studentId,
             $examId,
-            $examTraining->duration
+            $duration
         );
 
+        $message = $examTraining->isExam() ? 'Exam started successfully.' : 'Training started successfully.';
         return [
             'attempt' => $attempt,
-            'message' => 'Exam started successfully.',
+            'message' => $message,
         ];
     }
 
@@ -116,16 +121,12 @@ class ExamService
     }
 
     /**
-     * Submit entire exam and calculate final performance
+     * Submit entire exam/training and calculate final performance
      */
     public function submitEntireExam(SubmitEntireExamDTO $dto): array
     {
         return DB::transaction(function () use ($dto) {
             $examTraining = $this->examTrainingRepository->findOrFail($dto->examTrainingId);
-
-            if (!$examTraining->isExam()) {
-                throw new Exception('This is not an exam.');
-            }
 
             $attempt = $this->examAttemptRepository->findActiveAttempt(
                 $dto->studentId,
@@ -133,14 +134,17 @@ class ExamService
             );
 
             if (!$attempt) {
-                throw new Exception('No active exam attempt found.');
+                $message = $examTraining->isExam() ? 'No active exam attempt found.' : 'No active training attempt found.';
+                throw new Exception($message);
             }
 
             if ($attempt->isFinished()) {
-                throw new Exception('Exam has already been submitted.');
+                $message = $examTraining->isExam() ? 'Exam has already been submitted.' : 'Training has already been submitted.';
+                throw new Exception($message);
             }
 
-            if ($examTraining->hasEnded()) {
+            // For exams, check if exam has ended
+            if ($examTraining->isExam() && $examTraining->hasEnded()) {
                 throw new Exception('Exam has ended.');
             }
 

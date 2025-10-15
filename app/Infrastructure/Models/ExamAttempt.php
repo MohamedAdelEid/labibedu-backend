@@ -49,6 +49,11 @@ class ExamAttempt extends Model
 
     public function hasExpired(): bool
     {
+        // For training (duration = 0), never expire
+        if ($this->remaining_seconds === 0) {
+            return false;
+        }
+
         return $this->remaining_seconds <= 0;
     }
 

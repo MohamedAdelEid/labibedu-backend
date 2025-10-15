@@ -18,7 +18,8 @@ class AnswerService
         private QuestionRepositoryInterface $questionRepository,
         private ExamAttemptRepositoryInterface $examAttemptRepository,
         private AnswerCheckerFactory $answerCheckerFactory
-    ) {}
+    ) {
+    }
 
     public function submitAnswer(SubmitAnswerDTO $dto): array
     {
@@ -47,9 +48,9 @@ class AnswerService
 
             if ($existingAnswer) {
                 $this->deleteOldAnswerData($existingAnswer, $question->type);
-                
+
                 $answer = $this->answerRepository->updateAnswer(
-                    $existingAnswer->id, 
+                    $existingAnswer->id,
                     $this->prepareAnswerData($dto, $question->type)
                 );
             } else {
@@ -183,24 +184,30 @@ class AnswerService
         $attempt = $this->examAttemptRepository->findActiveAttempt($studentId, $examTraining->id);
 
         if (!$attempt) {
-            throw new Exception('No active exam attempt found. Please start the exam first.');
+            $message = $examTraining->isExam() ? 'No active exam attempt found. Please start the exam first.' : 'No active training attempt found. Please start the training first.';
+            throw new Exception($message);
         }
 
         if ($attempt->isFinished()) {
-            throw new Exception('Exam has already been submitted.');
+            $message = $examTraining->isExam() ? 'Exam has already been submitted.' : 'Training has already been submitted.';
+            throw new Exception($message);
         }
 
-        if ($attempt->hasExpired()) {
-            $attempt->markAsFinished();
-            throw new Exception('Exam time has expired.');
-        }
+        // For exams, check time expiration
+        if ($examTraining->isExam()) {
+            if ($attempt->hasExpired()) {
+                $attempt->markAsFinished();
+                throw new Exception('Exam time has expired.');
+            }
 
-        if ($examTraining->hasEnded()) {
-            $attempt->markAsFinished();
-            throw new Exception('Exam has ended.');
-        }
+            if ($examTraining->hasEnded()) {
+                $attempt->markAsFinished();
+                throw new Exception('Exam has ended.');
+            }
 
-        $attempt->updateRemainingTime($timeSpent);
+            // Only update remaining time for exams
+            $attempt->updateRemainingTime($timeSpent);
+        }
 
         return $attempt;
     }
@@ -232,10 +239,10 @@ class AnswerService
 
     private function buildTempPairs(array $pairs, $question)
     {
-        return collect($pairs)->map(function($pair) use ($question) {
+        return collect($pairs)->map(function ($pair) use ($question) {
             $leftOption = $question->options->firstWhere('id', $pair['left_option_id']);
             $rightOption = $question->options->firstWhere('id', $pair['right_option_id']);
-            
+
             return (object) [
                 'left_option_id' => $pair['left_option_id'],
                 'right_option_id' => $pair['right_option_id'],
