@@ -17,7 +17,7 @@ class CookieService
             config('session.secure', true),
             true,
             false,
-            'strict'
+            config('session.same_site')
         );
     }
 
