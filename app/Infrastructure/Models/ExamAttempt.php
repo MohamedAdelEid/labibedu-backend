@@ -67,6 +67,16 @@ class ExamAttempt extends Model
 
     public function updateRemainingTime(int $timeSpent): void
     {
+        // Security check: time_spent cannot be greater than current remaining_seconds
+        if ($timeSpent > $this->remaining_seconds) {
+            throw new \Exception('Invalid time_spent value. Cannot spend more time than remaining.');
+        }
+
+        // Check if time_spent is negative or zero
+        if ($timeSpent <= 0) {
+            throw new \Exception('time_spent must be greater than 0.');
+        }
+
         $newRemaining = max(0, $this->remaining_seconds - $timeSpent);
         $this->update(['remaining_seconds' => $newRemaining]);
     }

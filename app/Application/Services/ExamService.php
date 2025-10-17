@@ -121,6 +121,49 @@ class ExamService
     }
 
     /**
+     * Send heartbeat to update remaining time for active exam
+     */
+    public function sendHeartbeat(int $examId, int $studentId, int $timeSpent): array
+    {
+        $examTraining = $this->examTrainingRepository->findOrFail($examId);
+
+        // Only for exams, not training
+        if (!$examTraining->isExam()) {
+            throw new Exception('Heartbeat is only available for exams.');
+        }
+
+        $attempt = $this->examAttemptRepository->findActiveAttempt($studentId, $examId);
+
+        if (!$attempt) {
+            throw new Exception('No active exam attempt found.');
+        }
+
+        if ($attempt->isFinished()) {
+            throw new Exception('Exam has already been submitted.');
+        }
+
+        // Check if exam has ended
+        if ($examTraining->hasEnded()) {
+            $attempt->markAsFinished();
+            throw new Exception('Exam has ended.');
+        }
+
+        // Check if time has expired
+        if ($attempt->hasExpired()) {
+            $attempt->markAsFinished();
+            throw new Exception('Exam time has expired.');
+        }
+
+        // Update remaining time
+        $attempt->updateRemainingTime($timeSpent);
+
+        return [
+            'remaining_seconds' => $attempt->remaining_seconds,
+            'is_active' => true,
+        ];
+    }
+
+    /**
      * Submit entire exam/training and calculate final performance
      */
     public function submitEntireExam(SubmitEntireExamDTO $dto): array

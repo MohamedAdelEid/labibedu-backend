@@ -68,6 +68,17 @@ class ExamController extends Controller
         );
     }
 
+    public function sendHeartbeat(int $id, Request $request): JsonResponse
+    {
+        $request->validate([
+            'time_spent' => 'required|integer|min:0',
+        ]);
+
+        $result = $this->examFacade->sendHeartbeat($id, auth()->id(), $request->input('time_spent'));
+
+        return ApiResponse::success($result, 'Heartbeat sent successfully.');
+    }
+
     public function submitEntireExam(int $id): JsonResponse
     {
         $dto = new SubmitEntireExamDTO(

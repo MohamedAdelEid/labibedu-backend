@@ -16,7 +16,8 @@ class ExamFacade
 {
     public function __construct(
         private ExamService $examService
-    ) {}
+    ) {
+    }
 
     /**
      * Get exam details with questions and previous answers
@@ -40,6 +41,14 @@ class ExamFacade
     public function submitAnswer(SubmitAnswerDTO $dto): array
     {
         return $this->examService->submitAnswer($dto);
+    }
+
+    /**
+     * Send heartbeat to update remaining time
+     */
+    public function sendHeartbeat(int $examId, int $studentId, int $timeSpent): array
+    {
+        return $this->examService->sendHeartbeat($examId, $studentId, $timeSpent);
     }
 
     /**
