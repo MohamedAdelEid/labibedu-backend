@@ -2,6 +2,7 @@
 
 namespace App\Presentation\Http\Controllers\Api;
 
+use App\Application\DTOs\Exam\SendHeartbeatDTO;
 use App\Application\DTOs\Exam\SubmitAnswerDTO;
 use App\Application\DTOs\Exam\SubmitEntireExamDTO;
 use App\Presentation\Http\Resources\Answer\AnswerResource;
@@ -71,10 +72,16 @@ class ExamController extends Controller
     public function sendHeartbeat(int $id, Request $request): JsonResponse
     {
         $request->validate([
-            'time_spent' => 'required|integer|min:0',
+            'remaining_seconds' => 'required|integer|min:0',
         ]);
 
-        $result = $this->examFacade->sendHeartbeat($id, auth()->id(), $request->input('time_spent'));
+        $dto = new SendHeartbeatDTO(
+            examId: $id,
+            studentId: auth()->id(),
+            remainingSeconds: $request->input('remaining_seconds'),
+        );
+
+        $result = $this->examFacade->sendHeartbeat($dto);
 
         return ApiResponse::success($result, 'Heartbeat sent successfully.');
     }

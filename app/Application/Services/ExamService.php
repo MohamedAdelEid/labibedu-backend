@@ -3,6 +3,7 @@
 namespace App\Application\Services;
 
 use App\Application\Calculators\ExamPerformanceCalculator;
+use App\Application\DTOs\Exam\SendHeartbeatDTO;
 use App\Application\DTOs\Exam\SubmitAnswerDTO;
 use App\Application\DTOs\Exam\SubmitEntireExamDTO;
 use App\Domain\Interfaces\Repositories\AnswerRepositoryInterface;
@@ -123,16 +124,16 @@ class ExamService
     /**
      * Send heartbeat to update remaining time for active exam
      */
-    public function sendHeartbeat(int $examId, int $studentId, int $timeSpent): array
+    public function sendHeartbeat(SendHeartbeatDTO $dto): array
     {
-        $examTraining = $this->examTrainingRepository->findOrFail($examId);
+        $examTraining = $this->examTrainingRepository->findOrFail($dto->examId);
 
         // Only for exams, not training
         if (!$examTraining->isExam()) {
             throw new Exception('Heartbeat is only available for exams.');
         }
 
-        $attempt = $this->examAttemptRepository->findActiveAttempt($studentId, $examId);
+        $attempt = $this->examAttemptRepository->findActiveAttempt($dto->studentId, $dto->examId);
 
         if (!$attempt) {
             throw new Exception('No active exam attempt found.');
@@ -154,8 +155,27 @@ class ExamService
             throw new Exception('Exam time has expired.');
         }
 
-        // Update remaining time
-        $attempt->updateRemainingTime($timeSpent);
+        // Security check: remaining_seconds cannot be greater than current remaining_seconds
+        if ($dto->remainingSeconds > $attempt->remaining_seconds) {
+            throw new Exception('Invalid remaining_seconds value. Cannot have more time than remaining.');
+        }
+
+        // Check if remaining_seconds is negative
+        if ($dto->remainingSeconds < 0) {
+            throw new Exception('remaining_seconds cannot be negative.');
+        }
+
+        // Update remaining time using repository
+        $this->examAttemptRepository->updateRemainingTime($attempt->id, $dto->remainingSeconds);
+
+        // Refresh attempt to get updated data
+        $attempt->refresh();
+
+        // Check if time has expired after update
+        if ($attempt->hasExpired()) {
+            $attempt->markAsFinished();
+            throw new Exception('Exam time has expired.');
+        }
 
         return [
             'remaining_seconds' => $attempt->remaining_seconds,

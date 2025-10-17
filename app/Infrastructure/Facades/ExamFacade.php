@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Facades;
 
+use App\Application\DTOs\Exam\SendHeartbeatDTO;
 use App\Application\DTOs\Exam\SubmitAnswerDTO;
 use App\Application\DTOs\Exam\SubmitEntireExamDTO;
 use App\Application\Services\ExamService;
@@ -46,9 +47,9 @@ class ExamFacade
     /**
      * Send heartbeat to update remaining time
      */
-    public function sendHeartbeat(int $examId, int $studentId, int $timeSpent): array
+    public function sendHeartbeat(SendHeartbeatDTO $dto): array
     {
-        return $this->examService->sendHeartbeat($examId, $studentId, $timeSpent);
+        return $this->examService->sendHeartbeat($dto);
     }
 
     /**

@@ -53,4 +53,11 @@ class ExamAttemptRepository extends BaseRepository implements ExamAttemptReposit
                 'end_time' => now(),
             ]);
     }
+
+    public function updateRemainingTime(int $attemptId, int $remainingSeconds): void
+    {
+        $this->model->where('id', $attemptId)->update([
+            'remaining_seconds' => $remainingSeconds,
+        ]);
+    }
 }
