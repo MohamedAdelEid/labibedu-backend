@@ -74,6 +74,7 @@ class AnswerService
                 'gained_xp' => $gainedXp,
                 'gained_coins' => $gainedCoins,
                 'remaining_seconds' => $attempt?->remaining_seconds,
+                'exam_training' => $examTraining,
             ];
         });
     }

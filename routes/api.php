@@ -27,7 +27,7 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::get('/{id}', 'show');
         Route::post('/{id}/start', 'start');
         Route::post('/submit-answer', 'submitAnswer');
-        Route::post('/submit', 'submitEntireExam');
+        Route::post('/{id}/submit', 'submitEntireExam');
     });
 
     // Assignments

@@ -4,6 +4,7 @@ namespace App\Presentation\Http\Controllers\Api;
 
 use App\Application\DTOs\Exam\SubmitAnswerDTO;
 use App\Application\DTOs\Exam\SubmitEntireExamDTO;
+use App\Presentation\Http\Resources\Answer\AnswerResource;
 use App\Infrastructure\Facades\ExamFacade;
 use App\Infrastructure\Helpers\ApiResponse;
 use App\Presentation\Http\Requests\Exam\SubmitEntireExamRequest;
@@ -61,14 +62,17 @@ class ExamController extends Controller
 
         $result = $this->examFacade->submitAnswer($dto);
 
-        return ApiResponse::success($result, 'Answer submitted successfully.');
+        return ApiResponse::success(
+            new AnswerResource($result, $result['exam_training']),
+            'Answer submitted successfully.'
+        );
     }
 
-    public function submitEntireExam(SubmitEntireExamRequest $request): JsonResponse
+    public function submitEntireExam(int $id): JsonResponse
     {
         $dto = new SubmitEntireExamDTO(
             studentId: auth()->id(),
-            examTrainingId: $request->input('exam_training_id'),
+            examTrainingId: $id,
         );
 
         $result = $this->examFacade->submitEntireExam($dto);
