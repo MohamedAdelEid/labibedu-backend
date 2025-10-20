@@ -2,6 +2,8 @@
 
 namespace App\Presentation\Http\Resources\Exam;
 
+use App\Domain\Enums\QuestionType;
+use App\Infrastructure\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +25,7 @@ class ExamQuestionResource extends JsonResource
             'xp' => $question->xp,
             'coins' => $question->coins,
             'marks' => $question->marks,
+            'has_images' => $this->hasImages($question),
             'options' => $this->formatOptions($question),
             'answered' => $answeredData,
         ];
@@ -36,7 +39,7 @@ class ExamQuestionResource extends JsonResource
 
     private function formatOptions($question): mixed
     {
-        if ($question->type->value === 'connect') {
+        if ($question->type->value === QuestionType::CONNECT->value) {
             $left = $question->options->where('side', 'left')->map(fn($opt) => [
                 'id' => $opt->id,
                 'text' => $opt->text,
@@ -55,7 +58,7 @@ class ExamQuestionResource extends JsonResource
             ];
         }
 
-        if ($question->type->value === 'true_false') {
+        if ($question->type->value === QuestionType::TRUE_FALSE->value) {
             return null;
         }
 
@@ -64,5 +67,14 @@ class ExamQuestionResource extends JsonResource
             'text' => $opt->text,
             'image' => $opt->image,
         ])->values();
+    }
+
+    private function hasImages($question): bool
+    {
+        if ($question->type->value === QuestionType::CHOICE->value) {
+            return $question->options->contains(fn($opt) => !empty($opt->image));
+        }
+
+        return false;
     }
 }
