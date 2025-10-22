@@ -28,7 +28,7 @@ class ExamController extends Controller
             'per_page' => 'nullable|integer|min:1|max:100',
         ]);
 
-        $studentId = auth()->id();
+        $studentId = auth()->user()->student->id;
         $perPage = $request->input('per_page', 10);
 
         $data = $this->examFacade->getExamDetails($id, $studentId, $perPage);
@@ -41,7 +41,7 @@ class ExamController extends Controller
 
     public function start(int $id): JsonResponse
     {
-        $studentId = auth()->id();
+        $studentId = auth()->user()->student->id;
 
         $result = $this->examFacade->startExam($id, $studentId);
 
@@ -51,7 +51,7 @@ class ExamController extends Controller
     public function submitAnswer(SubmitAnswerRequest $request): JsonResponse
     {
         $dto = new SubmitAnswerDTO(
-            studentId: auth()->id(),
+            studentId: auth()->user()->student->id,
             questionId: $request->input('question_id'),
             selectedOptionIds: $request->input('selected_option_ids'),
             trueFalseAnswer: $request->input('true_false_answer'),
@@ -77,7 +77,7 @@ class ExamController extends Controller
 
         $dto = new SendHeartbeatDTO(
             examId: $id,
-            studentId: auth()->id(),
+            studentId: auth()->user()->student->id,
             remainingSeconds: $request->input('remaining_seconds'),
         );
 
@@ -89,7 +89,7 @@ class ExamController extends Controller
     public function submitEntireExam(int $id): JsonResponse
     {
         $dto = new SubmitEntireExamDTO(
-            studentId: auth()->id(),
+            studentId: auth()->user()->student->id,
             examTrainingId: $id,
         );
 

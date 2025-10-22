@@ -10,6 +10,7 @@ use App\Application\Exceptions\InvalidCredentialsException;
 use App\Application\Exceptions\InvalidTokenException;
 use App\Domain\Interfaces\Repositories\UserRepositoryInterface;
 use App\Domain\Interfaces\Services\AuthServiceInterface;
+use App\Domain\Interfaces\Services\UserActivityServiceInterface;
 use App\Infrastructure\Models\Otp;
 use App\Infrastructure\Models\PasswordResetTokens;
 use App\Presentation\Http\Resources\UserResource;
@@ -23,11 +24,12 @@ use Carbon\Carbon;
 class AuthService implements AuthServiceInterface
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private UserActivityServiceInterface $userActivityService
     ) {
     }
 
-    public function login(LoginDTO $dto): array
+    public function login(LoginDTO $dto, ?string $ipAddress = null, ?string $userAgent = null): array
     {
         $user = $this->userRepository->findByUserName($dto->userName);
 
@@ -41,6 +43,11 @@ class AuthService implements AuthServiceInterface
 
         $accessToken = JWTAuth::fromUser($user);
         $refreshToken = $this->generateRefreshToken($user);
+
+        // Track login activity
+        if ($ipAddress && $userAgent) {
+            $this->userActivityService->trackLogin($user->id, $ipAddress, $userAgent);
+        }
 
         return [
             'accessToken' => $accessToken,
@@ -142,7 +149,7 @@ class AuthService implements AuthServiceInterface
         return true;
     }
 
-    public function confirmOtp(ConfirmOtpDTO $dto): array
+    public function confirmOtp(ConfirmOtpDTO $dto, ?string $ipAddress = null, ?string $userAgent = null): array
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
@@ -171,6 +178,11 @@ class AuthService implements AuthServiceInterface
         // Return login data
         $accessToken = JWTAuth::fromUser($user);
         $refreshToken = $this->generateRefreshToken($user);
+
+        // Track login activity
+        if ($ipAddress && $userAgent) {
+            $this->userActivityService->trackLogin($user->id, $ipAddress, $userAgent);
+        }
 
         return [
             'accessToken' => $accessToken,

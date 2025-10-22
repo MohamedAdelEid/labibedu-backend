@@ -9,11 +9,11 @@ use App\Application\DTOs\Auth\ConfirmOtpDTO;
 
 interface AuthServiceInterface
 {
-    public function login(LoginDTO $dto): array;
+    public function login(LoginDTO $dto, ?string $ipAddress = null, ?string $userAgent = null): array;
     public function refresh(string $refreshToken): array;
     public function logout(): bool;
     public function forgetPassword(ForgetPasswordDTO $dto): bool;
     public function resetPassword(ResetPasswordDTO $dto): bool;
-    public function confirmOtp(ConfirmOtpDTO $dto): array;
+    public function confirmOtp(ConfirmOtpDTO $dto, ?string $ipAddress = null, ?string $userAgent = null): array;
     public function resendOtp(string $email): bool;
 }

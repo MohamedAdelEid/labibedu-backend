@@ -18,11 +18,29 @@ use App\Domain\Interfaces\Repositories\QuestionRepositoryInterface;
 use App\Domain\Interfaces\Repositories\VideoRepositoryInterface;
 use App\Domain\Interfaces\Repositories\BookRepositoryInterface;
 use App\Domain\Interfaces\Repositories\AssignmentRepositoryInterface;
+use App\Domain\Interfaces\Repositories\UserActivityRepositoryInterface;
 use App\Infrastructure\Repositories\ExamAttemptRepository;
 use App\Infrastructure\Repositories\QuestionRepository;
 use App\Infrastructure\Repositories\VideoRepository;
 use App\Infrastructure\Repositories\BookRepository;
 use App\Infrastructure\Repositories\AssignmentRepository;
+use App\Infrastructure\Repositories\UserActivityRepository;
+use App\Domain\Interfaces\Repositories\StudentRepositoryInterface;
+use App\Infrastructure\Repositories\StudentRepository;
+use App\Domain\Interfaces\Services\UserActivityServiceInterface;
+use App\Application\Services\UserActivityService;
+use App\Domain\Interfaces\Services\StudentServiceInterface;
+use App\Application\Services\StudentService;
+use App\Domain\Interfaces\Services\BookServiceInterface;
+use App\Application\Services\BookService;
+use App\Domain\Interfaces\Services\VideoServiceInterface;
+use App\Application\Services\VideoService;
+use App\Domain\Interfaces\Services\AvatarServiceInterface;
+use App\Application\Services\AvatarService;
+use App\Domain\Interfaces\Services\QuestionServiceInterface;
+use App\Application\Services\QuestionService;
+use App\Domain\Interfaces\Repositories\AvatarRepositoryInterface;
+use App\Infrastructure\Repositories\AvatarRepository;
 use App\Infrastructure\Facades\ExamFacade;
 use Illuminate\Support\ServiceProvider;
 
@@ -39,10 +57,18 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(VideoRepositoryInterface::class, VideoRepository::class);
         $this->app->bind(BookRepositoryInterface::class, BookRepository::class);
         $this->app->bind(AssignmentRepositoryInterface::class, AssignmentRepository::class);
-
+        $this->app->bind(UserActivityRepositoryInterface::class, UserActivityRepository::class);
+        $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
+        $this->app->bind(AvatarRepositoryInterface::class, AvatarRepository::class);
 
         // Bind services
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
+        $this->app->bind(UserActivityServiceInterface::class, UserActivityService::class);
+        $this->app->bind(StudentServiceInterface::class, StudentService::class);
+        $this->app->bind(BookServiceInterface::class, BookService::class);
+        $this->app->bind(VideoServiceInterface::class, VideoService::class);
+        $this->app->bind(AvatarServiceInterface::class, AvatarService::class);
+        $this->app->bind(QuestionServiceInterface::class, QuestionService::class);
         $this->app->singleton(CookieService::class);
         $this->app->singleton(ExamService::class);
 

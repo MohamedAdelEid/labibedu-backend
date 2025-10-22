@@ -11,4 +11,6 @@ interface BookRepositoryInterface
     public function getProgress(int $studentId, int $bookId);
 
     public function updateProgress(int $studentId, int $bookId, array $data);
+
+    public function getByRelatedTrainingId(int $trainingId): \Illuminate\Support\Collection;
 }

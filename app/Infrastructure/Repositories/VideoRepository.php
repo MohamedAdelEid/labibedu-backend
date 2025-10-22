@@ -35,4 +35,9 @@ class VideoRepository extends BaseRepository implements VideoRepositoryInterface
             $data
         );
     }
+
+    public function getByRelatedTrainingId(int $trainingId): \Illuminate\Support\Collection
+    {
+        return $this->model->where('related_training_id', $trainingId)->get();
+    }
 }

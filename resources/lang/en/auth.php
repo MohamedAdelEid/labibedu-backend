@@ -28,4 +28,5 @@ return [
     'email_not_verified' => 'Please verify your email address.',
     'phone_not_verified' => 'Please verify your phone number.',
     'unauthenticated' => 'You must be logged in to access this page.',
+    'unauthorized' => 'You are not authorized to perform this action.',
 ];

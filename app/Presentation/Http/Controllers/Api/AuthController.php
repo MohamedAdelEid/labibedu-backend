@@ -24,12 +24,13 @@ class AuthController extends Controller
     public function __construct(
         private AuthFacade $authFacade,
         private CookieService $cookieService
-    ) {}
+    ) {
+    }
 
     public function login(LoginRequest $request): JsonResponse
     {
         $dto = LoginDTO::fromRequest($request->validated());
-        $result = $this->authFacade->login($dto);
+        $result = $this->authFacade->login($dto, $request->ip(), $request->userAgent());
 
         $cookie = $this->cookieService->createRefreshTokenCookie($result['refreshToken']);
 
@@ -87,7 +88,7 @@ class AuthController extends Controller
     public function confirmOtp(ConfirmOtpRequest $request): JsonResponse
     {
         $dto = ConfirmOtpDTO::fromRequest($request->validated());
-        $result = $this->authFacade->confirmOtp($dto);
+        $result = $this->authFacade->confirmOtp($dto, $request->ip(), $request->userAgent());
 
         $cookie = $this->cookieService->createRefreshTokenCookie($result['refreshToken']);
 

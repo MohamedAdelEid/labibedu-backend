@@ -35,4 +35,9 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
             $data
         );
     }
+
+    public function getByRelatedTrainingId(int $trainingId): \Illuminate\Support\Collection
+    {
+        return $this->model->where('related_training_id', $trainingId)->get();
+    }
 }

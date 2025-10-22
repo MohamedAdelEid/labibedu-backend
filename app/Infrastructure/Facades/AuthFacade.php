@@ -12,11 +12,12 @@ class AuthFacade
 {
     public function __construct(
         private AuthServiceInterface $authService
-    ) {}
+    ) {
+    }
 
-    public function login(LoginDTO $dto): array
+    public function login(LoginDTO $dto, ?string $ipAddress = null, ?string $userAgent = null): array
     {
-        return $this->authService->login($dto);
+        return $this->authService->login($dto, $ipAddress, $userAgent);
     }
 
     public function refresh(string $refreshToken): array
@@ -39,9 +40,9 @@ class AuthFacade
         return $this->authService->resetPassword($dto);
     }
 
-    public function confirmOtp(ConfirmOtpDTO $dto): array
+    public function confirmOtp(ConfirmOtpDTO $dto, ?string $ipAddress = null, ?string $userAgent = null): array
     {
-        return $this->authService->confirmOtp($dto);
+        return $this->authService->confirmOtp($dto, $ipAddress, $userAgent);
     }
 
     public function resendOtp(string $email): bool

@@ -11,4 +11,6 @@ interface VideoRepositoryInterface
     public function getProgress(int $studentId, int $videoId);
 
     public function updateProgress(int $studentId, int $videoId, array $data);
+
+    public function getByRelatedTrainingId(int $trainingId): \Illuminate\Support\Collection;
 }

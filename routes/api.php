@@ -3,6 +3,9 @@
 use App\Presentation\Http\Controllers\Api\AuthController;
 use App\Presentation\Http\Controllers\Api\ExamController;
 use App\Presentation\Http\Controllers\Api\AssignmentController;
+use App\Presentation\Http\Controllers\Api\UserActivityController;
+use App\Presentation\Http\Controllers\Api\StudentController;
+use App\Presentation\Http\Controllers\Api\AvatarController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -20,7 +23,7 @@ Route::prefix('auth')->group(function () {
 });
 
 // Protected routes
-Route::middleware(['jwt.auth'])->group(function () {
+Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
     // Exams & Trainings
     Route::prefix('exams')->controller(ExamController::class)->group(function () {
         Route::get('/', 'index');
@@ -34,5 +37,27 @@ Route::middleware(['jwt.auth'])->group(function () {
     // Assignments
     Route::prefix('assignments')->group(function () {
         Route::get('/', [AssignmentController::class, 'index']);
+    });
+
+    // User Activity Tracking
+    Route::prefix('activity')->group(function () {
+        Route::get('/summary', [UserActivityController::class, 'getActivitySummary']);
+        Route::get('/total-time', [UserActivityController::class, 'getTotalTimeSpent']);
+        Route::get('/daily', [UserActivityController::class, 'getDailyActivity']);
+        Route::post('/end-session', [UserActivityController::class, 'endSession']);
+        Route::get('/most-active-users', [UserActivityController::class, 'getMostActiveUsers']);
+    });
+
+    // Student Operations
+    Route::prefix('student')->group(function () {
+        Route::get('/profile', [StudentController::class, 'getProfile']);
+    });
+
+    // Avatar Operations
+    Route::prefix('avatars')->group(function () {
+        Route::get('/', [AvatarController::class, 'getAvatars']);
+        Route::get('/owned', [AvatarController::class, 'getOwnedAvatars']);
+        Route::post('/purchase', [AvatarController::class, 'purchaseAvatar']);
+        Route::post('/set-active', [AvatarController::class, 'setActiveAvatar']);
     });
 });

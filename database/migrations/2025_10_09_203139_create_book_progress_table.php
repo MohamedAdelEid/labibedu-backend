@@ -17,9 +17,6 @@ return new class extends Migration
             $table->foreignId('book_id')->constrained()->cascadeOnDelete();
             $table->integer('pages_read')->default(0);
             $table->boolean('is_completed')->default(false);
-            $table->integer('earned_xp')->default(0);
-            $table->integer('earned_coins')->default(0);
-            $table->integer('earned_marks')->default(0);
             $table->timestamps();
 
             $table->unique(['student_id', 'book_id']);

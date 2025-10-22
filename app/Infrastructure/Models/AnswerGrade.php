@@ -39,4 +39,36 @@ class AnswerGrade extends Model
     {
         return $this->belongsTo(Teacher::class, 'graded_by');
     }
+
+    /**
+     * Get total points earned from this grade
+     */
+    public function getTotalPoints(): int
+    {
+        return $this->gained_xp + $this->gained_coins;
+    }
+
+    /**
+     * Check if this grade awarded any points
+     */
+    public function hasPoints(): bool
+    {
+        return $this->gained_xp > 0 || $this->gained_coins > 0;
+    }
+
+    /**
+     * Get scoring summary
+     */
+    public function getScoringSummary(): array
+    {
+        return [
+            'is_correct' => $this->is_correct,
+            'gained_xp' => $this->gained_xp,
+            'gained_coins' => $this->gained_coins,
+            'total_points' => $this->getTotalPoints(),
+            'has_points' => $this->hasPoints(),
+            'graded_at' => $this->graded_at,
+            'status' => $this->status,
+        ];
+    }
 }

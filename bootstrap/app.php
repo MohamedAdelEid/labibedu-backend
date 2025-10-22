@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'jwt.auth' => \App\Presentation\Http\Middleware\JwtMiddleware::class,
             'localization' => \App\Presentation\Http\Middleware\LocalizationMiddleware::class,
+            'user.activity' => \App\Presentation\Http\Middleware\UserActivityMiddleware::class,
         ]);
 
         $middleware->web(append: [

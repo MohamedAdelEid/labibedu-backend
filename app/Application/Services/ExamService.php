@@ -3,13 +3,19 @@
 namespace App\Application\Services;
 
 use App\Application\Calculators\ExamPerformanceCalculator;
+use App\Application\Calculators\ExamScoringCalculator;
 use App\Application\DTOs\Exam\SendHeartbeatDTO;
 use App\Application\DTOs\Exam\SubmitAnswerDTO;
 use App\Application\DTOs\Exam\SubmitEntireExamDTO;
+use App\Domain\Interfaces\Repositories\VideoRepositoryInterface;
+use App\Domain\Interfaces\Repositories\BookRepositoryInterface;
 use App\Domain\Interfaces\Repositories\AnswerRepositoryInterface;
 use App\Domain\Interfaces\Repositories\ExamAttemptRepositoryInterface;
 use App\Domain\Interfaces\Repositories\ExamTrainingRepositoryInterface;
 use App\Domain\Interfaces\Repositories\QuestionRepositoryInterface;
+use App\Domain\Interfaces\Services\StudentServiceInterface;
+use App\Domain\Interfaces\Services\BookServiceInterface;
+use App\Domain\Interfaces\Services\VideoServiceInterface;
 use App\Domain\Services\AnswerEvaluationService;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -23,7 +29,13 @@ class ExamService
         private AnswerRepositoryInterface $answerRepository,
         private AnswerService $answerService,
         private ExamPerformanceCalculator $performanceCalculator,
-        private AnswerEvaluationService $answerEvaluationService
+        private ExamScoringCalculator $scoringCalculator,
+        private AnswerEvaluationService $answerEvaluationService,
+        private StudentServiceInterface $studentService,
+        private BookServiceInterface $bookService,
+        private VideoServiceInterface $videoService,
+        private VideoRepositoryInterface $videoRepository,
+        private BookRepositoryInterface $bookRepository
     ) {
     }
 
@@ -213,18 +225,116 @@ class ExamService
 
             $attempt->markAsFinished();
 
-            $questions = $examTraining->questions;
-            $answers = $this->answerRepository->getAnswersForStudentExam($dto->studentId, $dto->examTrainingId);
-
-            $performance = $this->performanceCalculator->calculate($questions, $answers);
+            // Process completion scoring with new flow
+            $scoringResult = $this->processExamCompletionScoring($dto->studentId, $dto->examTrainingId);
 
             return [
-                'total_questions' => $questions->count(),
-                'correct_answers' => $performance['correct_answers'],
-                'score_percentage' => $performance['score_percentage'],
-                'total_xp' => $performance['earned_xp'],
-                'total_coins' => $performance['earned_coins'],
+                'total_questions' => $scoringResult['total_questions'],
+                'correct_answers' => $scoringResult['correct_answers'],
+                'score_percentage' => $scoringResult['score_percentage'],
+                'total_xp' => $scoringResult['total_xp_gained'],
+                'total_coins' => $scoringResult['total_coins_gained'],
+                'scoring' => $scoringResult,
             ];
+
         });
+    }
+
+    /**
+     * Process exam completion scoring with new flow
+     * 1. Check if exam is related to video/book
+     * 2. Verify completion and get scoring from related content
+     * 3. Validate written questions evaluation
+     * 4. Calculate exam scoring
+     * 5. Combine scorings and update student
+     */
+    private function processExamCompletionScoring(int $studentId, int $examTrainingId): array
+    {
+        $examTraining = $this->examTrainingRepository->findOrFail($examTrainingId);
+
+        // Step 1: Check for related content and get scoring
+        $relatedContentScoring = $this->getRelatedContentScoring($studentId, $examTraining);
+
+        // Step 2: Validate written questions evaluation before calculating exam scoring
+        $this->scoringCalculator->validateWrittenQuestionsEvaluation($studentId, $examTrainingId);
+
+        // Step 3: Calculate exam scoring using the new calculator
+        $examScoring = $this->scoringCalculator->calculateExamScoring($studentId, $examTrainingId);
+
+        // Step 4: Combine related content scoring with exam scoring
+        $totalXp = $examScoring['xp'] + $relatedContentScoring['xp'];
+        $totalCoins = $examScoring['coins'] + $relatedContentScoring['coins'];
+
+        // Step 5: Update student's scoring
+        $this->studentService->updateStudentScoring(
+            $studentId,
+            $totalXp,
+            $totalCoins,
+            "Exam completion: {$examTraining->title}"
+        );
+
+        return [
+            'success' => true,
+            'exam_scoring' => $examScoring,
+            'related_content_scoring' => $relatedContentScoring,
+            'total_xp_gained' => $totalXp,
+            'total_coins_gained' => $totalCoins,
+            'correct_answers' => $examScoring['correct_answers'],
+            'total_questions' => $examScoring['total_questions'],
+            'score_percentage' => $examScoring['score_percentage'],
+        ];
+    }
+
+    /**
+     * Get scoring from related book/video content
+     * Updated flow: Check completion first, throw exception if not completed
+     * Note: Videos and books have related_training_id pointing to exams_trainings
+     */
+    private function getRelatedContentScoring(int $studentId, $examTraining): array
+    {
+        $totalXp = 0;
+        $totalCoins = 0;
+        $relatedContent = [];
+
+        // Check if there are videos related to this exam/training
+        $relatedVideos = $this->videoRepository->getByRelatedTrainingId($examTraining->id);
+        foreach ($relatedVideos as $video) {
+            try {
+                $videoScoring = $this->videoService->getVideoCompletionScoring($studentId, $video->id);
+                $totalXp += $videoScoring['xp'];
+                $totalCoins += $videoScoring['coins'];
+                $relatedContent['videos'][] = $videoScoring;
+            } catch (Exception $e) {
+                throw new Exception("You must finish the video '{$video->title}' first: {$e->getMessage()}");
+            }
+        }
+
+        // Check if there are books related to this exam/training
+        $relatedBooks = $this->bookRepository->getByRelatedTrainingId($examTraining->id);
+        foreach ($relatedBooks as $book) {
+            try {
+                $bookScoring = $this->bookService->getBookCompletionScoring($studentId, $book->id);
+                $totalXp += $bookScoring['xp'];
+                $totalCoins += $bookScoring['coins'];
+                $relatedContent['books'][] = $bookScoring;
+            } catch (Exception $e) {
+                throw new Exception("You must finish the book '{$book->title}' first: {$e->getMessage()}");
+            }
+        }
+
+        return [
+            'xp' => $totalXp,
+            'coins' => $totalCoins,
+            'related_content' => $relatedContent,
+        ];
+    }
+
+    /**
+     * Check if all written questions for a student are properly evaluated
+     * Delegates to ExamScoringCalculator for consistency
+     */
+    public function areAllWrittenQuestionsEvaluated(int $studentId, int $examTrainingId): bool
+    {
+        return $this->scoringCalculator->areAllWrittenQuestionsEvaluated($studentId, $examTrainingId);
     }
 }
