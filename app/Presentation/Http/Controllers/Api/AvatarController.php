@@ -2,9 +2,12 @@
 
 namespace App\Presentation\Http\Controllers\Api;
 
+use App\Application\DTOs\Avatar\CreateAvatarDTO;
 use App\Domain\Interfaces\Services\AvatarServiceInterface;
 use App\Presentation\Http\Controllers\Controller;
+use App\Presentation\Http\Resources\Avatar\AvatarResource;
 use App\Infrastructure\Helpers\ApiResponse;
+use App\Presentation\Http\Requests\Avater\CreateAvatarRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,8 +27,28 @@ class AvatarController extends Controller
         try {
             $avatars = $this->avatarService->getAllAvatars();
 
+            return ApiResponse::success(AvatarResource::collection($avatars), 'Avatars retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponse::error(
+                $e->getMessage(),
+                null,
+                500
+            );
+        }
+    }
+
+    /**
+     * Get all avatars with student-specific information
+     */
+    public function getAvatarsForStudent(): JsonResponse
+    {
+        try {
+            $user = Auth::user();
+
+            $avatars = $this->avatarService->getAllAvatarsForStudent($user->student->id);
+
             return ApiResponse::success(
-                $avatars,
+                AvatarResource::collection($avatars),
                 'Avatars retrieved successfully'
             );
         } catch (\Exception $e) {
@@ -38,24 +61,31 @@ class AvatarController extends Controller
     }
 
     /**
+     * Upload a new avatar
+     */
+    public function createAvatar(CreateAvatarRequest $request): JsonResponse
+    {
+        try {
+            $dto = CreateAvatarDTO::fromRequest($request);
+            $avatar = $this->avatarService->createAvatar($dto);
+            return ApiResponse::success(new AvatarResource($avatar), 'Avatar uploaded successfully');
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), null, 500);
+        }
+    }
+
+    /**
      * Get student's owned avatars
      */
     public function getOwnedAvatars(): JsonResponse
     {
-        $user = Auth::user();
-        if (!$user || !$user->student) {
-            return ApiResponse::error(
-                'Student access required',
-                null,
-                403
-            );
-        }
-
         try {
+            $user = Auth::user();
+
             $avatars = $this->avatarService->getOwnedAvatars($user->student->id);
 
             return ApiResponse::success(
-                $avatars,
+                AvatarResource::collection($avatars),
                 'Owned avatars retrieved successfully'
             );
         } catch (\Exception $e) {
@@ -72,41 +102,17 @@ class AvatarController extends Controller
      */
     public function purchaseAvatar(Request $request): JsonResponse
     {
-        $user = Auth::user();
-        if (!$user || !$user->student) {
-            return ApiResponse::error(
-                'Student access required',
-                null,
-                403
-            );
-        }
-
         $request->validate([
             'avatar_id' => 'required|integer|exists:avatars,id',
         ]);
 
-        try {
-            $result = $this->avatarService->purchaseAvatar($user->student->id, $request->avatar_id);
+        $user = Auth::user();
+        $result = $this->avatarService->purchaseAvatar($user->student->id, $request->avatar_id);
 
-            if ($result['success']) {
-                return ApiResponse::success(
-                    $result['avatar'],
-                    'Avatar purchased successfully'
-                );
-            } else {
-                return ApiResponse::error(
-                    $result['message'],
-                    null,
-                    400
-                );
-            }
-        } catch (\Exception $e) {
-            return ApiResponse::error(
-                $e->getMessage(),
-                null,
-                500
-            );
-        }
+        return ApiResponse::success(
+            new AvatarResource($result),
+            'Avatar purchased successfully'
+        );
     }
 
     /**
@@ -115,39 +121,42 @@ class AvatarController extends Controller
     public function setActiveAvatar(Request $request): JsonResponse
     {
         $user = Auth::user();
-        if (!$user || !$user->student) {
-            return ApiResponse::error(
-                'Student access required',
-                null,
-                403
-            );
-        }
 
         $request->validate([
             'avatar_id' => 'required|integer|exists:avatars,id',
         ]);
 
-        try {
-            $result = $this->avatarService->setActiveAvatar($user->student->id, $request->avatar_id);
+        $result = $this->avatarService->setActiveAvatar($user->student->id, $request->avatar_id);
 
-            if ($result['success']) {
-                return ApiResponse::success(
-                    $result['avatar'],
-                    'Active avatar updated successfully'
-                );
-            } else {
-                return ApiResponse::error(
-                    $result['message'],
-                    null,
-                    400
-                );
-            }
-        } catch (\Exception $e) {
-            return ApiResponse::error(
-                $e->getMessage(),
-                null,
-                500
-            );
-        }
+        return ApiResponse::success(
+            new AvatarResource($result),
+            'Active avatar updated successfully'
+        );
+    }
+
+    /**
+     * Get avatars by category
+     */
+    public function getAvatarsByCategory(Request $request, int $categoryId): JsonResponse
+    {
+        $avatars = $this->avatarService->getAvatarsByCategory($categoryId);
+
+        return ApiResponse::success(
+            AvatarResource::collection($avatars),
+            'Avatars by category retrieved successfully'
+        );
+    }
+
+    /**
+     * Get avatars grouped by category
+     */
+    public function getAvatarsGroupedByCategory(): JsonResponse
+    {
+        $avatars = $this->avatarService->getAvatarsGroupedByCategory();
+
+        return ApiResponse::success(
+            $avatars,
+            'Avatars grouped by category retrieved successfully'
+        );
     }
 }

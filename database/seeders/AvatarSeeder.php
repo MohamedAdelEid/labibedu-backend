@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Infrastructure\Models\Avatar;
+use App\Infrastructure\Models\AvatarCategory;
+use App\Infrastructure\Models\Student;
 use Illuminate\Database\Seeder;
 
 class AvatarSeeder extends Seeder
@@ -12,43 +14,159 @@ class AvatarSeeder extends Seeder
      */
     public function run(): void
     {
-        $avatars = [
+        // Get categories
+        $labibCategory = AvatarCategory::where('name_en', 'labib')->first();
+        $dinosaurCategory = AvatarCategory::where('name_en', 'dinosaur')->first();
+        $robotCategory = AvatarCategory::where('name_en', 'robot')->first();
+        $astroCategory = AvatarCategory::where('name_en', 'astro')->first();
+
+        // Labib Avatars (5 avatars)
+        $labibAvatars = [
             [
-                'url' => 'https://example.com/avatars/avatar1.png',
-                'coins' => 0, // Free avatar
+                'url' => 'labib/labib_1.svg',
+                'coins' => 10,
+                'category_id' => $labibCategory->id,
             ],
             [
-                'url' => 'https://example.com/avatars/avatar2.png',
-                'coins' => 100,
+                'url' => 'labib/labib_2.svg',
+                'coins' => 15,
+                'category_id' => $labibCategory->id,
             ],
             [
-                'url' => 'https://example.com/avatars/avatar3.png',
-                'coins' => 250,
+                'url' => 'labib/labib_3.svg',
+                'coins' => 20,
+                'category_id' => $labibCategory->id,
             ],
             [
-                'url' => 'https://example.com/avatars/avatar4.png',
-                'coins' => 500,
+                'url' => 'labib/labib_4.svg',
+                'coins' => 25,
+                'category_id' => $labibCategory->id,
             ],
             [
-                'url' => 'https://example.com/avatars/avatar5.png',
-                'coins' => 750,
-            ],
-            [
-                'url' => 'https://example.com/avatars/avatar6.png',
-                'coins' => 1000,
-            ],
-            [
-                'url' => 'https://example.com/avatars/avatar7.png',
-                'coins' => 1500,
-            ],
-            [
-                'url' => 'https://example.com/avatars/avatar8.png',
-                'coins' => 2000,
+                'url' => 'labib/labib_5.svg',
+                'coins' => 30,
+                'category_id' => $labibCategory->id,
             ],
         ];
 
-        foreach ($avatars as $avatarData) {
+        // Dinosaur Avatars (5 avatars)
+        $dinosaurAvatars = [
+            [
+                'url' => 'dinosaur/dinosaur_1.svg',
+                'coins' => 12,
+                'category_id' => $dinosaurCategory->id,
+            ],
+            [
+                'url' => 'dinosaur/dinosaur_2.svg',
+                'coins' => 18,
+                'category_id' => $dinosaurCategory->id,
+            ],
+            [
+                'url' => 'dinosaur/dinosaur_3.svg',
+                'coins' => 22,
+                'category_id' => $dinosaurCategory->id,
+            ],
+            [
+                'url' => 'dinosaur/dinosaur_4.svg',
+                'coins' => 28,
+                'category_id' => $dinosaurCategory->id,
+            ],
+            [
+                'url' => 'dinosaur/dinosaur_5.svg',
+                'coins' => 35,
+                'category_id' => $dinosaurCategory->id,
+            ],
+        ];
+
+        // Robot Avatars (5 avatars)
+        $robotAvatars = [
+            [
+                'url' => 'robot/robot_1.svg',
+                'coins' => 14,
+                'category_id' => $robotCategory->id,
+            ],
+            [
+                'url' => 'robot/robot_2.svg',
+                'coins' => 16,
+                'category_id' => $robotCategory->id,
+            ],
+            [
+                'url' => 'robot/robot_3.svg',
+                'coins' => 24,
+                'category_id' => $robotCategory->id,
+            ],
+            [
+                'url' => 'robot/robot_4.svg',
+                'coins' => 32,
+                'category_id' => $robotCategory->id,
+            ],
+            [
+                'url' => 'robot/robot_5.svg',
+                'coins' => 40,
+                'category_id' => $robotCategory->id,
+            ],
+        ];
+
+        $astroAvatars = [
+            [
+                'url' => 'astro/astro_1.svg',
+                'coins' => 10,
+                'category_id' => $astroCategory->id,
+            ],
+            [
+                'url' => 'astro/astro_2.svg',
+                'coins' => 15,
+                'category_id' => $astroCategory->id,
+            ],
+            [
+                'url' => 'astro/astro_3.svg',
+                'coins' => 20,
+                'category_id' => $astroCategory->id,
+            ],
+            [
+                'url' => 'astro/astro_4.svg',
+                'coins' => 25,
+                'category_id' => $astroCategory->id,
+            ],
+            [
+                'url' => 'astro/astro_5.svg',
+                'coins' => 30,
+                'category_id' => $astroCategory->id,
+            ],
+        ];
+
+        // Create all avatars
+        $allAvatars = array_merge($labibAvatars, $dinosaurAvatars, $robotAvatars);
+
+        foreach ($allAvatars as $avatarData) {
             Avatar::create($avatarData);
+        }
+
+        // Get student with ID 1
+        $student = Student::find(1);
+
+        if ($student) {
+            // Purchase first avatar from Labib category
+            $firstLabibAvatar = Avatar::where('category_id', $labibCategory->id)->first();
+            $student->avatars()->attach($firstLabibAvatar->id, ['purchased_at' => now()]);
+            $student->coins -= $firstLabibAvatar->coins;
+
+            // Purchase first two avatars from Dinosaur category
+            $firstTwoDinosaurAvatars = Avatar::where('category_id', $dinosaurCategory->id)->limit(2)->get();
+            foreach ($firstTwoDinosaurAvatars as $avatar) {
+                $student->avatars()->attach($avatar->id, ['purchased_at' => now()]);
+                $student->coins -= $avatar->coins;
+            }
+
+            // Purchase first avatar from Robot category
+            $firstRobotAvatar = Avatar::where('category_id', $robotCategory->id)->first();
+            $student->avatars()->attach($firstRobotAvatar->id, ['purchased_at' => now()]);
+            $student->coins -= $firstRobotAvatar->coins;
+
+            // Set first Labib avatar as active
+            $student->active_avatar_id = $firstLabibAvatar->id;
+
+            $student->save();
         }
     }
 }

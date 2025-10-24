@@ -15,8 +15,7 @@ class UserActivityController extends Controller
 {
     public function __construct(
         private UserActivityServiceInterface $userActivityService
-    ) {
-    }
+    ) {}
 
     /**
      * Get user's activity summary for a specific period.

@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             QuestionSeeder::class,
             AssignmentSeeder::class,
             ExamAttemptAnswerSeeder::class,
+            AvatarCategorySeeder::class,
+            AvatarSeeder::class,
         ]);
     }
 }

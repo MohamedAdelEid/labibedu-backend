@@ -42,6 +42,10 @@ use App\Application\Services\QuestionService;
 use App\Domain\Interfaces\Repositories\AvatarRepositoryInterface;
 use App\Infrastructure\Repositories\AvatarRepository;
 use App\Infrastructure\Facades\ExamFacade;
+use App\Domain\Interfaces\Repositories\AvatarCategoryRepositoryInterface;
+use App\Infrastructure\Repositories\AvatarCategoryRepository;
+use App\Domain\Interfaces\Services\AvatarCategoryServiceInterface;
+use App\Application\Services\AvatarCategoryService;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -60,6 +64,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserActivityRepositoryInterface::class, UserActivityRepository::class);
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
         $this->app->bind(AvatarRepositoryInterface::class, AvatarRepository::class);
+        $this->app->bind(AvatarCategoryRepositoryInterface::class, AvatarCategoryRepository::class);
 
         // Bind services
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
@@ -68,6 +73,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(BookServiceInterface::class, BookService::class);
         $this->app->bind(VideoServiceInterface::class, VideoService::class);
         $this->app->bind(AvatarServiceInterface::class, AvatarService::class);
+        $this->app->bind(AvatarCategoryServiceInterface::class, AvatarCategoryService::class);
         $this->app->bind(QuestionServiceInterface::class, QuestionService::class);
         $this->app->singleton(CookieService::class);
         $this->app->singleton(ExamService::class);

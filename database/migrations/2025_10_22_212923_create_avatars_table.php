@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('avatars', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->nullable()->constrained('avatar_categories')->onDelete('set null');
             $table->string('url');
             $table->integer('coins')->default(0);
             $table->timestamps();

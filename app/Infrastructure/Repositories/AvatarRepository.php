@@ -53,51 +53,48 @@ class AvatarRepository extends BaseRepository implements AvatarRepositoryInterfa
     /**
      * Purchase avatar for student
      */
-    public function purchaseAvatar(int $studentId, int $avatarId): bool
+    public function purchaseAvatar(Student $student, Avatar $avatar): Avatar
     {
-        $student = Student::find($studentId);
-        $avatar = $this->findById($avatarId);
-
-        if (!$student || !$avatar) {
-            return false;
-        }
-
-        // Check if student can afford the avatar
-        if (!$student->canAfford($avatar->coins)) {
-            return false;
-        }
-
-        // Check if student already owns this avatar
-        if ($this->studentOwnsAvatar($studentId, $avatarId)) {
-            return false;
-        }
-
-        // Spend coins and attach avatar
-        if ($student->spendCoins($avatar->coins)) {
-            $student->avatars()->attach($avatarId, ['purchased_at' => now()]);
-            return true;
-        }
-
-        return false;
+        $student->avatars()->attach($avatar->id, ['purchased_at' => now()]);
+        return $avatar;
     }
 
     /**
      * Set active avatar for student
      */
-    public function setActiveAvatar(int $studentId, int $avatarId): bool
+    public function setActiveAvatar(Student $student, Avatar $avatar): Avatar
     {
-        $student = Student::find($studentId);
+        $student->active_avatar_id = $avatar->id;
+        $student->save();
+        return $avatar;
+    }
 
-        if (!$student) {
-            return false;
-        }
+    /**
+     * Get avatars by category
+     */
+    public function getByCategory(int $categoryId): Collection
+    {
+        return $this->model->where('category_id', $categoryId)->get();
+    }
 
-        // Check if student owns this avatar
-        if (!$this->studentOwnsAvatar($studentId, $avatarId)) {
-            return false;
-        }
+    /**
+     * Get avatars grouped by category
+     */
+    public function getGroupedByCategory(): Collection
+    {
+        return $this->model->with('category')
+            ->get()
+            ->groupBy('category.name');
+    }
 
-        $student->update(['active_avatar_id' => $avatarId]);
-        return true;
+    /**
+     * Create a new avatar with uploaded file
+     */
+    public function createAvatar(string $filePath, int $coins = 0): Avatar
+    {
+        return $this->model->create([
+            'url' => $filePath,
+            'coins' => $coins,
+        ]);
     }
 }

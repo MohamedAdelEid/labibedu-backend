@@ -22,14 +22,7 @@ class StudentController extends Controller
     public function getProfile(): JsonResponse
     {
         $user = Auth::user();
-        if (!$user || !$user->student) {
-            return ApiResponse::error(
-                'Student access required',
-                null,
-                403
-            );
-        }
-
+        
         try {
             $profileData = $this->studentService->getStudentProfile($user->student->id);
 

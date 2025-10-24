@@ -3,6 +3,7 @@
 namespace App\Domain\Interfaces\Repositories;
 
 use App\Infrastructure\Models\Avatar;
+use App\Infrastructure\Models\Student;
 use Illuminate\Support\Collection;
 
 interface AvatarRepositoryInterface
@@ -30,10 +31,25 @@ interface AvatarRepositoryInterface
     /**
      * Purchase avatar for student
      */
-    public function purchaseAvatar(int $studentId, int $avatarId): bool;
+    public function purchaseAvatar(Student $student, Avatar $avatar): Avatar;
 
     /**
      * Set active avatar for student
      */
-    public function setActiveAvatar(int $studentId, int $avatarId): bool;
+    public function setActiveAvatar(Student $student, Avatar $avatar): Avatar;
+
+    /**
+     * Get avatars by category
+     */
+    public function getByCategory(int $categoryId): Collection;
+
+    /**
+     * Get avatars grouped by category
+     */
+    public function getGroupedByCategory(): Collection;
+
+    /**
+     * Create a new avatar with uploaded file
+     */
+    public function createAvatar(string $filePath, int $coins = 0): Avatar;
 }

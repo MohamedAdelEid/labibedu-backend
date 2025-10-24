@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('level', ['primary', 'preparatory', 'secondary']);
+            $table->enum('level', ['kindergarten', 'primary', 'preparatory', 'secondary']);
             $table->timestamps();
         });
     }

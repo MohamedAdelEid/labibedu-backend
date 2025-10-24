@@ -125,10 +125,7 @@ class StudentService implements StudentServiceInterface
         $avatarData = $this->avatarService->getActiveAvatarInfo($student->id);
 
         // Get total time spent from UserActivityService
-        $timeData = $this->userActivityService->getTotalTimeSpent($student->user_id);
-        $hours = floor($timeData['total_seconds'] / 3600);
-        $minutes = floor(($timeData['total_seconds'] % 3600) / 60);
-        $totalTimeSpent = sprintf('%dh %dm', $hours, $minutes);
+        $timeData = $this->userActivityService->getTotalTimeSpent($student->user_id)['total_seconds'];
 
         // Get question statistics from QuestionService
         $questionStats = $this->questionService->getStudentQuestionStatistics($student->id);
@@ -140,7 +137,7 @@ class StudentService implements StudentServiceInterface
         return [
             'student' => $student,
             'avatar' => $avatarData,
-            'total_time_spent' => $totalTimeSpent,
+            'total_time_spent' => $timeData,
             'question_stats' => $questionStats,
             'books_read' => $booksRead,
         ];

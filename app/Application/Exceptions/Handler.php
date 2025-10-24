@@ -2,8 +2,7 @@
 
 namespace App\Application\Exceptions;
 
-use App\Application\Exceptions\InvalidCredentialsException;
-use App\Application\Exceptions\InvalidTokenException;
+use App\Application\Exceptions\BaseException;
 use App\Infrastructure\Helpers\ApiResponse;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -69,12 +68,12 @@ class Handler extends ExceptionHandler
             );
         }
 
-        // Custom application exceptions
-        if ($e instanceof InvalidCredentialsException || $e instanceof InvalidTokenException) {
+        // Custom domain exceptions
+        if ($e instanceof BaseException) {
             return ApiResponse::error(
                 $e->getMessage(),
                 null,
-                $e->getCode() ?: 401
+                $e->getStatusCode()
             );
         }
 

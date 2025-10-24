@@ -2,114 +2,159 @@
 
 namespace App\Application\Services;
 
+use App\Application\DTOs\Avatar\CreateAvatarDTO;
+use App\Application\Exceptions\Avatar\AvatarAlreadyOwnedException;
+use App\Application\Exceptions\Avatar\AvatarNotFoundException;
+use App\Application\Exceptions\Avatar\AvatarNotOwnedException;
+use App\Application\Exceptions\Avatar\AvatarPurchaseFailedException;
+use App\Application\Exceptions\Student\InsufficientCoinsException;
+use App\Domain\Interfaces\Repositories\AvatarCategoryRepositoryInterface;
 use App\Domain\Interfaces\Repositories\AvatarRepositoryInterface;
+use App\Domain\Interfaces\Repositories\StudentRepositoryInterface;
 use App\Domain\Interfaces\Services\AvatarServiceInterface;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
+use App\Infrastructure\Models\Avatar;
 
 class AvatarService implements AvatarServiceInterface
 {
     public function __construct(
-        private AvatarRepositoryInterface $avatarRepository
+        private AvatarRepositoryInterface $avatarRepository,
+        private StudentRepositoryInterface $studentRepository,
+        private AvatarCategoryRepositoryInterface $avatarCategoryRepository
     ) {
     }
 
     /**
      * Get all available avatars
      */
-    public function getAllAvatars(): array
+    public function getAllAvatars(): Collection
     {
-        $avatars = $this->avatarRepository->getAll();
+        return $this->avatarRepository->getAll()->load('category');
+    }
 
-        return $avatars->map(function ($avatar) {
-            return [
-                'id' => $avatar->id,
-                'url' => $avatar->url,
-                'coins' => $avatar->coins,
-            ];
-        })->toArray();
+    /**
+     * Get avatars by category
+     */
+    public function getAvatarsByCategory(int $categoryId): Collection
+    {
+        return $this->avatarRepository->getByCategory($categoryId)->load('category');
+    }
+
+    /**
+     * Get avatars grouped by category
+     */
+    public function getAvatarsGroupedByCategory(): Collection
+    {
+        return $this->avatarRepository->getGroupedByCategory();
+    }
+
+    /**
+     * Get all avatars with student-specific information
+     */
+    public function getAllAvatarsForStudent(int $studentId): Collection
+    {
+        $allAvatars = $this->avatarRepository->getAll();
+        $ownedAvatars = $this->avatarRepository->getOwnedByStudent($studentId);
+        $student = $this->studentRepository->findById($studentId);
+
+        $ownedAvatarIds = $ownedAvatars->pluck('id')->toArray();
+        $activeAvatarId = $student?->active_avatar_id;
+
+        return $allAvatars->map(function ($avatar) use ($ownedAvatarIds, $activeAvatarId) {
+            $avatar->is_owned = in_array($avatar->id, $ownedAvatarIds);
+            $avatar->is_active = $avatar->id === $activeAvatarId;
+            return $avatar;
+        });
     }
 
     /**
      * Get avatars owned by a student
      */
-    public function getOwnedAvatars(int $studentId): array
+    public function getOwnedAvatars(int $studentId): Collection
     {
-        $avatars = $this->avatarRepository->getOwnedByStudent($studentId);
-
-        return $avatars->map(function ($avatar) {
-            return [
-                'id' => $avatar->id,
-                'url' => $avatar->url,
-                'coins' => $avatar->coins,
-                'purchased_at' => $avatar->pivot->purchased_at,
-            ];
-        })->toArray();
+        return $this->avatarRepository->getOwnedByStudent($studentId);
     }
 
     /**
      * Purchase an avatar for a student
      */
-    public function purchaseAvatar(int $studentId, int $avatarId): array
+    public function purchaseAvatar(int $studentId, int $avatarId): Avatar
     {
-        $success = $this->avatarRepository->purchaseAvatar($studentId, $avatarId);
+        $student = $this->studentRepository->findById($studentId);
+        $avatar = $this->avatarRepository->findById($avatarId);
 
-        if ($success) {
-            $avatar = $this->avatarRepository->findById($avatarId);
-            return [
-                'success' => true,
-                'avatar' => [
-                    'id' => $avatar->id,
-                    'url' => $avatar->url,
-                    'coins' => $avatar->coins,
-                ],
-            ];
+
+        if (!$avatar) {
+            throw new AvatarNotFoundException();
         }
 
-        return [
-            'success' => false,
-            'message' => 'Unable to purchase avatar. Check if you have enough coins or if you already own this avatar.',
-        ];
+        // Check if student can afford the avatar
+        if (!$student->canAfford($avatar->coins)) {
+            throw new InsufficientCoinsException();
+        }
+
+        // Check if student already owns this avatar
+        if ($this->avatarRepository->studentOwnsAvatar($studentId, $avatarId)) {
+            throw new AvatarAlreadyOwnedException();
+        }
+
+        // Spend coins and attach avatar
+        if (!$student->spendCoins($avatar->coins)) {
+            throw new AvatarPurchaseFailedException();
+        }
+
+        $avatar = $this->avatarRepository->purchaseAvatar($student, $avatar);
+        return $avatar;
     }
 
     /**
      * Set active avatar for a student
      */
-    public function setActiveAvatar(int $studentId, int $avatarId): array
+    public function setActiveAvatar(int $studentId, int $avatarId): Avatar
     {
-        $success = $this->avatarRepository->setActiveAvatar($studentId, $avatarId);
+        $student = $this->studentRepository->findById($studentId);
+        $avatar = $this->avatarRepository->findById($avatarId);
 
-        if ($success) {
-            $avatar = $this->avatarRepository->findById($avatarId);
-            return [
-                'success' => true,
-                'avatar' => [
-                    'id' => $avatar->id,
-                    'url' => $avatar->url,
-                    'coins' => $avatar->coins,
-                ],
-            ];
+
+        if (!$avatar) {
+            throw new AvatarNotFoundException();
         }
 
-        return [
-            'success' => false,
-            'message' => 'Unable to set active avatar. Make sure you own this avatar.',
-        ];
+        // Check if student owns this avatar
+        if (!$this->avatarRepository->studentOwnsAvatar($studentId, $avatarId)) {
+            throw new AvatarNotOwnedException();
+        }
+
+        $avatar = $this->avatarRepository->setActiveAvatar($student, $avatar);
+        return $avatar;
     }
 
     /**
      * Get student's active avatar info
      */
-    public function getActiveAvatarInfo(int $studentId): ?array
+    public function getActiveAvatarInfo(int $studentId): ?Avatar
     {
-        $student = \App\Infrastructure\Models\Student::find($studentId);
+        $student = $this->studentRepository->findById($studentId);
+        return $student?->activeAvatar;
+    }
 
-        if (!$student || !$student->activeAvatar) {
-            return null;
-        }
+    /**
+     * Upload a new avatar
+     */
+    public function createAvatar(CreateAvatarDTO $dto): Avatar
+    {
+        $category = $this->avatarCategoryRepository->findById($dto->categoryId);
 
-        $avatar = $student->activeAvatar;
-        return [
-            'id' => $avatar->id,
-            'url' => $avatar->url,
-        ];
+        // Generate unique filename
+        $extension = $dto->avatar->getClientOriginalExtension();
+        $filename = 'avatar_' . time() . '_' . Str::random(10) . '.' . $extension;
+
+        // Store file in public/assets/images/avatars folder
+        $directory = 'assets/images/avatars/' . $category->name_en;
+        $storedPath = $dto->avatar->storeAs($directory, $filename, 'public');
+
+        // Create avatar record
+        return $this->avatarRepository->createAvatar($storedPath, $dto->coins);
     }
 }

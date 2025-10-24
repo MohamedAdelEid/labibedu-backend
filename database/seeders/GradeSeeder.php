@@ -9,19 +9,46 @@ class GradeSeeder extends Seeder
 {
     public function run(): void
     {
-        // Primary grades
-        for ($i = 1; $i <= 6; $i++) {
-            Grade::create(['name' => "Grade $i", 'level' => 'primary']);
+        // Primary levels (Kindergarten)
+        $primaryGrades = [
+            'KG One',
+            'KG Two',
+        ];
+        foreach ($primaryGrades as $grade) {
+            Grade::create(['name' => $grade, 'level' => 'kindergarten']);
         }
 
-        // Preparatory grades
-        for ($i = 7; $i <= 9; $i++) {
-            Grade::create(['name' => "Grade $i", 'level' => 'preparatory']);
+        // Preparatory levels (Primary)
+        $preparatoryGrades = [
+            'Grade One',
+            'Grade Two',
+            'Grade Three',
+            'Grade Four',
+            'Grade Five',
+            'Grade Six',
+        ];
+        foreach ($preparatoryGrades as $grade) {
+            Grade::create(['name' => $grade, 'level' => 'primary']);
+        }   
+
+        // Secondary levels (Preparatory)
+        $secondaryGrades = [
+            'Grade One',
+            'Grade Two',
+            'Grade Three',
+        ];
+        foreach ($secondaryGrades as $grade) {
+            Grade::create(['name' => $grade, 'level' => 'preparatory']);
         }
 
-        // Secondary grades
-        for ($i = 10; $i <= 12; $i++) {
-            Grade::create(['name' => "Grade $i", 'level' => 'secondary']);
+        // Secondary levels (Secondary)
+        $secondaryGrades = [
+            'Grade One',
+            'Grade Two',
+            'Grade Three',
+        ];
+        foreach ($secondaryGrades as $grade) {
+            Grade::create(['name' => $grade, 'level' => 'secondary']);
         }
     }
 }
