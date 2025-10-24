@@ -56,7 +56,7 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
         });
 
         // Avatar Operations
-        Route::prefix(prefix: 'avatars')->group(function () {
+        Route::prefix('avatars')->group(function () {
             Route::get('/', [AvatarController::class, 'getAvatars']);
             Route::get('/student', [AvatarController::class, 'getAvatarsForStudent']);
             Route::get('/owned', [AvatarController::class, 'getOwnedAvatars']);
