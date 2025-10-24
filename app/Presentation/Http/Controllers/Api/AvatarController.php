@@ -152,11 +152,30 @@ class AvatarController extends Controller
      */
     public function getAvatarsGroupedByCategory(): JsonResponse
     {
-        $avatars = $this->avatarService->getAvatarsGroupedByCategory();
+        try {
+            $user = Auth::user();
+            $studentId = $user->student?->id;
 
-        return ApiResponse::success(
-            $avatars,
-            'Avatars grouped by category retrieved successfully'
-        );
+            $groupedAvatars = $this->avatarService->getAvatarsGroupedByCategory($studentId);
+
+            // Transform the grouped collection into a proper format
+            $formattedData = $groupedAvatars->map(function ($avatars, $categoryName) {
+                return [
+                    'category_name' => $categoryName,
+                    'avatars' => AvatarResource::collection($avatars)
+                ];
+            });
+
+            return ApiResponse::success(
+                $formattedData,
+                'Avatars grouped by category retrieved successfully'
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::error(
+                $e->getMessage(),
+                null,
+                500
+            );
+        }
     }
 }

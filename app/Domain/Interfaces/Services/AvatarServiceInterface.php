@@ -46,7 +46,7 @@ interface AvatarServiceInterface
     /**
      * Get avatars grouped by category
      */
-    public function getAvatarsGroupedByCategory(): Collection;
+    public function getAvatarsGroupedByCategory(?int $studentId = null): Collection;
 
     /**
      * Upload a new avatar

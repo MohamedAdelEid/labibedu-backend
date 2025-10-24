@@ -44,9 +44,29 @@ class AvatarService implements AvatarServiceInterface
     /**
      * Get avatars grouped by category
      */
-    public function getAvatarsGroupedByCategory(): Collection
+    public function getAvatarsGroupedByCategory(?int $studentId = null): Collection
     {
-        return $this->avatarRepository->getGroupedByCategory();
+        $groupedAvatars = $this->avatarRepository->getGroupedByCategory();
+
+        // If student ID is provided, add student-specific information
+        if ($studentId) {
+            $ownedAvatars = $this->avatarRepository->getOwnedByStudent($studentId);
+            $student = $this->studentRepository->findById($studentId);
+
+            $ownedAvatarIds = $ownedAvatars->pluck('id')->toArray();
+            $activeAvatarId = $student?->active_avatar_id;
+
+            // Add student-specific data to each avatar in each category
+            return $groupedAvatars->map(function ($avatars) use ($ownedAvatarIds, $activeAvatarId) {
+                return $avatars->map(function ($avatar) use ($ownedAvatarIds, $activeAvatarId) {
+                    $avatar->is_owned = in_array($avatar->id, $ownedAvatarIds);
+                    $avatar->is_active = $avatar->id === $activeAvatarId;
+                    return $avatar;
+                });
+            });
+        }
+
+        return $groupedAvatars;
     }
 
     /**
@@ -54,7 +74,7 @@ class AvatarService implements AvatarServiceInterface
      */
     public function getAllAvatarsForStudent(int $studentId): Collection
     {
-        $allAvatars = $this->avatarRepository->getAll();
+        $allAvatars = $this->avatarRepository->getAll()->load('category');
         $ownedAvatars = $this->avatarRepository->getOwnedByStudent($studentId);
         $student = $this->studentRepository->findById($studentId);
 

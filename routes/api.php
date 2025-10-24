@@ -57,7 +57,6 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
 
         // Avatar Operations
         Route::prefix('avatars')->group(function () {
-            Route::get('/', [AvatarController::class, 'getAvatars']);
             Route::get('/student', [AvatarController::class, 'getAvatarsForStudent']);
             Route::get('/owned', [AvatarController::class, 'getOwnedAvatars']);
             Route::get('/category/{categoryId}', [AvatarController::class, 'getAvatarsByCategory']);
@@ -96,6 +95,10 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
 });
 
 // Public routes - Public routes are accessible without authentication
+Route::prefix('avatars')->group(function () {
+    Route::get('/', [AvatarController::class, 'getAvatars']);
+});
+
 Route::prefix('avatar-categories')->controller(AvatarCategoryController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/with-count', 'withAvatarCount');
