@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,15 +13,18 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('url');
-            $table->integer('pages_count');
-            $table->timestamp('start_date')->nullable();
-            $table->timestamp('end_date')->nullable();
+            $table->string('cover');
+            $table->boolean('is_in_library')->default(false);
+            $table->string('language', 2)->default('ar');
+            $table->boolean('has_sound')->default(false);
             $table->integer('xp')->default(0);
             $table->integer('coins')->default(0);
             $table->integer('marks')->default(0);
             $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('level_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('related_training_id')->nullable()->constrained('exams_trainings')->nullOnDelete();
+
+            $table->index(['is_in_library', 'subject_id', 'level_id']);
             $table->timestamps();
         });
     }

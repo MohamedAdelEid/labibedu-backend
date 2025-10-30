@@ -6,20 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class BookProgress extends Model
+class StudentBook extends Model
 {
     use HasFactory;
-
-    protected $table = 'book_progress';
 
     protected $fillable = [
         'student_id',
         'book_id',
         'last_read_page_id',
+        'is_favorite',
     ];
 
     protected $casts = [
-        'last_read_page_id' => 'integer',
+        'is_favorite' => 'boolean',
     ];
 
     public function student(): BelongsTo
@@ -37,3 +36,4 @@ class BookProgress extends Model
         return $this->belongsTo(Page::class, 'last_read_page_id');
     }
 }
+

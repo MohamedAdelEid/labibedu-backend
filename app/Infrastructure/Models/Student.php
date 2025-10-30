@@ -2,12 +2,15 @@
 
 namespace App\Infrastructure\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Student extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'user_id',
         'xp',
@@ -55,6 +58,24 @@ class Student extends Model
     {
         return $this->belongsToMany(Avatar::class, 'avatar_student')
             ->withPivot('purchased_at')
+            ->withTimestamps();
+    }
+
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'student_books')
+            ->withPivot('is_favorite', 'last_read_page_id')
+            ->withTimestamps();
+    }
+
+    public function studentBooks(): HasMany
+    {
+        return $this->hasMany(StudentBook::class);
+    }
+
+    public function levels(): BelongsToMany
+    {
+        return $this->belongsToMany(Level::class, 'student_level')
             ->withTimestamps();
     }
 

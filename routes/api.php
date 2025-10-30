@@ -7,6 +7,8 @@ use App\Presentation\Http\Controllers\Api\UserActivityController;
 use App\Presentation\Http\Controllers\Api\StudentController;
 use App\Presentation\Http\Controllers\Api\AvatarController;
 use App\Presentation\Http\Controllers\Api\AvatarCategoryController;
+use App\Presentation\Http\Controllers\Api\LibraryController;
+use App\Presentation\Http\Controllers\Api\LevelController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -53,6 +55,15 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
         // Student Operations
         Route::prefix('student')->group(function () {
             Route::get('/profile', [StudentController::class, 'getProfile']);
+
+            // Library
+            Route::get('/library', [LibraryController::class, 'index']);
+        });
+
+        // Book Operations
+        Route::prefix('books')->group(function () {
+            Route::post('/{id}/favorite', [LibraryController::class, 'toggleFavorite']);
+            Route::post('/{id}/open', [LibraryController::class, 'openBook']);
         });
 
         // Avatar Operations
@@ -103,3 +114,6 @@ Route::prefix('avatar-categories')->controller(AvatarCategoryController::class)-
     Route::get('/', 'index');
     Route::get('/with-count', 'withAvatarCount');
 });
+
+// Levels (public)
+Route::get('/levels', [LevelController::class, 'index']);

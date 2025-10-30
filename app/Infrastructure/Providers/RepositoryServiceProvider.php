@@ -46,6 +46,16 @@ use App\Domain\Interfaces\Repositories\AvatarCategoryRepositoryInterface;
 use App\Infrastructure\Repositories\AvatarCategoryRepository;
 use App\Domain\Interfaces\Services\AvatarCategoryServiceInterface;
 use App\Application\Services\AvatarCategoryService;
+use App\Domain\Interfaces\Repositories\StudentBookRepositoryInterface;
+use App\Infrastructure\Repositories\StudentBookRepository;
+use App\Domain\Interfaces\Repositories\LevelRepositoryInterface;
+use App\Infrastructure\Repositories\LevelRepository;
+use App\Domain\Interfaces\Repositories\PageRepositoryInterface;
+use App\Infrastructure\Repositories\PageRepository;
+use App\Infrastructure\Facades\LibraryFacade;
+use App\Application\Services\LibraryService;
+use App\Application\Services\BookProgressService;
+use App\Application\Services\StudentBookService;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -65,6 +75,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
         $this->app->bind(AvatarRepositoryInterface::class, AvatarRepository::class);
         $this->app->bind(AvatarCategoryRepositoryInterface::class, AvatarCategoryRepository::class);
+        $this->app->bind(StudentBookRepositoryInterface::class, StudentBookRepository::class);
+        $this->app->bind(LevelRepositoryInterface::class, LevelRepository::class);
+        $this->app->bind(PageRepositoryInterface::class, PageRepository::class);
 
         // Bind services
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
@@ -77,6 +90,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionServiceInterface::class, QuestionService::class);
         $this->app->singleton(CookieService::class);
         $this->app->singleton(ExamService::class);
+        $this->app->singleton(LibraryService::class);
+        $this->app->singleton(BookProgressService::class);
+        $this->app->singleton(StudentBookService::class);
 
         // Bind facades
         $this->app->singleton(AuthFacade::class, function ($app) {
@@ -85,7 +101,12 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(ExamFacade::class, function ($app) {
             return new ExamFacade($app->make(ExamService::class));
         });
-
+        $this->app->singleton(LibraryFacade::class, function ($app) {
+            return new LibraryFacade(
+                $app->make(LibraryService::class),
+                $app->make(StudentBookService::class)
+            );
+        });
     }
 
     public function boot(): void

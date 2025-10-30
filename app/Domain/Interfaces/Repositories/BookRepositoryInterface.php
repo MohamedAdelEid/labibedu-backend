@@ -3,6 +3,7 @@
 namespace App\Domain\Interfaces\Repositories;
 
 use App\Infrastructure\Models\Book;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface BookRepositoryInterface
 {
@@ -13,4 +14,25 @@ interface BookRepositoryInterface
     public function updateProgress(int $studentId, int $bookId, array $data);
 
     public function getByRelatedTrainingId(int $trainingId): \Illuminate\Support\Collection;
+
+    public function getAllLibraryBooks(
+        int $studentId,
+        ?int $levelId,
+        ?string $search,
+        int $perPage
+    ): LengthAwarePaginator;
+
+    public function getStudentBooks(
+        int $studentId,
+        ?int $levelId,
+        ?string $search,
+        int $perPage
+    ): LengthAwarePaginator;
+
+    public function getFavoriteBooks(
+        int $studentId,
+        ?int $levelId,
+        ?string $search,
+        int $perPage
+    ): LengthAwarePaginator;
 }
