@@ -44,6 +44,7 @@ class ExamService
         $this->examAttemptRepository->autoFinishExpiredAttempts();
 
         $examTraining = $this->examTrainingRepository->findOrFail($examId);
+        $examTraining->load('book');
         $questions = $this->questionRepository->getByExamTrainingId($examId, $perPage);
 
         $attemptData = null;

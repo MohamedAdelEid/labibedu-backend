@@ -14,6 +14,9 @@ class ExamDetailsResource extends JsonResource
         $attempt = $this->resource['attempt'] ?? null;
         $evaluatedQuestions = $this->resource['evaluatedQuestions'] ?? collect();
 
+        // Get first related book if exists
+        $book = $examTraining->book->first();
+
         return [
             'id' => $examTraining->id,
             'title' => $examTraining->title,
@@ -25,6 +28,11 @@ class ExamDetailsResource extends JsonResource
             'subject' => $examTraining->subject ? [
                 'id' => $examTraining->subject->id,
                 'name' => $examTraining->subject->name,
+            ] : null,
+            'book' => $book ? [
+                'id' => $book->id,
+                'title' => $book->title,
+                'cover' => $book->cover,
             ] : null,
             'attempt' => $attempt ? new ExamAttemptResource($attempt) : null,
             'questions' => [

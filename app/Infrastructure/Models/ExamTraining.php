@@ -60,6 +60,11 @@ class ExamTraining extends Model
         return $this->hasMany(ExamAttempt::class);
     }
 
+    public function book(): HasMany
+    {
+        return $this->hasMany(Book::class, 'related_training_id');
+    }
+
     public function isExam(): bool
     {
         return $this->type === ExamTrainingType::EXAM;

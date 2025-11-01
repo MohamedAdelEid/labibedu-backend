@@ -24,6 +24,7 @@ class BookResource extends JsonResource
             'has_training' => $this->has_training ?? false,
             'is_favourite' => $this->is_favourite ?? false,
             'reading_status' => $this->reading_status ?? 'not_started',
+            'examTrainingId' => $this->related_training_id,
         ];
     }
 }
