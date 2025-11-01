@@ -5,12 +5,14 @@ namespace App\Presentation\Http\Controllers\Api;
 use App\Application\DTOs\Library\GetLibraryBooksDTO;
 use App\Application\DTOs\Library\OpenBookDTO;
 use App\Application\DTOs\Library\ToggleFavoriteDTO;
+use App\Application\DTOs\Library\GetBookPagesDTO;
 use App\Infrastructure\Facades\LibraryFacade;
 use App\Infrastructure\Helpers\ApiResponse;
 use App\Presentation\Http\Requests\Library\GetLibraryBooksRequest;
 use App\Presentation\Http\Requests\Library\OpenBookRequest;
 use App\Presentation\Http\Resources\Library\BookResource;
 use App\Presentation\Http\Resources\Library\StudentBookResource;
+use App\Presentation\Http\Resources\Library\BookPagesResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -83,6 +85,22 @@ class LibraryController extends Controller
         return ApiResponse::success(
             new StudentBookResource($studentBook),
             'Book opened successfully.'
+        );
+    }
+
+    /**
+     * Get all pages for a specific book with student's last read page
+     */
+    public function getBookPages(int $bookId): JsonResponse
+    {
+        $studentId = auth()->user()->student->id;
+
+        $dto = new GetBookPagesDTO($studentId, $bookId);
+
+        $bookPages = $this->libraryFacade->getBookPages($dto);
+
+        return ApiResponse::success(
+            new BookPagesResource($bookPages)
         );
     }
 }

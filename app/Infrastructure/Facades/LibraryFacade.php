@@ -5,8 +5,10 @@ namespace App\Infrastructure\Facades;
 use App\Application\DTOs\Library\GetLibraryBooksDTO;
 use App\Application\DTOs\Library\ToggleFavoriteDTO;
 use App\Application\DTOs\Library\OpenBookDTO;
+use App\Application\DTOs\Library\GetBookPagesDTO;
 use App\Application\Services\LibraryService;
 use App\Application\Services\StudentBookService;
+use App\Application\Services\PageService;
 use App\Infrastructure\Models\StudentBook;
 
 /**
@@ -20,6 +22,7 @@ class LibraryFacade
     public function __construct(
         private LibraryService $libraryService,
         private StudentBookService $studentBookService,
+        private PageService $pageService,
     ) {
     }
 
@@ -56,6 +59,15 @@ class LibraryFacade
     public function openBook(OpenBookDTO $dto): StudentBook
     {
         return $this->studentBookService->openBook($dto);
+    }
+
+    /**
+     * Get all pages for a book with student's last read page
+     * Returns array with book_id, last_read_page_id, and pages
+     */
+    public function getBookPages(GetBookPagesDTO $dto): array
+    {
+        return $this->pageService->getBookPages($dto);
     }
 }
 

@@ -4,6 +4,7 @@ namespace App\Infrastructure\Repositories;
 
 use App\Domain\Interfaces\Repositories\PageRepositoryInterface;
 use App\Infrastructure\Models\Page;
+use Illuminate\Database\Eloquent\Collection;
 
 class PageRepository implements PageRepositoryInterface
 {
@@ -30,6 +31,14 @@ class PageRepository implements PageRepositoryInterface
         return $this->model
             ->where('book_id', $bookId)
             ->count();
+    }
+
+    public function getPagesByBookId(int $bookId): Collection
+    {
+        return $this->model
+            ->where('book_id', $bookId)
+            ->orderBy('id', 'asc')
+            ->get();
     }
 }
 

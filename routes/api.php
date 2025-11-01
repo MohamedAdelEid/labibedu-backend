@@ -58,6 +58,9 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
 
             // Library
             Route::get('/library', [LibraryController::class, 'index']);
+
+            // Book Pages
+            Route::get('/books/{id}/pages', [LibraryController::class, 'getBookPages']);
         });
 
         // Book Operations

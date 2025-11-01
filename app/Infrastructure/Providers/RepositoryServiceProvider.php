@@ -56,6 +56,7 @@ use App\Infrastructure\Facades\LibraryFacade;
 use App\Application\Services\LibraryService;
 use App\Application\Services\BookProgressService;
 use App\Application\Services\StudentBookService;
+use App\Application\Services\PageService;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -93,6 +94,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(LibraryService::class);
         $this->app->singleton(BookProgressService::class);
         $this->app->singleton(StudentBookService::class);
+        $this->app->singleton(PageService::class);
 
         // Bind facades
         $this->app->singleton(AuthFacade::class, function ($app) {
@@ -104,7 +106,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(LibraryFacade::class, function ($app) {
             return new LibraryFacade(
                 $app->make(LibraryService::class),
-                $app->make(StudentBookService::class)
+                $app->make(StudentBookService::class),
+                $app->make(PageService::class)
             );
         });
     }
