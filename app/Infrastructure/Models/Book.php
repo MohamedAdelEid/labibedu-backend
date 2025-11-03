@@ -15,6 +15,7 @@ class Book extends Model
     protected $fillable = [
         'title',
         'cover',
+        'thumbnail',
         'is_in_library',
         'language',
         'has_sound',
@@ -35,6 +36,21 @@ class Book extends Model
     ];
 
     public function getCoverAttribute($value): ?string
+    {
+        if (!$value) {
+            return null;
+        }
+
+        // If already a full URL, return as is
+        if (str_starts_with($value, 'http')) {
+            return $value;
+        }
+
+        // Prepend storage URL
+        return config('app.url') . '/storage/' . $value;
+    }
+
+    public function getThumbnailAttribute($value): ?string
     {
         if (!$value) {
             return null;

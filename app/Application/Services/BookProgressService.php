@@ -86,5 +86,29 @@ class BookProgressService
         // Locked if no student_books record exists
         return !$studentBook;
     }
+
+    /**
+     * Check if book is fully read (last page has been read)
+     * Returns true only if student has read the last page of the book
+     */
+    public function isRead(Book $book, int $studentId): bool
+    {
+        $studentBook = $this->studentBookRepository->findByStudentAndBook($studentId, $book->id);
+
+        // Not read if no record or no page has been read
+        if (!$studentBook || !$studentBook->last_read_page_id) {
+            return false;
+        }
+
+        // Get the last page of the book
+        $lastPage = $this->pageRepository->getLastPageOfBook($book->id);
+
+        if (!$lastPage) {
+            return false;
+        }
+
+        // Check if the last read page is the last page of the book
+        return $studentBook->last_read_page_id === $lastPage->id;
+    }
 }
 

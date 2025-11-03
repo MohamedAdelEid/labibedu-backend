@@ -33,6 +33,7 @@ class ExamDetailsResource extends JsonResource
                 'id' => $book->id,
                 'title' => $book->title,
                 'cover' => $book->cover,
+                'thumbnail' => $book->thumbnail,
             ] : null,
             'attempt' => $attempt ? new ExamAttemptResource($attempt) : null,
             'questions' => [

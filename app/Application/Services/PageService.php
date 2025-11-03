@@ -32,7 +32,7 @@ class PageService
         $studentBook = $this->studentBookRepository->findByStudentAndBook($dto->studentId, $dto->bookId);
 
         return [
-            'book_id' => $dto->bookId,
+            'book' => $book,
             'last_read_page_id' => $studentBook?->last_read_page_id,
             'pages' => $pages,
         ];

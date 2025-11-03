@@ -13,6 +13,7 @@ class BookResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'cover' => $this->cover,
+            'language' => $this->language,
             'xp' => $this->xp,
             'coins' => $this->coins,
             'marks' => $this->marks,
@@ -24,6 +25,7 @@ class BookResource extends JsonResource
             'has_training' => $this->has_training ?? false,
             'is_favourite' => $this->is_favourite ?? false,
             'reading_status' => $this->reading_status ?? 'not_started',
+            'is_read' => $this->is_read ?? false,
             'examTrainingId' => $this->related_training_id,
         ];
     }

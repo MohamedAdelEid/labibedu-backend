@@ -72,6 +72,7 @@ class LibraryService
         $book->has_training = !is_null($book->related_training_id);
         $book->is_favourite = $studentBook ? $studentBook->is_favorite : false;
         $book->reading_status = $this->bookProgressService->getReadingStatus($book, $studentId);
+        $book->is_read = $this->bookProgressService->isRead($book, $studentId);
 
         return $book;
     }

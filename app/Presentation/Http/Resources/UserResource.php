@@ -9,7 +9,7 @@ class UserResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'name' => $this->name,
             'userName' => $this->user_name,
@@ -19,5 +19,13 @@ class UserResource extends JsonResource
             'role' => $this->role->value,
             'createdAt' => $this->created_at->toIso8601String(),
         ];
+
+        // Add coins and xp if user is a student
+        if ($this->student) {
+            $data['coins'] = $this->student->coins ?? 0;
+            $data['xp'] = $this->student->xp ?? 0;
+        }
+
+        return $data;
     }
 }

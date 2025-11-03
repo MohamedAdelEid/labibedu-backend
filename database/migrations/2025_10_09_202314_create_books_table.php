@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->string('cover');
+            $table->string('thumbnail')->nullable();
             $table->boolean('is_in_library')->default(false);
             $table->string('language', 2)->default('ar');
             $table->boolean('has_sound')->default(false);
