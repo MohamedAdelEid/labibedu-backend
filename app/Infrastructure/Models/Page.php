@@ -26,5 +26,23 @@ class Page extends Model
     {
         return $this->belongsTo(Book::class);
     }
+
+    public function getImageAttribute($value): ?string
+    {
+        if (!$value) {
+            return null;
+        }
+
+        return config('app.url') . '/storage/' . $value;
+    }
+
+    public function getMp3Attribute($value): ?string
+    {
+        if (!$value) {
+            return null;
+        }
+
+        return config('app.url') . '/storage/' . $value;
+    }
 }
 
