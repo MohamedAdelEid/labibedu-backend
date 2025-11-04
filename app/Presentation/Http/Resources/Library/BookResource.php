@@ -17,6 +17,7 @@ class BookResource extends JsonResource
             'xp' => $this->xp,
             'coins' => $this->coins,
             'marks' => $this->marks,
+            'total_pages' => $this->pages_count ?? 0,
             'subject' => $this->subject ? new SubjectResource($this->subject) : null,
             'level' => $this->level ? new LevelResource($this->level) : null,
             'is_new' => $this->is_new ?? false,
@@ -25,7 +26,6 @@ class BookResource extends JsonResource
             'has_training' => $this->has_training ?? false,
             'is_favourite' => $this->is_favourite ?? false,
             'reading_status' => $this->reading_status ?? 'not_started',
-            'is_read' => $this->is_read ?? false,
             'examTrainingId' => $this->related_training_id,
         ];
     }

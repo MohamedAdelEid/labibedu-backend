@@ -50,6 +50,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
     ): LengthAwarePaginator {
         $query = $this->model->query()
             ->with(['subject', 'level', 'relatedTraining'])
+            ->withCount('pages')
             ->where(function ($q) use ($studentId) {
                 $q->where('is_in_library', true)
                     ->orWhereHas('studentBooks', function ($sq) use ($studentId) {
@@ -68,6 +69,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
     ): LengthAwarePaginator {
         $query = $this->model->query()
             ->with(['subject', 'level', 'relatedTraining'])
+            ->withCount('pages')
             ->whereHas('studentBooks', function ($q) use ($studentId) {
                 $q->where('student_id', $studentId);
             });
@@ -83,6 +85,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
     ): LengthAwarePaginator {
         $query = $this->model->query()
             ->with(['subject', 'level', 'relatedTraining'])
+            ->withCount('pages')
             ->whereHas('studentBooks', function ($q) use ($studentId) {
                 $q->where('student_id', $studentId)
                     ->where('is_favorite', true);
