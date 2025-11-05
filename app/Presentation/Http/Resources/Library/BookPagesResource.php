@@ -14,6 +14,8 @@ class BookPagesResource extends JsonResource
             'language' => $this->resource['book']?->language ?? null,
             'total_pages' => $this->resource['pages']->count() ?? 0,
             'last_read_page_id' => $this->resource['last_read_page_id'],
+            'examTrainingId' => $this->resource['book']?->related_training_id,
+            'cover' => $this->resource['book']?->cover,
             'pages' => PageResource::collection($this->resource['pages']),
         ];
     }
