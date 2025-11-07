@@ -3,15 +3,16 @@
 namespace App\Application\Services;
 
 use App\Domain\Interfaces\Services\BookServiceInterface;
-use App\Infrastructure\Models\BookProgress;
-use App\Infrastructure\Models\Book;
+use App\Domain\Interfaces\Repositories\StudentBookRepositoryInterface;
+use App\Domain\Interfaces\Repositories\BookRepositoryInterface;
 use Exception;
 
 class BookService implements BookServiceInterface
 {
     public function __construct(
-        private BookProgress $bookProgressModel,
-        private Book $bookModel
+        private StudentBookRepositoryInterface $studentBookRepository,
+        private BookRepositoryInterface $bookRepository,
+        private BookProgressService $bookProgressService
     ) {
     }
 
@@ -20,28 +21,29 @@ class BookService implements BookServiceInterface
      */
     public function getBookCompletionScoring(int $studentId, int $bookId): array
     {
-        // Check if book progress exists and is completed
-        $bookProgress = $this->bookProgressModel
-            ->where('student_id', $studentId)
-            ->where('book_id', $bookId)
-            ->where('is_completed', true)
-            ->with('book')
-            ->first();
+        // Get the book
+        $book = $this->bookRepository->findOrFail($bookId);
 
-        if (!$bookProgress) {
-            throw new Exception('Book must be completed first before scoring');
-        }
-
-        if (!$bookProgress->book) {
+        if (!$book) {
             throw new Exception('Book not found');
         }
 
+        // Check if book is completed using BookProgressService
+        $isCompleted = $this->bookProgressService->getReadingStatus($book, $studentId) === 'completed';
+
+        if (!$isCompleted) {
+            throw new Exception('Book must be completed first before scoring');
+        }
+
+        // Get student book record for updated_at timestamp
+        $studentBook = $this->studentBookRepository->findByStudentAndBook($studentId, $bookId);
+
         return [
             'success' => true,
-            'xp' => $bookProgress->book->xp ?? 0,
-            'coins' => $bookProgress->book->coins ?? 0,
+            'xp' => $book->xp ?? 0,
+            'coins' => $book->coins ?? 0,
             'book_id' => $bookId,
-            'completed_at' => $bookProgress->updated_at,
+            'completed_at' => $studentBook?->updated_at ?? now(),
         ];
     }
 
@@ -50,9 +52,24 @@ class BookService implements BookServiceInterface
      */
     public function getBooksReadCount(int $studentId): int
     {
-        return $this->bookProgressModel
-            ->where('student_id', $studentId)
-            ->where('is_completed', true)
-            ->count();
+        // Get all books that the student has opened
+        $studentBookIds = $this->studentBookRepository->getStudentBookIds($studentId);
+
+        if ($studentBookIds->isEmpty()) {
+            return 0;
+        }
+
+        // Count how many of these books are fully read
+        $readCount = 0;
+
+        foreach ($studentBookIds as $bookId) {
+            $book = $this->bookRepository->findOrFail($bookId);
+            
+            if ($book && $this->bookProgressService->isRead($book, $studentId)) {
+                $readCount++;
+            }
+        }
+
+        return $readCount;
     }
 }

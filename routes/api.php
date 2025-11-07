@@ -9,6 +9,7 @@ use App\Presentation\Http\Controllers\Api\AvatarController;
 use App\Presentation\Http\Controllers\Api\AvatarCategoryController;
 use App\Presentation\Http\Controllers\Api\LibraryController;
 use App\Presentation\Http\Controllers\Api\LevelController;
+use App\Presentation\Http\Controllers\Api\JourneyController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -61,6 +62,9 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
 
             // Book Pages
             Route::get('/books/{id}/pages', [LibraryController::class, 'getBookPages']);
+
+            // Journey
+            Route::get('/journey', [JourneyController::class, 'index']);
         });
 
         // Book Operations

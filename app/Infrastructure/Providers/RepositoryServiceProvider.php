@@ -57,6 +57,10 @@ use App\Application\Services\LibraryService;
 use App\Application\Services\BookProgressService;
 use App\Application\Services\StudentBookService;
 use App\Application\Services\PageService;
+use App\Domain\Interfaces\Repositories\JourneyRepositoryInterface;
+use App\Infrastructure\Repositories\JourneyRepository;
+use App\Application\Services\JourneyService;
+use App\Infrastructure\Facades\JourneyFacade;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -79,6 +83,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(StudentBookRepositoryInterface::class, StudentBookRepository::class);
         $this->app->bind(LevelRepositoryInterface::class, LevelRepository::class);
         $this->app->bind(PageRepositoryInterface::class, PageRepository::class);
+        $this->app->bind(JourneyRepositoryInterface::class, JourneyRepository::class);
 
         // Bind services
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
@@ -95,6 +100,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(BookProgressService::class);
         $this->app->singleton(StudentBookService::class);
         $this->app->singleton(PageService::class);
+        $this->app->singleton(JourneyService::class);
 
         // Bind facades
         $this->app->singleton(AuthFacade::class, function ($app) {
@@ -109,6 +115,9 @@ class RepositoryServiceProvider extends ServiceProvider
                 $app->make(StudentBookService::class),
                 $app->make(PageService::class)
             );
+        });
+        $this->app->singleton(JourneyFacade::class, function ($app) {
+            return new JourneyFacade($app->make(JourneyService::class));
         });
     }
 

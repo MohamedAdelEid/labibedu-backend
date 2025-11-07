@@ -4,7 +4,7 @@ namespace App\Infrastructure\Repositories;
 
 use App\Domain\Interfaces\Repositories\BookRepositoryInterface;
 use App\Infrastructure\Models\Book;
-use App\Infrastructure\Models\BookProgress;
+use App\Infrastructure\Models\StudentBook;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class BookRepository extends BaseRepository implements BookRepositoryInterface
@@ -21,14 +21,14 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
 
     public function getProgress(int $studentId, int $bookId)
     {
-        return BookProgress::where('student_id', $studentId)
+        return StudentBook::where('student_id', $studentId)
             ->where('book_id', $bookId)
             ->first();
     }
 
     public function updateProgress(int $studentId, int $bookId, array $data)
     {
-        return BookProgress::updateOrCreate(
+        return StudentBook::updateOrCreate(
             [
                 'student_id' => $studentId,
                 'book_id' => $bookId,

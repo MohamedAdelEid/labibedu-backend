@@ -6,7 +6,6 @@ use App\Domain\Interfaces\Repositories\StudentRepositoryInterface;
 use App\Infrastructure\Models\Student;
 use App\Infrastructure\Models\AnswerGrade;
 use App\Infrastructure\Models\VideoProgress;
-use App\Infrastructure\Models\BookProgress;
 use Illuminate\Support\Collection;
 
 class StudentRepository extends BaseRepository implements StudentRepositoryInterface
@@ -66,10 +65,8 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         $totalXp += $videoProgress->sum('earned_xp');
         $totalCoins += $videoProgress->sum('earned_coins');
 
-        // Add book progress earnings
-        $bookProgress = BookProgress::where('student_id', $studentId)->get();
-        $totalXp += $bookProgress->sum('earned_xp');
-        $totalCoins += $bookProgress->sum('earned_coins');
+        // Note: Book earnings are tracked through answer grades (book-related trainings)
+        // Books themselves don't store separate earned_xp/earned_coins in the database
 
         return [
             'total_xp' => $totalXp,

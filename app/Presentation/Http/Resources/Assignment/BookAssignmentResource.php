@@ -61,12 +61,12 @@ class BookAssignmentResource extends JsonResource
             return null;
         }
 
+        // StudentBook model only has last_read_page_id and is_favorite
+        // Progress calculation would need to be done separately using BookProgressService
+        // For now, return basic info if progress exists
         return [
-            'earned_marks' => $progress->earned_marks ?? 0,
-            'earned_xp' => $progress->earned_xp ?? 0,
-            'earned_coins' => $progress->earned_coins ?? 0,
-            'pages_read' => $progress->pages_read ?? 0,
-            'progress' => $progress->progress_percent ? $progress->progress_percent . '%' : '0%',
+            'status' => $progress->last_read_page_id ? 'in_progress' : 'not_started',
+            'is_favorite' => $progress->is_favorite ?? false,
         ];
     }
 

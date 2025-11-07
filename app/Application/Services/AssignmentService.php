@@ -60,8 +60,7 @@ class AssignmentService
     public function getBookPerformance(int $studentId, int $bookId, ?array $relatedTrainingPerformance = null): array
     {
         $book = $this->bookRepository->findOrFail($bookId);
-        $progress = $this->bookRepository->getProgress($studentId, $bookId);
 
-        return $this->bookPerformanceCalculator->calculate($book, $progress, $relatedTrainingPerformance);
+        return $this->bookPerformanceCalculator->calculate($book, $studentId, $relatedTrainingPerformance);
     }
 }

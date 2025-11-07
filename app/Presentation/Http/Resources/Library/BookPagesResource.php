@@ -20,4 +20,3 @@ class BookPagesResource extends JsonResource
         ];
     }
 }
-
