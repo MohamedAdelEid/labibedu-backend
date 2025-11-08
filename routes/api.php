@@ -10,6 +10,7 @@ use App\Presentation\Http\Controllers\Api\AvatarCategoryController;
 use App\Presentation\Http\Controllers\Api\LibraryController;
 use App\Presentation\Http\Controllers\Api\LevelController;
 use App\Presentation\Http\Controllers\Api\JourneyController;
+use App\Presentation\Http\Controllers\Api\AgeGroupController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -118,6 +119,7 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
 });
 
 // Public routes - Public routes are accessible without authentication
+
 Route::prefix('avatars')->group(function () {
     Route::get('/', [AvatarController::class, 'getAvatars']);
 });
@@ -127,5 +129,5 @@ Route::prefix('avatar-categories')->controller(AvatarCategoryController::class)-
     Route::get('/with-count', 'withAvatarCount');
 });
 
-// Levels (public)
 Route::get('/levels', [LevelController::class, 'index']);
+Route::get('/age-groups', [AgeGroupController::class, 'index']);

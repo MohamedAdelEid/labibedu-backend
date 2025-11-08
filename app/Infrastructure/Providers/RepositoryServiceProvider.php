@@ -61,6 +61,8 @@ use App\Domain\Interfaces\Repositories\JourneyRepositoryInterface;
 use App\Infrastructure\Repositories\JourneyRepository;
 use App\Application\Services\JourneyService;
 use App\Infrastructure\Facades\JourneyFacade;
+use App\Domain\Interfaces\Repositories\AgeGroupRepositoryInterface;
+use App\Infrastructure\Repositories\AgeGroupRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -84,6 +86,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(LevelRepositoryInterface::class, LevelRepository::class);
         $this->app->bind(PageRepositoryInterface::class, PageRepository::class);
         $this->app->bind(JourneyRepositoryInterface::class, JourneyRepository::class);
+        $this->app->bind(AgeGroupRepositoryInterface::class, AgeGroupRepository::class);
 
         // Bind services
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
