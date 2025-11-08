@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             GradeSeeder::class,
             ClassroomSeeder::class,
             GroupSeeder::class,
+            AgeGroupSeeder::class,
             UserSeeder::class,
             StudentSeeder::class,
             TeacherSeeder::class,

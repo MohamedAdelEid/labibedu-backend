@@ -2,6 +2,9 @@
 
 namespace App\Infrastructure\Models;
 
+use App\Domain\Enums\Gender;
+use App\Domain\Enums\Language;
+use App\Domain\Enums\Theme;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +16,14 @@ class Student extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'name',
+        'age_group_id',
+        'gender',
+        'is_first_time',
+        'language',
+        'theme',
+        'notifications_enabled',
+        'haptic_feedback_enabled',
         'xp',
         'coins',
         'date_of_birth',
@@ -27,11 +38,22 @@ class Student extends Model
         'xp' => 'integer',
         'coins' => 'integer',
         'active_avatar_id' => 'integer',
+        'gender' => Gender::class,
+        'language' => Language::class,
+        'theme' => Theme::class,
+        'is_first_time' => 'boolean',
+        'notifications_enabled' => 'boolean',
+        'haptic_feedback_enabled' => 'boolean',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function ageGroup(): BelongsTo
+    {
+        return $this->belongsTo(AgeGroup::class);
     }
 
     public function school(): BelongsTo

@@ -60,4 +60,30 @@ interface StudentServiceInterface
      * @return array
      */
     public function getStudentProfile(int $studentId): array;
+
+    /**
+     * Complete first-time student setup
+     *
+     * @param int $studentId
+     * @param array $data
+     * @return array
+     */
+    public function completeFirstSetup(int $studentId, array $data): array;
+
+    /**
+     * Get student settings
+     *
+     * @param int $studentId
+     * @return array
+     */
+    public function getSettings(int $studentId): array;
+
+    /**
+     * Update student settings
+     *
+     * @param int $studentId
+     * @param array $data
+     * @return array
+     */
+    public function updateSettings(int $studentId, array $data): array;
 }

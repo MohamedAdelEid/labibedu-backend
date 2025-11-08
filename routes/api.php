@@ -57,6 +57,11 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/profile', [StudentController::class, 'getProfile']);
 
+            // Student Settings
+            Route::post('/first-setup', [StudentController::class, 'firstSetup']);
+            Route::get('/settings', [StudentController::class, 'getSettings']);
+            Route::patch('/settings/update', [StudentController::class, 'updateSettings']);
+
             // Library
             Route::get('/library', [LibraryController::class, 'index']);
 

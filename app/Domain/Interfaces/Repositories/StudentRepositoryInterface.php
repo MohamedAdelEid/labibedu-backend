@@ -41,4 +41,14 @@ interface StudentRepositoryInterface
      * Get students by group
      */
     public function getByGroup(int $groupId): Collection;
+
+    /**
+     * Update student first setup data
+     */
+    public function updateFirstSetup(int $studentId, array $data): Student;
+
+    /**
+     * Update student settings
+     */
+    public function updateSettings(int $studentId, array $data): Student;
 }

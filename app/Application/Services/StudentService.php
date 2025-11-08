@@ -8,6 +8,7 @@ use App\Domain\Interfaces\Services\UserActivityServiceInterface;
 use App\Domain\Interfaces\Services\QuestionServiceInterface;
 use App\Domain\Interfaces\Services\BookServiceInterface;
 use App\Domain\Interfaces\Services\AvatarServiceInterface;
+use App\Application\Exceptions\Student\StudentNotFoundException;
 use App\Infrastructure\Models\Student;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -140,6 +141,79 @@ class StudentService implements StudentServiceInterface
             'total_time_spent' => $timeData,
             'question_stats' => $questionStats,
             'books_read' => $booksRead,
+        ];
+    }
+
+    /**
+     * Complete first-time student setup
+     */
+    public function completeFirstSetup(int $studentId, array $data): array
+    {
+        $student = $this->studentRepository->findById($studentId);
+
+        if (!$student) {
+            throw new StudentNotFoundException("Student with ID {$studentId} not found");
+        }
+
+        // Check if this is actually the first time
+        if (!$student->is_first_time) {
+            throw new \Exception("Student has already completed first-time setup");
+        }
+
+        // Automatically set theme based on gender
+        $theme = $data['gender'] === 'male' ? 'blue' : 'pink';
+
+        $updatedStudent = $this->studentRepository->updateFirstSetup($studentId, [
+            'name' => $data['name'],
+            'age_group_id' => $data['age_group_id'],
+            'gender' => $data['gender'],
+            'theme' => $theme,
+        ]);
+
+        return [
+            'message' => 'First-time setup completed successfully',
+            'student' => $updatedStudent,
+        ];
+    }
+
+    /**
+     * Get student settings
+     */
+    public function getSettings(int $studentId): array
+    {
+        $student = $this->studentRepository->findById($studentId);
+
+        if (!$student) {
+            throw new StudentNotFoundException("Student with ID {$studentId} not found");
+        }
+
+        return [
+            'language' => $student->language?->value,
+            'theme' => $student->theme?->value,
+            'notifications_enabled' => $student->notifications_enabled,
+            'haptic_feedback_enabled' => $student->haptic_feedback_enabled,
+            'is_first_time' => $student->is_first_time,
+        ];
+    }
+
+    /**
+     * Update student settings
+     */
+    public function updateSettings(int $studentId, array $data): array
+    {
+        $student = $this->studentRepository->findById($studentId);
+
+        if (!$student) {
+            throw new StudentNotFoundException("Student with ID {$studentId} not found");
+        }
+
+        $dataToUpdate = array_filter($data, fn($value) => $value !== null);
+
+        $updatedStudent = $this->studentRepository->updateSettings($studentId, $dataToUpdate);
+
+        return [
+            'message' => 'Settings updated successfully',
+            'student' => $updatedStudent,
         ];
     }
 }

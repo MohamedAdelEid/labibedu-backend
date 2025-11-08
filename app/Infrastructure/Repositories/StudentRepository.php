@@ -40,7 +40,7 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         if (!$student) {
             return false;
         }
-        
+
         $student->increment('xp', $xpGained);
         $student->increment('coins', $coinsGained);
 
@@ -96,5 +96,33 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
     public function getByGroup(int $groupId): Collection
     {
         return $this->model->where('group_id', $groupId)->get();
+    }
+
+    /**
+     * Update student first setup data
+     */
+    public function updateFirstSetup(int $studentId, array $data): Student
+    {
+        $student = $this->findById($studentId);
+        $student->update([
+            'name' => $data['name'],
+            'age_group_id' => $data['age_group_id'],
+            'gender' => $data['gender'],
+            'theme' => $data['theme'] ?? null,
+            'is_first_time' => false,
+        ]);
+
+        return $student->fresh(['ageGroup']);
+    }
+
+    /**
+     * Update student settings
+     */
+    public function updateSettings(int $studentId, array $data): Student
+    {
+        $student = $this->findById($studentId);
+        $student->update($data);
+
+        return $student->fresh();
     }
 }
