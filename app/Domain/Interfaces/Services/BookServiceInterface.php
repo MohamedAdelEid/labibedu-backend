@@ -20,4 +20,13 @@ interface BookServiceInterface
      * @return int
      */
     public function getBooksReadCount(int $studentId): int;
+
+    /**
+     * Check if a book is completed by the student
+     *
+     * @param int $studentId
+     * @param int $bookId
+     * @return bool
+     */
+    public function isBookCompleted(int $studentId, int $bookId): bool;
 }

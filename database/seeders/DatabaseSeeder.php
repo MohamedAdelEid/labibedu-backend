@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             AvatarCategorySeeder::class,
             AvatarSeeder::class,
             LibrarySeeder::class,
+            JourneySeeder::class,
         ]);
     }
 }

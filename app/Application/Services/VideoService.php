@@ -45,4 +45,23 @@ class VideoService implements VideoServiceInterface
             'completed_at' => $videoProgress->updated_at,
         ];
     }
+
+    /**
+     * Check if a video is completed by the student
+     * A video is completed when is_completed flag is true in video_progress table
+     * 
+     * @param int $studentId
+     * @param int $videoId
+     * @return bool
+     */
+    public function isVideoCompleted(int $studentId, int $videoId): bool
+    {
+        $videoProgress = $this->videoProgressModel
+            ->where('student_id', $studentId)
+            ->where('video_id', $videoId)
+            ->where('is_completed', true)
+            ->first();
+
+        return $videoProgress !== null;
+    }
 }

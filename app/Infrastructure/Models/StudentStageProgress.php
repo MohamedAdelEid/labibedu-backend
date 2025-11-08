@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Models;
 
+use App\Domain\Enums\StudentStageStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +22,7 @@ class StudentStageProgress extends Model
 
     protected $casts = [
         'earned_stars' => 'integer',
+        'status' => StudentStageStatus::class,
     ];
 
     /**

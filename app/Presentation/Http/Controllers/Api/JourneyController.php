@@ -5,7 +5,7 @@ namespace App\Presentation\Http\Controllers\Api;
 use App\Infrastructure\Facades\JourneyFacade;
 use App\Infrastructure\Helpers\ApiResponse;
 use App\Presentation\Http\Controllers\Controller;
-use App\Presentation\Http\Resources\JourneyLevelResource;
+use App\Presentation\Http\Resources\Journey\JourneyLevelResource;
 use Illuminate\Http\JsonResponse;
 use Exception;
 
@@ -19,6 +19,8 @@ class JourneyController extends Controller
     /**
      * Get student's journey with levels, stages, and progress
      * 
+     * GET /api/student/journey
+     * 
      * @return JsonResponse
      */
     public function index(): JsonResponse
@@ -26,10 +28,12 @@ class JourneyController extends Controller
         try {
             $studentId = auth()->user()->student->id;
 
-            $journeyData = $this->journeyFacade->getStudentJourney($studentId);
+            // Facade returns Eloquent models/collections
+            $levels = $this->journeyFacade->getStudentJourney($studentId);
 
+            // Resources format the JSON
             return ApiResponse::success(
-                JourneyLevelResource::collection($journeyData),
+                JourneyLevelResource::collection($levels),
                 __('messages.success')
             );
         } catch (Exception $e) {
@@ -41,4 +45,3 @@ class JourneyController extends Controller
         }
     }
 }
-

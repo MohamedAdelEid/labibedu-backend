@@ -64,12 +64,31 @@ class BookService implements BookServiceInterface
 
         foreach ($studentBookIds as $bookId) {
             $book = $this->bookRepository->findOrFail($bookId);
-            
+
             if ($book && $this->bookProgressService->isRead($book, $studentId)) {
                 $readCount++;
             }
         }
 
         return $readCount;
+    }
+
+    /**
+     * Check if a book is completed by the student
+     * A book is completed when student has read the last page AND completed related training (if exists)
+     * 
+     * @param int $studentId
+     * @param int $bookId
+     * @return bool
+     */
+    public function isBookCompleted(int $studentId, int $bookId): bool
+    {
+        try {
+            $book = $this->bookRepository->findOrFail($bookId);
+            $readingStatus = $this->bookProgressService->getReadingStatus($book, $studentId);
+            return $readingStatus === 'completed';
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

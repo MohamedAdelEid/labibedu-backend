@@ -3,8 +3,9 @@
 namespace App\Domain\Interfaces\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
+use App\Infrastructure\Models\StudentStageProgress;
 
-interface JourneyRepositoryInterface
+interface JourneyRepositoryInterface extends BaseRepositoryInterface
 {
     /**
      * Get all journey levels with their stages ordered by order
@@ -12,33 +13,17 @@ interface JourneyRepositoryInterface
     public function getAllLevelsWithStages(): Collection;
 
     /**
-     * Get student's progress for all stages
+     * Get student's progress records for all stages
      */
-    public function getStudentProgress(int $studentId): Collection;
+    public function getStudentProgressRecords(int $studentId): Collection;
 
     /**
-     * Get or create student progress for a specific stage
+     * Get student progress for a specific stage (read-only, returns null if not found)
      */
-    public function getOrCreateStudentStageProgress(int $studentId, int $stageId): mixed;
+    public function getStudentStageProgress(int $studentId, int $stageId): ?StudentStageProgress;
 
     /**
-     * Check if a book is completed by student (book + related training)
+     * Get all student stage progress records by stage IDs
      */
-    public function isBookCompleted(int $studentId, int $bookId): bool;
-
-    /**
-     * Check if a video is completed by student
-     */
-    public function isVideoCompleted(int $studentId, int $videoId): bool;
-
-    /**
-     * Check if an exam/training is completed by student
-     */
-    public function isExamTrainingCompleted(int $studentId, int $examTrainingId): bool;
-
-    /**
-     * Count completed contents for a student in a stage
-     */
-    public function countCompletedContents(int $studentId, int $stageId): int;
+    public function getStudentProgressByStageIds(int $studentId, array $stageIds): Collection;
 }
-

@@ -12,4 +12,13 @@ interface VideoServiceInterface
      * @return array
      */
     public function getVideoCompletionScoring(int $studentId, int $videoId): array;
+
+    /**
+     * Check if a video is completed by the student
+     *
+     * @param int $studentId
+     * @param int $videoId
+     * @return bool
+     */
+    public function isVideoCompleted(int $studentId, int $videoId): bool;
 }

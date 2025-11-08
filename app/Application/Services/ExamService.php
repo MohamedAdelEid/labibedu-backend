@@ -338,4 +338,19 @@ class ExamService
     {
         return $this->scoringCalculator->areAllWrittenQuestionsEvaluated($studentId, $examTrainingId);
     }
+
+    /**
+     * Check if an exam/training is completed by the student
+     * An exam/training is completed when there's a finished attempt
+     * 
+     * @param int $studentId
+     * @param int $examTrainingId
+     * @return bool
+     */
+    public function isExamTrainingCompleted(int $studentId, int $examTrainingId): bool
+    {
+        $attempt = $this->examAttemptRepository->findLatestAttempt($studentId, $examTrainingId);
+
+        return $attempt && $attempt->isFinished();
+    }
 }

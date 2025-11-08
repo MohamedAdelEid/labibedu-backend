@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Facades;
 
 use App\Application\Services\JourneyService;
+use Illuminate\Support\Collection;
 
 /**
  * JourneyFacade - Provides a simplified interface between Controller and Journey Services
@@ -18,11 +19,11 @@ class JourneyFacade
     }
 
     /**
-     * Get student's journey with levels, stages, and progress
+     * Get student's journey levels with calculated progress
+     * Returns Eloquent models for Resources to format
      */
-    public function getStudentJourney(int $studentId): array
+    public function getStudentJourney(int $studentId): Collection
     {
-        return $this->journeyService->getStudentJourney($studentId);
+        return $this->journeyService->getLevelsForStudent($studentId);
     }
 }
-
