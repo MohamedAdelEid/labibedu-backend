@@ -50,7 +50,7 @@ class StudentController extends Controller
     public function firstSetup(FirstSetupRequest $request): JsonResponse
     {
         $dto = FirstSetupDTO::fromRequest($request->validated());
-        $studentId = auth()->user()->student->id;
+        $studentId = Auth::user()->student->id;
 
         $result = $this->studentService->completeFirstSetup($studentId, [
             'name' => $dto->name,
@@ -69,7 +69,7 @@ class StudentController extends Controller
      */
     public function getSettings(): JsonResponse
     {
-        $studentId = auth()->user()->student->id;
+        $studentId = Auth::user()->student->id;
 
         $settings = $this->studentService->getSettings($studentId);
 
@@ -85,7 +85,7 @@ class StudentController extends Controller
     public function updateSettings(UpdateSettingsRequest $request): JsonResponse
     {
         $dto = UpdateSettingsDTO::fromRequest($request->validated());
-        $studentId = auth()->user()->student->id;
+        $studentId = Auth::user()->student->id;
 
         $result = $this->studentService->updateSettings($studentId, [
             'language' => $dto->language,
@@ -97,6 +97,21 @@ class StudentController extends Controller
         return ApiResponse::success(
             new StudentSettingsResource($result['student']),
             $result['message']
+        );
+    }
+
+    /**
+     * Complete first-time setup (mark is_first_time as false)
+     */
+    public function completeFirstTime(): JsonResponse
+    {
+        $studentId = Auth::user()->student->id;
+
+        $result = $this->studentService->completeFirstTime($studentId);
+
+        return ApiResponse::success(
+            $result,
+            'First-time setup completed successfully'
         );
     }
 }

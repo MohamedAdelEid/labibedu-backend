@@ -41,8 +41,8 @@ class AuthService implements AuthServiceInterface
             throw new InvalidCredentialsException(__('auth.invalid_password'));
         }
 
-        // Load student relationship if user is a student
-        $user->load('student');
+        // Load student relationship with activeAvatar if user is a student
+        $user->load('student.activeAvatar');
 
         $accessToken = JWTAuth::fromUser($user);
         $refreshToken = $this->generateRefreshToken($user);
@@ -178,8 +178,8 @@ class AuthService implements AuthServiceInterface
         // Delete used OTP
         $otp->delete();
 
-        // Load student relationship if user is a student
-        $user->load('student');
+        // Load student relationship with activeAvatar if user is a student
+        $user->load('student.activeAvatar');
 
         // Return login data
         $accessToken = JWTAuth::fromUser($user);

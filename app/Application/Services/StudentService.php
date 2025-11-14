@@ -216,4 +216,36 @@ class StudentService implements StudentServiceInterface
             'student' => $updatedStudent,
         ];
     }
+
+    /**
+     * Complete first-time setup (mark is_first_time as false)
+     */
+    public function completeFirstTime(int $studentId): array
+    {
+        $student = $this->studentRepository->findById($studentId);
+
+        if (!$student) {
+            throw new StudentNotFoundException("Student with ID {$studentId} not found");
+        }
+
+        // Check if already completed
+        if (!$student->is_first_time) {
+            return [
+                'message' => 'First-time setup already completed',
+                'is_first_time' => false,
+            ];
+        }
+
+        // Mark first-time as complete
+        $student->update(['is_first_time' => false]);
+
+        Log::info('First-time setup completed', [
+            'student_id' => $studentId,
+        ]);
+
+        return [
+            'message' => 'First-time setup completed successfully',
+            'is_first_time' => false,
+        ];
+    }
 }

@@ -60,6 +60,7 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
 
             // Student Settings
             Route::post('/first-setup', [StudentController::class, 'firstSetup']);
+            Route::post('/complete-first-time', [StudentController::class, 'completeFirstTime']);
             Route::get('/settings', [StudentController::class, 'getSettings']);
             Route::patch('/settings/update', [StudentController::class, 'updateSettings']);
 

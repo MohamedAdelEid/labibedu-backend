@@ -86,4 +86,12 @@ interface StudentServiceInterface
      * @return array
      */
     public function updateSettings(int $studentId, array $data): array;
+
+    /**
+     * Complete first-time setup (mark is_first_time as false)
+     *
+     * @param int $studentId
+     * @return array
+     */
+    public function completeFirstTime(int $studentId): array;
 }
