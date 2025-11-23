@@ -63,6 +63,16 @@ use App\Application\Services\JourneyService;
 use App\Infrastructure\Facades\JourneyFacade;
 use App\Domain\Interfaces\Repositories\AgeGroupRepositoryInterface;
 use App\Infrastructure\Repositories\AgeGroupRepository;
+use App\Domain\Interfaces\Repositories\LessonRepositoryInterface;
+use App\Infrastructure\Repositories\LessonRepository;
+use App\Domain\Interfaces\Repositories\SubjectRepositoryInterface;
+use App\Infrastructure\Repositories\SubjectRepository;
+use App\Domain\Interfaces\Services\LessonServiceInterface;
+use App\Application\Services\LessonService;
+use App\Domain\Interfaces\Services\SubjectServiceInterface;
+use App\Application\Services\SubjectService;
+use App\Infrastructure\Facades\LessonFacade;
+use App\Infrastructure\Facades\SubjectFacade;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -87,6 +97,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PageRepositoryInterface::class, PageRepository::class);
         $this->app->bind(JourneyRepositoryInterface::class, JourneyRepository::class);
         $this->app->bind(AgeGroupRepositoryInterface::class, AgeGroupRepository::class);
+        $this->app->bind(LessonRepositoryInterface::class, LessonRepository::class);
+        $this->app->bind(SubjectRepositoryInterface::class, SubjectRepository::class);
 
         // Bind services
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
@@ -104,6 +116,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(StudentBookService::class);
         $this->app->singleton(PageService::class);
         $this->app->singleton(JourneyService::class);
+        $this->app->bind(LessonServiceInterface::class, LessonService::class);
+        $this->app->bind(SubjectServiceInterface::class, SubjectService::class);
 
         // Bind facades
         $this->app->singleton(AuthFacade::class, function ($app) {
@@ -121,6 +135,12 @@ class RepositoryServiceProvider extends ServiceProvider
         });
         $this->app->singleton(JourneyFacade::class, function ($app) {
             return new JourneyFacade($app->make(JourneyService::class));
+        });
+        $this->app->singleton(LessonFacade::class, function ($app) {
+            return new LessonFacade($app->make(LessonServiceInterface::class));
+        });
+        $this->app->singleton(SubjectFacade::class, function ($app) {
+            return new SubjectFacade($app->make(SubjectServiceInterface::class));
         });
     }
 

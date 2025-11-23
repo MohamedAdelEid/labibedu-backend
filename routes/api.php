@@ -11,6 +11,8 @@ use App\Presentation\Http\Controllers\Api\LibraryController;
 use App\Presentation\Http\Controllers\Api\LevelController;
 use App\Presentation\Http\Controllers\Api\JourneyController;
 use App\Presentation\Http\Controllers\Api\AgeGroupController;
+use App\Presentation\Http\Controllers\Api\LessonController;
+use App\Presentation\Http\Controllers\Api\SubjectController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -72,6 +74,12 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
 
             // Journey
             Route::get('/journey', [JourneyController::class, 'index']);
+
+            // Lessons
+            Route::get('/lessons', [LessonController::class, 'index']);
+
+            // Subjects
+            Route::get('/subjects', [SubjectController::class, 'index']);
         });
 
         // Book Operations

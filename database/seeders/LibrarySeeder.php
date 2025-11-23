@@ -54,16 +54,16 @@ class LibrarySeeder extends Seeder
     private function createLibrarySubjects(): Collection
     {
         $subjectsData = [
-            ['name' => 'Programming', 'classroom_id' => null],
-            ['name' => 'Web Development', 'classroom_id' => null],
-            ['name' => 'Design', 'classroom_id' => null],
+            ['name_en' => 'Programming', 'name_ar' => 'البرمجة', 'classroom_id' => null],
+            ['name_en' => 'Web Development', 'name_ar' => 'تطوير الويب', 'classroom_id' => null],
+            ['name_en' => 'Design', 'name_ar' => 'التصميم', 'classroom_id' => null],
         ];
 
         $subjects = collect();
 
         foreach ($subjectsData as $subjectData) {
             $subject = Subject::firstOrCreate(
-                ['name' => $subjectData['name'], 'classroom_id' => null],
+                ['name_en' => $subjectData['name_en'], 'classroom_id' => null],
                 $subjectData
             );
             $subjects->push($subject);
@@ -183,8 +183,8 @@ class LibrarySeeder extends Seeder
         $books = collect();
 
         foreach ($booksData as $bookData) {
-            // Find subject by name
-            $subject = $subjects->firstWhere('name', $bookData['subject']);
+            // Find subject by name_en
+            $subject = $subjects->firstWhere('name_en', $bookData['subject']);
             if (!$subject) {
                 throw new \Exception("Subject '{$bookData['subject']}' not found.");
             }

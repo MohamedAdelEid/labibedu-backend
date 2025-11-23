@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name_ar');
+            $table->string('name_en');
             $table->unsignedBigInteger('classroom_id')->nullable();
             $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');
             $table->timestamps();

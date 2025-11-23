@@ -10,15 +10,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Subject extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'classroom_id'];
+    protected $fillable = ['name_ar', 'name_en', 'classroom_id'];
 
     /**
      * Get the localized name based on the current app locale
-     * Note: Subject only has a 'name' field, not separate ar/en fields
      */
-    public function getNameAttribute($value): string
+    public function getNameAttribute(): string
     {
-        return $value;
+        $locale = app()->getLocale();
+        return $this->attributes['name_' . $locale] ?? $this->attributes['name_ar'] ?? '';
     }
 
     public function classroom(): BelongsTo
@@ -39,5 +39,10 @@ class Subject extends Model
     public function examsTrainings(): HasMany
     {
         return $this->hasMany(ExamTraining::class);
+    }
+
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class);
     }
 }

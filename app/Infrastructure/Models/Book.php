@@ -96,4 +96,10 @@ class Book extends Model
             ->withPivot('is_favorite', 'last_read_page_id')
             ->withTimestamps();
     }
+
+    public function lessons(): BelongsToMany
+    {
+        return $this->belongsToMany(Lesson::class, 'lesson_book')
+            ->withTimestamps();
+    }
 }

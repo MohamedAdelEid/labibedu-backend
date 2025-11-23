@@ -4,6 +4,7 @@ namespace App\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Video extends Model
@@ -43,5 +44,11 @@ class Video extends Model
     public function watchProgress(): HasMany
     {
         return $this->hasMany(VideoProgress::class);
+    }
+
+    public function lessons(): BelongsToMany
+    {
+        return $this->belongsToMany(Lesson::class, 'lesson_video')
+            ->withTimestamps();
     }
 }

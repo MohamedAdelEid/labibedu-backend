@@ -107,7 +107,8 @@ class TeacherSubjectGroupSeeder extends Seeder
         ];
 
         foreach ($assignments as $assignment) {
-            $subject = Subject::where('name', $assignment['subject_name'])->first();
+            // Search by name_en since we're using English names in assignments
+            $subject = Subject::where('name_en', $assignment['subject_name'])->first();
 
             if (!$subject) {
                 continue;
