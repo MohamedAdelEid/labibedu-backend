@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             ExamTrainingSeeder::class,
             BookSeeder::class,
+            LessonCategorySeeder::class,
             LessonSeeder::class,
             QuestionSeeder::class,
             AssignmentSeeder::class,

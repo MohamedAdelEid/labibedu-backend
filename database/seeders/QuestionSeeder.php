@@ -6,746 +6,812 @@ use Illuminate\Database\Seeder;
 use App\Infrastructure\Models\Question;
 use App\Infrastructure\Models\QuestionOption;
 use App\Infrastructure\Models\QuestionOptionPair;
+use App\Infrastructure\Models\ExamTraining;
 
 class QuestionSeeder extends Seeder
 {
     /**
-     * Main seeder method
+     * Run the database seeds.
      */
     public function run(): void
     {
         $this->command->info('🌱 Starting Questions Seeding...');
 
-        // Define all exam/training data
-        $examTrainingData = $this->getExamTrainingData();
+        $trainingsData = $this->getBookTrainingsQuestionsData();
 
-        // Create questions for each exam/training
-        foreach ($examTrainingData as $examTraining) {
-            $this->createExamTrainingQuestions($examTraining);
+        foreach ($trainingsData as $trainingData) {
+            $this->createTrainingQuestions($trainingData);
         }
 
         $this->command->info('✅ Questions seeded successfully!');
-        $this->command->info('📊 Total questions created: ' . array_sum(array_column($examTrainingData, 'question_count')));
     }
 
     /**
-     * Get all exam/training data configuration
+     * Get all book trainings questions data configuration
+     * 
+     * To add questions for a new book training, add the training title_ar to getBookTrainingQuestions()
      */
-    private function getExamTrainingData(): array
+    private function getBookTrainingsQuestionsData(): array
     {
         return [
-            // EXAM 1: Mathematics Midterm
+            $this->getBookTrainingQuestions('تدريب كتاب سناء في الفضاء'),
+            $this->getBookTrainingQuestions('تدريب كتاب آدم يتخيل النحلة'),
+            $this->getBookTrainingQuestions('تدريب كتاب عندما فقدت قطتي عقلها'),
+            $this->getBookTrainingQuestions('تدريب كتاب لماذا انا مربع'),
+        ];
+    }
+
+    /**
+     * Get questions for a specific book training
+     * 
+     * To add a new book training's questions, create a new method like getBookTrainingQuestions()
+     * and return the questions array with the training title_ar
+     */
+    private function getBookTrainingQuestions(string $trainingTitleAr): array
+    {
+        $questions = match ($trainingTitleAr) {
+            'تدريب كتاب سناء في الفضاء' => $this->getSanaaInSpaceQuestions(),
+            'تدريب كتاب آدم يتخيل النحلة' => $this->getAdamImaginesBeeQuestions(),
+            'تدريب كتاب عندما فقدت قطتي عقلها' => $this->getWhenMyCatLostHerMindQuestions(),
+            'تدريب كتاب لماذا انا مربع' => $this->getWhyAmISquareQuestions(),
+            default => [],
+        };
+
+        return [
+            'training_title_ar' => $trainingTitleAr,
+            'questions' => $questions,
+        ];
+    }
+
+    /**
+     * Questions for book: سناء في الفضاء
+     */
+    private function getSanaaInSpaceQuestions(): array
+    {
+        return [
+            // Choice Questions
             [
-                'id' => 1,
-                'name' => 'Mathematics Midterm',
-                'type' => 'exam',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'What is the value of x in the equation 2x + 5 = 15?',
-                        'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => '5', 'is_correct' => true],
-                            ['text' => '10', 'is_correct' => false],
-                            ['text' => '7', 'is_correct' => false],
-                            ['text' => '3', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'The sum of angles in a triangle is 180 degrees.',
-                        'type' => 'true_false',
-                        'xp' => 5,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'en',
-                    ],
-                    [
-                        'title' => 'Match the geometric shapes with their properties',
-                        'type' => 'connect',
-                        'xp' => 15,
-                        'coins' => 8,
-                        'marks' => 3,
-                        'language' => 'en',
-                        'pairs' => [
-                            ['left' => 'Square', 'right' => '4 equal sides', 'xp' => 5, 'coins' => 3, 'marks' => 1],
-                            ['left' => 'Circle', 'right' => 'No corners', 'xp' => 5, 'coins' => 3, 'marks' => 1],
-                            ['left' => 'Triangle', 'right' => '3 sides', 'xp' => 5, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'Arrange the following numbers in ascending order',
-                        'type' => 'arrange',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => '3', 'order' => 1],
-                            ['text' => '7', 'order' => 2],
-                            ['text' => '15', 'order' => 3],
-                            ['text' => '22', 'order' => 4],
-                        ]
-                    ],
-                ]
+                'title' => 'كانت سناء تلميذة في الصف __________.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الرابع', 'is_correct' => false],
+                    ['text' => 'الخامس', 'is_correct' => true],
+                    ['text' => 'السادس', 'is_correct' => false],
+                    ['text' => 'الثالث', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'أهدى خالها لها __________ لتراقب به الكواكب.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'مجهرًا', 'is_correct' => false],
+                    ['text' => 'كتابًا', 'is_correct' => false],
+                    ['text' => 'تلسكوبًا', 'is_correct' => true],
+                    ['text' => 'هاتفًا', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'سافرت سناء مع خالها إلى كوكب __________.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'المريخ', 'is_correct' => false],
+                    ['text' => 'كيبْلَر', 'is_correct' => true],
+                    ['text' => 'الزهرة', 'is_correct' => false],
+                    ['text' => 'عطارد', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'قال خالها إنّ رحلتهما كانت أسرع من __________.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الريح', 'is_correct' => false],
+                    ['text' => 'الصوت', 'is_correct' => false],
+                    ['text' => 'الضوء', 'is_correct' => true],
+                    ['text' => 'الماء', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'الكلمة المخالفة في مجموعة الكلمات التالية هي: (كوكب – نجم – قمر – زهرة)',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'كوكب', 'is_correct' => false],
+                    ['text' => 'نجم', 'is_correct' => false],
+                    ['text' => 'قمر', 'is_correct' => false],
+                    ['text' => 'زهرة', 'is_correct' => true],
+                ],
+            ],
+            [
+                'title' => 'الكلمة المخالفة في مجموعة الكلمات التالية هي: (كيبْلَر – المريخ – الزهرة – الرياض)',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'كيبْلَر', 'is_correct' => false],
+                    ['text' => 'المريخ', 'is_correct' => false],
+                    ['text' => 'الزهرة', 'is_correct' => false],
+                    ['text' => 'الرياض', 'is_correct' => true],
+                ],
             ],
 
-            // EXAM 2: Science Final
+            // Arrange Questions
             [
-                'id' => 2,
-                'name' => 'Science Final',
-                'type' => 'exam',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'What is the chemical symbol for water?',
-                        'type' => 'choice',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'H2O', 'is_correct' => true],
-                            ['text' => 'CO2', 'is_correct' => false],
-                            ['text' => 'O2', 'is_correct' => false],
-                            ['text' => 'H2', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'The speed of light is faster than the speed of sound.',
-                        'type' => 'true_false',
-                        'xp' => 6,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'en',
-                    ],
-                    [
-                        'title' => 'Match the scientists with their discoveries',
-                        'type' => 'connect',
-                        'xp' => 18,
-                        'coins' => 9,
-                        'marks' => 3,
-                        'language' => 'en',
-                        'pairs' => [
-                            ['left' => 'Newton', 'right' => 'Gravity', 'xp' => 6, 'coins' => 3, 'marks' => 1],
-                            ['left' => 'Einstein', 'right' => 'Relativity', 'xp' => 6, 'coins' => 3, 'marks' => 1],
-                            ['left' => 'Darwin', 'right' => 'Evolution', 'xp' => 6, 'coins' => 3, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'Arrange the planets in order from the Sun',
-                        'type' => 'arrange',
-                        'xp' => 15,
-                        'coins' => 7,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'Mercury', 'order' => 1],
-                            ['text' => 'Venus', 'order' => 2],
-                            ['text' => 'Earth', 'order' => 3],
-                            ['text' => 'Mars', 'order' => 4],
-                        ]
-                    ],
-                ]
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ الأهل',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الأهل', 'order' => 1],
+                    ['text' => 'احتفلوا', 'order' => 2],
+                    ['text' => 'بعودة', 'order' => 3],
+                    ['text' => 'سناء', 'order' => 4],
+                    ['text' => 'من', 'order' => 5],
+                    ['text' => 'رحلتها', 'order' => 6],
+                    ['text' => 'الفضائية', 'order' => 7],
+                    ['text' => 'الطويلة', 'order' => 8],
+                ],
+            ],
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ المركبة',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'المركبة', 'order' => 1],
+                    ['text' => 'الفضائية', 'order' => 2],
+                    ['text' => 'أقلعت', 'order' => 3],
+                    ['text' => 'من', 'order' => 4],
+                    ['text' => 'فناء', 'order' => 5],
+                    ['text' => 'المنزل', 'order' => 6],
+                    ['text' => 'بسرعة', 'order' => 7],
+                    ['text' => 'كبيرة', 'order' => 8],
+                ],
+            ],
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ سناء',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'سناء', 'order' => 1],
+                    ['text' => 'تقرأ', 'order' => 2],
+                    ['text' => 'كتب', 'order' => 3],
+                    ['text' => 'الفلك', 'order' => 4],
+                    ['text' => 'بانبهار', 'order' => 5],
+                ],
             ],
 
-            // EXAM 3: English Grammar
+            // True/False Questions
             [
-                'id' => 3,
-                'name' => 'English Grammar',
-                'type' => 'exam',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'Which sentence is grammatically correct?',
-                        'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'She has been working here for five years.', 'is_correct' => true],
-                            ['text' => 'She have been working here for five years.', 'is_correct' => false],
-                            ['text' => 'She has working here for five years.', 'is_correct' => false],
-                            ['text' => 'She been working here for five years.', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'The past tense of "go" is "went".',
-                        'type' => 'true_false',
-                        'xp' => 5,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'en',
-                    ],
-                    [
-                        'title' => 'Match the words with their synonyms',
-                        'type' => 'connect',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'pairs' => [
-                            ['left' => 'Happy', 'right' => 'Joyful', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => 'Angry', 'right' => 'Furious', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => 'Big', 'right' => 'Large', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'Arrange the words to form a correct sentence',
-                        'type' => 'arrange',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'I', 'order' => 1],
-                            ['text' => 'love', 'order' => 2],
-                            ['text' => 'learning', 'order' => 3],
-                            ['text' => 'English', 'order' => 4],
-                        ]
-                    ],
-                ]
+                'title' => 'كانت سناء تكره كتب الفلك لأنها مملة.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => false, // خطأ
             ],
-
-            // TRAINING 1: Algebra Practice
             [
-                'id' => 4,
-                'name' => 'Algebra Practice',
-                'type' => 'training',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'Simplify: 3x + 2x',
-                        'type' => 'choice',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => '5x', 'is_correct' => true],
-                            ['text' => '6x', 'is_correct' => false],
-                            ['text' => '5x²', 'is_correct' => false],
-                            ['text' => '3x²', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'The equation x + 5 = 10 has the solution x = 5.',
-                        'type' => 'true_false',
-                        'xp' => 5,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'en',
-                    ],
-                    [
-                        'title' => 'Match the algebraic expressions with their simplified forms',
-                        'type' => 'connect',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'pairs' => [
-                            ['left' => '2x + 3x', 'right' => '5x', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => '4x - x', 'right' => '3x', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'Arrange the steps to solve: 2x + 4 = 10',
-                        'type' => 'arrange',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'Subtract 4 from both sides', 'order' => 1],
-                            ['text' => 'Get 2x = 6', 'order' => 2],
-                            ['text' => 'Divide both sides by 2', 'order' => 3],
-                            ['text' => 'Solution: x = 3', 'order' => 4],
-                        ]
-                    ],
-                ]
+                'title' => 'أهدى الخال راغب لابنة أخته سناء تلسكوبًا لمراقبة الكواكب.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
             ],
-
-            // TRAINING 2: Physics Fundamentals
             [
-                'id' => 5,
-                'name' => 'Physics Fundamentals',
-                'type' => 'training',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'What is the SI unit of force?',
-                        'type' => 'choice',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'Newton', 'is_correct' => true],
-                            ['text' => 'Joule', 'is_correct' => false],
-                            ['text' => 'Watt', 'is_correct' => false],
-                            ['text' => 'Pascal', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'Energy can be created or destroyed.',
-                        'type' => 'true_false',
-                        'xp' => 6,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'en',
-                    ],
-                    [
-                        'title' => 'Match the physical quantities with their units',
-                        'type' => 'connect',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'pairs' => [
-                            ['left' => 'Velocity', 'right' => 'm/s', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => 'Acceleration', 'right' => 'm/s²', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'Arrange the states of matter by increasing particle movement',
-                        'type' => 'arrange',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'Solid', 'order' => 1],
-                            ['text' => 'Liquid', 'order' => 2],
-                            ['text' => 'Gas', 'order' => 3],
-                        ]
-                    ],
-                ]
-            ],
-
-            // TRAINING 3: English Vocabulary
-            [
-                'id' => 6,
-                'name' => 'English Vocabulary',
-                'type' => 'training',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'What is the meaning of "benevolent"?',
-                        'type' => 'choice',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'Kind and generous', 'is_correct' => true],
-                            ['text' => 'Cruel and harsh', 'is_correct' => false],
-                            ['text' => 'Lazy and unmotivated', 'is_correct' => false],
-                            ['text' => 'Angry and upset', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'An antonym is a word that has the opposite meaning of another word.',
-                        'type' => 'true_false',
-                        'xp' => 5,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'en',
-                    ],
-                    [
-                        'title' => 'Match the words with their antonyms',
-                        'type' => 'connect',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'en',
-                        'pairs' => [
-                            ['left' => 'Hot', 'right' => 'Cold', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => 'Fast', 'right' => 'Slow', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'Arrange the words alphabetically',
-                        'type' => 'arrange',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'Apple', 'order' => 1],
-                            ['text' => 'Banana', 'order' => 2],
-                            ['text' => 'Cherry', 'order' => 3],
-                            ['text' => 'Date', 'order' => 4],
-                        ]
-                    ],
-                ]
-            ],
-
-            // EXAM 4: الرياضيات - الفصل الدراسي الأول
-            [
-                'id' => 7,
-                'name' => 'الرياضيات - الفصل الدراسي الأول',
-                'type' => 'exam',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'ما قيمة س في المعادلة 3س + 7 = 22؟',
-                        'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => '5', 'is_correct' => true],
-                            ['text' => '6', 'is_correct' => false],
-                            ['text' => '4', 'is_correct' => false],
-                            ['text' => '7', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'مجموع زوايا المثلث يساوي 180 درجة.',
-                        'type' => 'true_false',
-                        'xp' => 5,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    [
-                        'title' => 'اربط الأشكال الهندسية بخصائصها',
-                        'type' => 'connect',
-                        'xp' => 15,
-                        'coins' => 8,
-                        'marks' => 3,
-                        'language' => 'ar',
-                        'pairs' => [
-                            ['left' => 'المربع', 'right' => '4 أضلاع متساوية', 'xp' => 5, 'coins' => 3, 'marks' => 1],
-                            ['left' => 'الدائرة', 'right' => 'لا توجد زوايا', 'xp' => 5, 'coins' => 3, 'marks' => 1],
-                            ['left' => 'المثلث', 'right' => '3 أضلاع', 'xp' => 5, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'رتب الأرقام التالية ترتيباً تصاعدياً',
-                        'type' => 'arrange',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => '2', 'order' => 1],
-                            ['text' => '5', 'order' => 2],
-                            ['text' => '8', 'order' => 3],
-                            ['text' => '12', 'order' => 4],
-                        ]
-                    ],
-                ]
-            ],
-
-            // EXAM 5: العلوم - الفصل الدراسي الأول
-            [
-                'id' => 8,
-                'name' => 'العلوم - الفصل الدراسي الأول',
-                'type' => 'exam',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'ما هو الرمز الكيميائي للماء؟',
-                        'type' => 'choice',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'H2O', 'is_correct' => true],
-                            ['text' => 'CO2', 'is_correct' => false],
-                            ['text' => 'O2', 'is_correct' => false],
-                            ['text' => 'H2', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'سرعة الضوء أسرع من سرعة الصوت.',
-                        'type' => 'true_false',
-                        'xp' => 6,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    [
-                        'title' => 'اربط العلماء باكتشافاتهم',
-                        'type' => 'connect',
-                        'xp' => 18,
-                        'coins' => 9,
-                        'marks' => 3,
-                        'language' => 'ar',
-                        'pairs' => [
-                            ['left' => 'نيوتن', 'right' => 'الجاذبية', 'xp' => 6, 'coins' => 3, 'marks' => 1],
-                            ['left' => 'أينشتاين', 'right' => 'النسبية', 'xp' => 6, 'coins' => 3, 'marks' => 1],
-                            ['left' => 'داروين', 'right' => 'التطور', 'xp' => 6, 'coins' => 3, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'رتب الكواكب حسب بعدها عن الشمس',
-                        'type' => 'arrange',
-                        'xp' => 15,
-                        'coins' => 7,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'عطارد', 'order' => 1],
-                            ['text' => 'الزهرة', 'order' => 2],
-                            ['text' => 'الأرض', 'order' => 3],
-                            ['text' => 'المريخ', 'order' => 4],
-                        ]
-                    ],
-                ]
-            ],
-
-            // EXAM 6: اللغة العربية - النحو والإملاء
-            [
-                'id' => 9,
-                'name' => 'اللغة العربية - النحو والإملاء',
-                'type' => 'exam',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'أي جملة من الجمل التالية صحيحة نحوياً؟',
-                        'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'الطلاب يدرسون بجد', 'is_correct' => true],
-                            ['text' => 'الطلاب يدرس بجد', 'is_correct' => false],
-                            ['text' => 'الطلاب درس بجد', 'is_correct' => false],
-                            ['text' => 'الطلاب درست بجد', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'الفعل الماضي من "يذهب" هو "ذهب".',
-                        'type' => 'true_false',
-                        'xp' => 5,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    [
-                        'title' => 'اربط الكلمات بمرادفاتها',
-                        'type' => 'connect',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'pairs' => [
-                            ['left' => 'سعيد', 'right' => 'فرحان', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => 'غاضب', 'right' => 'غضبان', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => 'كبير', 'right' => 'ضخم', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'رتب الكلمات لتكوين جملة صحيحة',
-                        'type' => 'arrange',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'أحب', 'order' => 1],
-                            ['text' => 'التعلم', 'order' => 2],
-                            ['text' => 'اللغة', 'order' => 3],
-                            ['text' => 'العربية', 'order' => 4],
-                        ]
-                    ],
-                ]
-            ],
-
-            // TRAINING 4: تدريب الجبر
-            [
-                'id' => 10,
-                'name' => 'تدريب الجبر',
-                'type' => 'training',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'بسط: 4س + 3س',
-                        'type' => 'choice',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => '7س', 'is_correct' => true],
-                            ['text' => '12س', 'is_correct' => false],
-                            ['text' => '7س²', 'is_correct' => false],
-                            ['text' => '4س²', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'المعادلة س + 3 = 8 لها الحل س = 5.',
-                        'type' => 'true_false',
-                        'xp' => 5,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    [
-                        'title' => 'اربط التعبيرات الجبرية بأشكالها المبسطة',
-                        'type' => 'connect',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'pairs' => [
-                            ['left' => '3س + 4س', 'right' => '7س', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => '5س - 2س', 'right' => '3س', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'رتب خطوات حل المعادلة: 3س + 6 = 15',
-                        'type' => 'arrange',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'اطرح 6 من الطرفين', 'order' => 1],
-                            ['text' => 'احصل على 3س = 9', 'order' => 2],
-                            ['text' => 'اقسم الطرفين على 3', 'order' => 3],
-                            ['text' => 'الحل: س = 3', 'order' => 4],
-                        ]
-                    ],
-                ]
-            ],
-
-            // TRAINING 5: تدريب الفيزياء الأساسية
-            [
-                'id' => 11,
-                'name' => 'تدريب الفيزياء الأساسية',
-                'type' => 'training',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'ما هي وحدة القوة في النظام الدولي؟',
-                        'type' => 'choice',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'نيوتن', 'is_correct' => true],
-                            ['text' => 'جول', 'is_correct' => false],
-                            ['text' => 'واط', 'is_correct' => false],
-                            ['text' => 'باسكال', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'يمكن إنشاء أو تدمير الطاقة.',
-                        'type' => 'true_false',
-                        'xp' => 6,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    [
-                        'title' => 'اربط الكميات الفيزيائية بوحداتها',
-                        'type' => 'connect',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'pairs' => [
-                            ['left' => 'السرعة', 'right' => 'م/ث', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => 'التسارع', 'right' => 'م/ث²', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'رتب حالات المادة حسب زيادة حركة الجسيمات',
-                        'type' => 'arrange',
-                        'xp' => 10,
-                        'coins' => 5,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'صلبة', 'order' => 1],
-                            ['text' => 'سائلة', 'order' => 2],
-                            ['text' => 'غازية', 'order' => 3],
-                        ]
-                    ],
-                ]
-            ],
-
-            // TRAINING 6: تدريب مفردات اللغة العربية
-            [
-                'id' => 12,
-                'name' => 'تدريب مفردات اللغة العربية',
-                'type' => 'training',
-                'question_count' => 4,
-                'questions' => [
-                    [
-                        'title' => 'ما معنى كلمة "كريم"؟',
-                        'type' => 'choice',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'سخي ومحسن', 'is_correct' => true],
-                            ['text' => 'بخيل وقاسي', 'is_correct' => false],
-                            ['text' => 'كسول وغير متحمس', 'is_correct' => false],
-                            ['text' => 'غاضب ومستاء', 'is_correct' => false],
-                        ]
-                    ],
-                    [
-                        'title' => 'الضد هو كلمة لها معنى معاكس لكلمة أخرى.',
-                        'type' => 'true_false',
-                        'xp' => 5,
-                        'coins' => 3,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    [
-                        'title' => 'اربط الكلمات بأضدادها',
-                        'type' => 'connect',
-                        'xp' => 12,
-                        'coins' => 6,
-                        'marks' => 2,
-                        'language' => 'ar',
-                        'pairs' => [
-                            ['left' => 'حار', 'right' => 'بارد', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                            ['left' => 'سريع', 'right' => 'بطيء', 'xp' => 4, 'coins' => 2, 'marks' => 1],
-                        ]
-                    ],
-                    [
-                        'title' => 'رتب الكلمات ترتيباً أبجدياً',
-                        'type' => 'arrange',
-                        'xp' => 8,
-                        'coins' => 4,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'أحمد', 'order' => 1],
-                            ['text' => 'بسام', 'order' => 2],
-                            ['text' => 'تامر', 'order' => 3],
-                            ['text' => 'جمال', 'order' => 4],
-                        ]
-                    ],
-                ]
+                'title' => 'صنع خال سناء مركبة فضائية تسير بسرعة الضوء.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
             ],
         ];
     }
 
     /**
-     * Create questions for a specific exam/training
+     * Questions for book: آدم يتخيل النحلة
      */
-    private function createExamTrainingQuestions(array $examTraining): void
+    private function getAdamImaginesBeeQuestions(): array
     {
-        $this->command->info("📝 Creating questions for: {$examTraining['name']} ({$examTraining['type']})");
+        return [
+            // Choice Questions
+            [
+                'title' => 'جذبَتْ آدم رائحةُ __________ المتفتحة بجانب منزله.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الأشجار', 'is_correct' => false],
+                    ['text' => 'الزهور', 'is_correct' => true],
+                    ['text' => 'الفواكه', 'is_correct' => false],
+                    ['text' => 'الأعشاب', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'قال الأخ إن النحلة تشبه __________ لكنها تلسع.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الفراشة', 'is_correct' => false],
+                    ['text' => 'الذبابة', 'is_correct' => true],
+                    ['text' => 'النملة', 'is_correct' => false],
+                    ['text' => 'العصفور', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'أوضح الأب أن النحلة حشرة __________ تصنع لنا العسل.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'مؤذية', 'is_correct' => false],
+                    ['text' => 'مفيدة', 'is_correct' => true],
+                    ['text' => 'صغيرة جدًا', 'is_correct' => false],
+                    ['text' => 'خطير', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'أهدت الجدة آدم جوارب __________ منقطة بالأسود.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'خضراء', 'is_correct' => false],
+                    ['text' => 'صفراء', 'is_correct' => true],
+                    ['text' => 'بيضاء', 'is_correct' => false],
+                    ['text' => 'زرقاء', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'ماذا جذب آدم في بداية القصة؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'صوت العصافير', 'is_correct' => false],
+                    ['text' => 'رائحة الزهور', 'is_correct' => true],
+                    ['text' => 'لون الفراشات', 'is_correct' => false],
+                    ['text' => 'طنين النحل', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'من حذّر آدم من وجود نحلة داخل الزهرة؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'والده', 'is_correct' => false],
+                    ['text' => 'أخوه', 'is_correct' => true],
+                    ['text' => 'جدته', 'is_correct' => false],
+                    ['text' => 'أمه', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'ما الذي أحضرته الجدة لآدم؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'قميصًا أزرق', 'is_correct' => false],
+                    ['text' => 'جوارب صفراء منقطة بالأسود', 'is_correct' => true],
+                    ['text' => 'كتابًا عن النحل', 'is_correct' => false],
+                    ['text' => 'قبعة ملونة', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'ماذا فعلت الأم في نهاية القصة؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'قدمت العسل لآدم', 'is_correct' => false],
+                    ['text' => 'عرضت عليه صورة النحلة في كتاب', 'is_correct' => true],
+                    ['text' => 'ذهبت لتشتري العسل', 'is_correct' => false],
+                    ['text' => 'طلبت منه نسيان النحل', 'is_correct' => false],
+                ],
+            ],
 
-        foreach ($examTraining['questions'] as $questionData) {
-            $this->createQuestion($examTraining['id'], $questionData);
+            // Arrange Questions
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ آدم',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'آدم', 'order' => 1],
+                    ['text' => 'قرب', 'order' => 2],
+                    ['text' => 'من', 'order' => 3],
+                    ['text' => 'الأزهار', 'order' => 4],
+                    ['text' => 'ليتأمل', 'order' => 5],
+                    ['text' => 'ألوانها', 'order' => 6],
+                    ['text' => 'الجميلة', 'order' => 7],
+                ],
+            ],
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ الأم',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الأم', 'order' => 1],
+                    ['text' => 'أحضرت', 'order' => 2],
+                    ['text' => 'كتابًا', 'order' => 3],
+                    ['text' => 'فيه', 'order' => 4],
+                    ['text' => 'صور', 'order' => 5],
+                    ['text' => 'ملونة', 'order' => 6],
+                    ['text' => 'عن', 'order' => 7],
+                    ['text' => 'الحشرات', 'order' => 8],
+                ],
+            ],
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ الأب',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الأب', 'order' => 1],
+                    ['text' => 'لابنه', 'order' => 2],
+                    ['text' => 'شرح', 'order' => 3],
+                    ['text' => 'كيف', 'order' => 4],
+                    ['text' => 'يصنع', 'order' => 5],
+                    ['text' => 'النحل', 'order' => 6],
+                    ['text' => 'العسل', 'order' => 7],
+                ],
+            ],
+
+            // True/False Questions
+            [
+                'title' => 'تخيّل آدم في البداية أن النحلة حشرة سوداء مخيفة.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            [
+                'title' => 'رسم آدم في النهاية نحلة تجمع الصفات التي عرفها من الجميع.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            [
+                'title' => 'أخبره أخوه أن النحلة طائر جميل له ريش.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => false, // خطأ
+            ],
+        ];
+    }
+
+    /**
+     * Questions for book: عندما فقدت قطتي عقلها
+     */
+    private function getWhenMyCatLostHerMindQuestions(): array
+    {
+        return [
+            // Choice Questions
+            [
+                'title' => 'من هو بطل القصة؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'سامي', 'is_correct' => false],
+                    ['text' => 'رامي', 'is_correct' => true],
+                    ['text' => 'خالد', 'is_correct' => false],
+                    ['text' => 'فادي', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'ما الشيء الذي كان داخل الصندوق مع القطة؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'زجاجة سُم', 'is_correct' => true],
+                    ['text' => 'طعام', 'is_correct' => false],
+                    ['text' => 'ماء', 'is_correct' => false],
+                    ['text' => 'وسادة', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'ما الذي يرمز إليه الصندوق في القصة؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'بيت القطة', 'is_correct' => false],
+                    ['text' => 'تجربة علمية', 'is_correct' => true],
+                    ['text' => 'لعبة للأطفال', 'is_correct' => false],
+                    ['text' => 'مكان للاختباء', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'كيف انتهت القصة؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'اختفت القطة نهائيًا', 'is_correct' => false],
+                    ['text' => 'تحولت إلى روبوت', 'is_correct' => false],
+                    ['text' => 'عادت كما كانت', 'is_correct' => true],
+                    ['text' => 'بقيت غاضبة من رامي', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'املأ الفراغ بالكلمة المناسبة مما يلي: عاد رامي إلى المنزل وهو يشعر بالتعب من يومٍ __________.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'قصيرٍ', 'is_correct' => false],
+                    ['text' => 'طويلٍ', 'is_correct' => true],
+                    ['text' => 'سهلٍ', 'is_correct' => false],
+                    ['text' => 'غريبٍ', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'لم يجد رامي قطته __________ في أي مكان.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'مشمشَة', 'is_correct' => true],
+                    ['text' => 'مشمسة', 'is_correct' => false],
+                    ['text' => 'مشربة', 'is_correct' => false],
+                    ['text' => 'مشهورة', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'قالت القطة إنها ليست مشمشَة، بل قطة __________.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'شرودنجر', 'is_correct' => true],
+                    ['text' => 'شرودر', 'is_correct' => false],
+                    ['text' => 'شرونجر', 'is_correct' => false],
+                    ['text' => 'شرودينجر', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'دخلت القطة __________ وأغلقته على نفسها.',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'السرير', 'is_correct' => false],
+                    ['text' => 'الصندوق', 'is_correct' => true],
+                    ['text' => 'الدولاب', 'is_correct' => false],
+                    ['text' => 'الكرسي', 'is_correct' => false],
+                ],
+            ],
+
+            // Arrange Questions
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ رامي',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'رامي', 'order' => 1],
+                    ['text' => 'بحث', 'order' => 2],
+                    ['text' => 'عن', 'order' => 3],
+                    ['text' => 'قطته', 'order' => 4],
+                    ['text' => 'في', 'order' => 5],
+                    ['text' => 'المنزل', 'order' => 6],
+                ],
+            ],
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بــ عاد',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'عاد', 'order' => 1],
+                    ['text' => 'رامي', 'order' => 2],
+                    ['text' => 'إلى', 'order' => 3],
+                    ['text' => 'المنزل', 'order' => 4],
+                    ['text' => 'مسرورًا', 'order' => 5],
+                ],
+            ],
+
+            // True/False Questions
+            [
+                'title' => 'عاد رامي إلى المنزل مسرورًا لأن يومه في المدرسة كان سهلًا.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => false, // خطأ
+            ],
+            [
+                'title' => 'انتهت القصة بعودة مشمشَة إلى طبيعتها ولعبها مع رامي.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            [
+                'title' => 'لم يجد رامي قطته مشمشَة عندما عاد إلى المنزل.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+        ];
+    }
+
+    /**
+     * Questions for book: لماذا انا مربع
+     */
+    private function getWhyAmISquareQuestions(): array
+    {
+        return [
+            // Choice Questions
+            [
+                'title' => 'لماذا كان المربّع مختلفًا عن الآخرين؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'لأنه كان صغيرًا في العمر.', 'is_correct' => false],
+                    ['text' => 'لأن شكله كان مربعًا في عالم من الدوائر.', 'is_correct' => true],
+                    ['text' => 'لأنه لم يذهب إلى المدرسة.', 'is_correct' => false],
+                    ['text' => 'لأنه يعيش في مدينة أخرى.', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'كيف ساعد المربّع زملاءه أثناء الزلزال؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'جرى ليطلب المساعدة من الشرطة.', 'is_correct' => false],
+                    ['text' => 'اختبأ بعيدًا عنهم خوفًا.', 'is_correct' => false],
+                    ['text' => 'وقف بثبات وسدّ الطريق إلى الهاوية.', 'is_correct' => true],
+                    ['text' => 'صعد إلى أعلى الجبل بمفرده.', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'ماذا تعلّم الجميع في نهاية القصة؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'أن الشكل لا يهمّ في الصداقة.', 'is_correct' => false],
+                    ['text' => 'أن لكلٍّ منا ما يميّزه ويجعله مميزًا.', 'is_correct' => true],
+                    ['text' => 'أن المربّع أقوى من الدائرة.', 'is_correct' => false],
+                    ['text' => 'أن الدوائر لا يمكنها التدحرج.', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'من ساعد ماما أثناء الولادة؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الطبيب المربّع.', 'is_correct' => false],
+                    ['text' => 'الطبيب الدائري والممرضات الدائريات.', 'is_correct' => true],
+                    ['text' => 'الجدة المثلثة.', 'is_correct' => false],
+                    ['text' => 'صديقه المربع.', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'كيف كان ردّ فعل الدوائر بعد إنقاذهم؟',
+                'type' => 'choice',
+                'xp' => 10,
+                'coins' => 5,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'تجاهلوه تمامًا وكأن شيئًا لم يحدث.', 'is_correct' => false],
+                    ['text' => 'حملوه على الأكتاف وهتفوا له.', 'is_correct' => true],
+                    ['text' => 'ابتعدوا عنه خوفًا.', 'is_correct' => false],
+                    ['text' => 'عادوا إلى المدرسة دون أن يشكروه.', 'is_correct' => false],
+                ],
+            ],
+
+            // Arrange Questions
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ بابا',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'بابا', 'order' => 1],
+                    ['text' => 'دائرة', 'order' => 2],
+                    ['text' => 'تزوّج', 'order' => 3],
+                    ['text' => 'من', 'order' => 4],
+                    ['text' => 'ماما', 'order' => 5],
+                    ['text' => 'وعاشا', 'order' => 6],
+                    ['text' => 'في', 'order' => 7],
+                    ['text' => 'البيت', 'order' => 8],
+                    ['text' => 'الدائري', 'order' => 9],
+                ],
+            ],
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ ذهب',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'ذهب', 'order' => 1],
+                    ['text' => 'المربّع', 'order' => 2],
+                    ['text' => 'إلى', 'order' => 3],
+                    ['text' => 'المدرسة', 'order' => 4],
+                    ['text' => 'الدائرية', 'order' => 5],
+                    ['text' => 'مع', 'order' => 6],
+                    ['text' => 'أصدقائه', 'order' => 7],
+                ],
+            ],
+            [
+                'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ ساعد',
+                'type' => 'arrange',
+                'xp' => 15,
+                'coins' => 8,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'ساعد', 'order' => 1],
+                    ['text' => 'المربّع', 'order' => 2],
+                    ['text' => 'زملاءه', 'order' => 3],
+                    ['text' => 'أثناء', 'order' => 4],
+                    ['text' => 'الزلزال', 'order' => 5],
+                    ['text' => 'الكبير', 'order' => 6],
+                ],
+            ],
+
+            // True/False Questions
+            [
+                'title' => 'وُلد الطفل على شكل مربع في عالم كله دوائر.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            [
+                'title' => 'استخدم المربّع شجاعته ليساعد زملاءه أثناء الزلزال.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            [
+                'title' => 'كانت الدوائر في المدرسة تُشجّع المربّع دائمًا وتُصفّق له.',
+                'type' => 'true_false',
+                'xp' => 8,
+                'coins' => 4,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => false, // خطأ
+            ],
+        ];
+    }
+
+    /**
+     * Create questions for a specific training
+     */
+    private function createTrainingQuestions(array $trainingData): void
+    {
+        $training = ExamTraining::where('title_ar', $trainingData['training_title_ar'])->first();
+
+        if (!$training) {
+            $this->command->warn("⚠️  Training not found: {$trainingData['training_title_ar']}");
+            return;
         }
+
+        $this->command->info("📝 Creating questions for: {$trainingData['training_title_ar']}");
+
+        $questionCount = 0;
+        foreach ($trainingData['questions'] as $questionData) {
+            $this->createQuestion($training->id, $questionData);
+            $questionCount++;
+        }
+
+        $this->command->info("   ✅ Created {$questionCount} questions");
     }
 
     /**
@@ -753,25 +819,29 @@ class QuestionSeeder extends Seeder
      */
     private function createQuestion(int $examTrainingId, array $questionData): void
     {
+        // Extract question metadata
+        $type = $questionData['type'];
+        $language = $questionData['language'] ?? 'ar';
+
         // Create the question
         $question = Question::create([
             'exam_training_id' => $examTrainingId,
             'title' => $questionData['title'],
-            'type' => $questionData['type'],
-            'language' => $questionData['language'] ?? 'en',
+            'type' => $type,
+            'language' => $language,
             'xp' => $questionData['xp'],
             'coins' => $questionData['coins'],
             'marks' => $questionData['marks'],
         ]);
 
         // Handle different question types
-        switch ($questionData['type']) {
+        switch ($type) {
             case 'choice':
                 $this->createChoiceOptions($question->id, $questionData['options']);
                 break;
 
             case 'true_false':
-                // True/False questions don't need additional options
+                $this->createTrueFalseOption($question->id, $questionData['is_correct'] ?? true);
                 break;
 
             case 'connect':
@@ -803,6 +873,18 @@ class QuestionSeeder extends Seeder
     }
 
     /**
+     * Create true/false question option
+     */
+    private function createTrueFalseOption(int $questionId, bool $isCorrect): void
+    {
+        QuestionOption::create([
+            'question_id' => $questionId,
+            'text' => 'صح',
+            'is_correct' => $isCorrect,
+        ]);
+    }
+
+    /**
      * Create connect question pairs
      */
     private function createConnectPairs(int $questionId, array $pairs): void
@@ -823,9 +905,9 @@ class QuestionSeeder extends Seeder
             QuestionOptionPair::create([
                 'left_option_id' => $leftOption->id,
                 'right_option_id' => $rightOption->id,
-                'xp' => $pair['xp'],
-                'coins' => $pair['coins'],
-                'marks' => $pair['marks'],
+                'xp' => $pair['xp'] ?? 0,
+                'coins' => $pair['coins'] ?? 0,
+                'marks' => $pair['marks'] ?? 0,
             ]);
         }
     }

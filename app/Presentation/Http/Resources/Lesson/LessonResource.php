@@ -12,9 +12,16 @@ class LessonResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title, // Uses getTitleAttribute() from model (localized)
-            'name' => $this->name, // Alias for title (localized)
-            'category' => $this->category,
+            'title_ar' => $this->title_ar,
+            'title_en' => $this->title_en,
+            'train_id' => $this->train_id,
+            'category' => $this->whenLoaded('category', function () {
+                return $this->category ? [
+                    'id' => $this->category->id,
+                    'name_ar' => $this->category->name_ar,
+                    'name_en' => $this->category->name_en,
+                ] : null;
+            }),
             'books_count' => $this->books_count ?? 0,
             'videos_count' => $this->videos_count ?? 0,
             'books' => BookResource::collection($this->whenLoaded('books')),
@@ -22,12 +29,10 @@ class LessonResource extends JsonResource
                 return $this->videos->map(function ($video) {
                     return [
                         'id' => $video->id,
-                        'title' => $video->title,
+                        'title_ar' => $video->title_ar,
+                        'title_en' => $video->title_en,
                         'url' => $video->url,
-                        'duration' => $video->duration,
-                        'xp' => $video->xp,
-                        'coins' => $video->coins,
-                        'marks' => $video->marks,
+                        'cover' => $video->cover,
                         'subject' => $video->subject ? [
                             'id' => $video->subject->id,
                             'name' => $video->subject->name,

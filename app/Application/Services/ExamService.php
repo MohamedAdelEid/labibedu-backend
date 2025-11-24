@@ -306,7 +306,8 @@ class ExamService
                 $totalCoins += $videoScoring['coins'];
                 $relatedContent['videos'][] = $videoScoring;
             } catch (Exception $e) {
-                throw new Exception("You must finish the video '{$video->title}' first: {$e->getMessage()}");
+                $videoTitle = $video->title_ar ?? $video->title_en ?? 'Video';
+                throw new Exception("You must finish the video '{$videoTitle}' first: {$e->getMessage()}");
             }
         }
 

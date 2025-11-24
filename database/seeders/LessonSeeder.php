@@ -7,6 +7,8 @@ use App\Infrastructure\Models\Grade;
 use App\Infrastructure\Models\Subject;
 use App\Infrastructure\Models\Book;
 use App\Infrastructure\Models\Video;
+use App\Infrastructure\Models\LessonCategory;
+use App\Infrastructure\Models\ExamTraining;
 use Illuminate\Database\Seeder;
 
 class LessonSeeder extends Seeder
@@ -35,6 +37,19 @@ class LessonSeeder extends Seeder
         $subject2 = $subjects->skip(1)->first() ?? $subjects->first();
         $subject3 = $subjects->skip(2)->first() ?? $subjects->first();
 
+        // Get categories
+        $beginnerCategory = LessonCategory::where('name_en', 'Beginner')->first();
+        $intermediateCategory = LessonCategory::where('name_en', 'Intermediate')->first();
+        $advancedCategory = LessonCategory::where('name_en', 'Advanced')->first();
+
+        if (!$beginnerCategory || !$intermediateCategory || !$advancedCategory) {
+            $this->command->warn('No categories found. Please run LessonCategorySeeder first.');
+            return;
+        }
+
+        // Get a training for testing
+        $training = ExamTraining::first();
+
         // Get books for testing
         $books = Book::take(3)->get();
         // Get videos for testing
@@ -46,9 +61,10 @@ class LessonSeeder extends Seeder
             [
                 'title_ar' => 'مقدمة في الأرقام',
                 'title_en' => 'Introduction to Numbers',
-                'category' => 'beginner',
+                'category_id' => $beginnerCategory->id,
                 'grade_id' => $grade1->id,
                 'subject_id' => $subject1->id,
+                'train_id' => $training?->id,
                 'books' => $books->take(1)->pluck('id')->toArray(),
                 'videos' => $videos->take(1)->pluck('id')->toArray(),
             ],
@@ -56,9 +72,10 @@ class LessonSeeder extends Seeder
             [
                 'title_ar' => 'الجمع والطرح',
                 'title_en' => 'Addition and Subtraction',
-                'category' => 'intermediate',
+                'category_id' => $intermediateCategory->id,
                 'grade_id' => $grade1->id,
                 'subject_id' => $subject1->id,
+                'train_id' => $training?->id,
                 'books' => $books->take(2)->pluck('id')->toArray(),
                 'videos' => $videos->take(1)->pluck('id')->toArray(),
             ],
@@ -66,9 +83,10 @@ class LessonSeeder extends Seeder
             [
                 'title_ar' => 'الضرب والقسمة',
                 'title_en' => 'Multiplication and Division',
-                'category' => 'advanced',
+                'category_id' => $advancedCategory->id,
                 'grade_id' => $grade1->id,
                 'subject_id' => $subject1->id,
+                'train_id' => $training?->id,
                 'books' => $books->take(2)->pluck('id')->toArray(),
                 'videos' => $videos->pluck('id')->toArray(),
             ],
@@ -76,9 +94,10 @@ class LessonSeeder extends Seeder
             [
                 'title_ar' => 'أساسيات القراءة',
                 'title_en' => 'Reading Basics',
-                'category' => 'beginner',
+                'category_id' => $beginnerCategory->id,
                 'grade_id' => $grade1->id,
                 'subject_id' => $subject2->id,
+                'train_id' => $training?->id,
                 'books' => $books->take(1)->pluck('id')->toArray(),
                 'videos' => $videos->take(1)->pluck('id')->toArray(),
             ],
@@ -86,9 +105,10 @@ class LessonSeeder extends Seeder
             [
                 'title_ar' => 'الجمل البسيطة',
                 'title_en' => 'Simple Sentences',
-                'category' => 'intermediate',
+                'category_id' => $intermediateCategory->id,
                 'grade_id' => $grade2->id,
                 'subject_id' => $subject2->id,
+                'train_id' => $training?->id,
                 'books' => $books->skip(1)->take(1)->pluck('id')->toArray(),
                 'videos' => $videos->pluck('id')->toArray(),
             ],

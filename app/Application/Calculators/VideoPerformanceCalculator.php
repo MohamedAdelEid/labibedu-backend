@@ -14,9 +14,9 @@ class VideoPerformanceCalculator
      */
     public function calculate($video, $progress, ?array $relatedTrainingPerformance = null): array
     {
-        $earnedMarks = $progress?->is_completed ? $video->marks : 0;
-        $earnedXp = $progress?->is_completed ? $video->xp : 0;
-        $earnedCoins = $progress?->is_completed ? $video->coins : 0;
+        $earnedMarks = 0;
+        $earnedXp = 0;
+        $earnedCoins = 0;
 
         if ($relatedTrainingPerformance) {
             $earnedMarks += $relatedTrainingPerformance['earned_marks'] ?? 0;

@@ -39,8 +39,8 @@ class VideoService implements VideoServiceInterface
 
         return [
             'success' => true,
-            'xp' => $videoProgress->video->xp ?? 0,
-            'coins' => $videoProgress->video->coins ?? 0,
+            'xp' => 0, // Videos no longer have direct XP/coins, only through related training
+            'coins' => 0,
             'video_id' => $videoId,
             'completed_at' => $videoProgress->updated_at,
         ];

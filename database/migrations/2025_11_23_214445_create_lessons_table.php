@@ -14,13 +14,15 @@ return new class extends Migration {
             $table->id();
             $table->string('title_ar');
             $table->string('title_en');
-            $table->enum('category', ['beginner', 'intermediate', 'advanced'])->default('beginner');
+            $table->foreignId('category_id')->constrained('lesson_categories')->onDelete('cascade');
+            $table->foreignId('train_id')->constrained('exams_trainings')->onDelete('cascade');
             $table->foreignId('grade_id')->constrained('grades')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
             $table->timestamps();
 
             $table->index(['grade_id', 'subject_id']);
-            $table->index('category');
+            $table->index('category_id');
+            $table->index('train_id');
         });
     }
 

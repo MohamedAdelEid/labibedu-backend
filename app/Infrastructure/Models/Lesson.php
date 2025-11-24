@@ -14,14 +14,17 @@ class Lesson extends Model
     protected $fillable = [
         'title_ar',
         'title_en',
-        'category',
+        'category_id',
         'grade_id',
         'subject_id',
+        'train_id',
     ];
 
     protected $casts = [
         'grade_id' => 'integer',
         'subject_id' => 'integer',
+        'category_id' => 'integer',
+        'train_id' => 'integer',
     ];
 
     /**
@@ -49,6 +52,16 @@ class Lesson extends Model
     public function subject(): BelongsTo
     {
         return $this->belongsTo(Subject::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(LessonCategory::class, 'category_id');
+    }
+
+    public function train(): BelongsTo
+    {
+        return $this->belongsTo(ExamTraining::class, 'train_id');
     }
 
     public function books(): BelongsToMany

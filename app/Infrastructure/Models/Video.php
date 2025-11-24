@@ -10,26 +10,40 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Video extends Model
 {
     protected $fillable = [
-        'title',
+        'title_ar',
+        'title_en',
         'url',
-        'duration',
-        'start_date',
-        'end_date',
-        'xp',
-        'coins',
-        'marks',
+        'cover',
         'subject_id',
         'related_training_id',
     ];
 
-    protected $casts = [
-        'duration' => 'integer',
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
-        'xp' => 'integer',
-        'coins' => 'integer',
-        'marks' => 'integer',
-    ];
+    /**
+     * Get the localized title based on the current app locale
+     */
+    public function getTitleAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $this->attributes['title_' . $locale] ?? $this->attributes['title_ar'] ?? '';
+    }
+
+    /**
+     * Get the cover URL
+     */
+    public function getCoverAttribute($value): ?string
+    {
+        if (!$value) {
+            return null;
+        }
+
+        // If already a full URL, return as is
+        if (str_starts_with($value, 'http')) {
+            return $value;
+        }
+
+        // Prepend storage URL
+        return config('app.url') . '/storage/' . $value;
+    }
 
     public function subject(): BelongsTo
     {

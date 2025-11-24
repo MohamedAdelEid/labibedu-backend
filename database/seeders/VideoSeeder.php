@@ -4,33 +4,72 @@ namespace Database\Seeders;
 
 use App\Infrastructure\Models\Video;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class VideoSeeder extends Seeder
 {
     public function run(): void
     {
-        Video::create([
-            'title' => 'Introduction to Algebra',
-            'url' => 'https://youtube.com/watch?v=algebra101',
-            'duration' => 1800, // 30 minutes
-            'xp' => 50,
-            'coins' => 25,
-            'marks' => 10,
-            'subject_id' => 1,
-            'start_date' => now()->subDays(10),
-            'end_date' => now()->addDays(20),
-        ]);
+        $videos = [
+            [
+                'title_ar' => 'إعادة التدوير',
+                'title_en' => 'Recycling',
+                'url' => 'https://youtu.be/stVbDrPusiw',
+                'subject_id' => null,
+                'related_training_id' => null,
+            ],
+        ];
 
-        Video::create([
-            'title' => 'The Scientific Method',
-            'url' => 'https://youtube.com/watch?v=science101',
-            'duration' => 2400, // 40 minutes
-            'xp' => 60,
-            'coins' => 30,
-            'marks' => 12,
-            'subject_id' => 2,
-            'start_date' => now()->subDays(5),
-            'end_date' => now()->addDays(15),
-        ]);
+        foreach ($videos as $videoData) {
+            // Generate folder name from Arabic title
+            $folderName = $this->generateFolderName($videoData['title_ar']);
+
+            // Create video folder structure
+            $this->createVideoFolder($folderName);
+
+            // Set cover path
+            $videoData['cover'] = "videos/{$folderName}/cover.png";
+
+            // Create video
+            Video::create($videoData);
+
+            $this->command->info("✅ Created video: {$videoData['title_ar']} in folder: {$folderName}");
+        }
+
+        $this->command->info('✅ Videos seeded successfully!');
+    }
+
+    /**
+     * Generate folder name from Arabic title (same method as BookSeeder)
+     */
+    private function generateFolderName(string $title): string
+    {
+        if (class_exists('Transliterator')) {
+            $transliterator = \Transliterator::create('Any-Latin; Latin-ASCII');
+            if ($transliterator) {
+                $latinText = $transliterator->transliterate($title);
+                return Str::slug($latinText);
+            }
+        }
+
+        return Str::slug($title);
+    }
+
+    /**
+     * Create folder structure for a video
+     */
+    private function createVideoFolder(string $folderName): void
+    {
+        $basePath = storage_path("app/public/videos/{$folderName}");
+
+        // Create main video folder
+        File::makeDirectory($basePath, 0755, true, true);
+
+        // Create placeholder cover.png file (empty file, user can replace it later)
+        $coverPath = "{$basePath}/cover.png";
+        if (!File::exists($coverPath)) {
+            File::put($coverPath, '');
+        }
     }
 }
