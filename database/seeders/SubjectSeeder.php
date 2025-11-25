@@ -10,26 +10,19 @@ class SubjectSeeder extends Seeder
     public function run(): void
     {
         $subjects = [
+            ['ar' => 'اللغة العربية', 'en' => 'Arabic'],
             ['ar' => 'الرياضيات', 'en' => 'Mathematics'],
             ['ar' => 'العلوم', 'en' => 'Science'],
             ['ar' => 'اللغة الإنجليزية', 'en' => 'English'],
-            ['ar' => 'اللغة العربية', 'en' => 'Arabic'],
-            ['ar' => 'التاريخ', 'en' => 'History'],
-            ['ar' => 'الجغرافيا', 'en' => 'Geography'],
-            ['ar' => 'الفيزياء', 'en' => 'Physics'],
-            ['ar' => 'الكيمياء', 'en' => 'Chemistry'],
-            ['ar' => 'الأحياء', 'en' => 'Biology'],
         ];
 
-        // Create subjects for each classroom
-        for ($classroomId = 1; $classroomId <= 36; $classroomId++) {
-            foreach ($subjects as $subject) {
-                Subject::create([
-                    'name_ar' => $subject['ar'],
-                    'name_en' => $subject['en'],
-                    'classroom_id' => $classroomId,
-                ]);
-            }
+        // Create subjects only for Grade 5 (classroom_id = 1)
+        foreach ($subjects as $subject) {
+            Subject::create([
+                'name_ar' => $subject['ar'],
+                'name_en' => $subject['en'],
+                'classroom_id' => 1, // Grade 5
+            ]);
         }
     }
 }

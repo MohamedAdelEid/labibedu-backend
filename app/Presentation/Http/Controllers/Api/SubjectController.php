@@ -9,6 +9,7 @@ use App\Presentation\Http\Requests\Subject\GetSubjectsRequest;
 use App\Presentation\Http\Resources\Library\SubjectResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectController extends Controller
 {
@@ -22,7 +23,10 @@ class SubjectController extends Controller
      */
     public function index(GetSubjectsRequest $request): JsonResponse
     {
-        $dto = GetSubjectsDTO::fromRequest($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = Auth::user()->student->id;
+
+        $dto = GetSubjectsDTO::fromRequest($validated);
 
         // Get subjects from facade
         $subjects = $this->subjectFacade->getSubjects($dto);

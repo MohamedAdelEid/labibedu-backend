@@ -26,21 +26,23 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
 
     public function getSubjectsByUserId(int $userId): Collection
     {
-        // Get user's student
-        $user = User::with('student.classroom')->findOrFail($userId);
+        // Get student by id
+        $student = Student::with('classroom')->find($userId);
 
-        if (!$user->student || !$user->student->classroom) {
+        if (!$student || !$student->classroom) {
             return collect();
         }
 
-        $gradeId = $user->student->classroom->grade_id;
+        $classroomId = $student->classroom_id;
 
-        if (!$gradeId) {
+        if (!$classroomId) {
             return collect();
         }
 
-        // Get subjects for this grade
-        return $this->getSubjectsByGradeId($gradeId);
+        // Get subjects for this classroom
+        return $this->model->query()
+            ->where('classroom_id', $classroomId)
+            ->get();
     }
 }
 
