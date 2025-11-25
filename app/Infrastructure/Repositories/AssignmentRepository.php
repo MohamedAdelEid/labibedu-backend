@@ -31,22 +31,25 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
                 'students' => function ($q) use ($studentId) {
                     $q->where('student_id', $studentId);
                 },
-                'examTraining.questions',
-                'video.relatedTraining.questions',
-                'book.relatedTraining.questions',
+                'assignable', // Load polymorphic relationship
             ]);
 
+        // Apply type filter
         if ($type === 'current') {
+            // Current: all assignments that haven't ended yet
             $query->where(function ($q) {
                 $q->whereNull('end_date')
                     ->orWhere('end_date', '>=', now());
             });
         } elseif ($type === 'exams') {
-            $query->whereIn('type', ['exam', 'training']);
+            // Exams: all examTraining types
+            $query->where('assignable_type', 'examTraining');
         } elseif ($type === 'reading') {
-            $query->where('type', 'book');
+            // Reading: all book types
+            $query->where('assignable_type', 'book');
         } elseif ($type === 'watching') {
-            $query->where('type', 'video');
+            // Watching: all video types
+            $query->where('assignable_type', 'video');
         }
 
         return $query->orderBy('created_at', 'desc')->paginate($perPage);
@@ -61,9 +64,8 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
                 'students' => function ($q) use ($studentId) {
                     $q->where('student_id', $studentId);
                 },
-                'examTraining.questions.options',
-                'video.relatedTraining.questions.options',
-                'book.relatedTraining.questions.options',
+                'assignable.questions.options',
+                'assignable.relatedTraining.questions.options',
             ])
             ->findOrFail($assignmentId);
     }

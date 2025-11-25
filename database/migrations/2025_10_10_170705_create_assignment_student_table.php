@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('assignment_id')->constrained('assignments')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
-            $table->enum('status', ['not_submitted', 'pending', 'completed'])->default('not_submitted');
+            $table->enum('status', ['not_started', 'in_progress', 'completed', 'not_submitted'])->default('not_started');
             $table->datetime('assigned_at');
             $table->timestamps();
 

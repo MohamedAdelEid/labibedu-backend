@@ -13,11 +13,10 @@ class AssignmentResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        // dd($this->type);
-        $type = $this->type;
+        $type = $this->assignable_type;
 
         return match ($type) {
-            AssignmentType::EXAM->value, AssignmentType::TRAINING->value =>
+            AssignmentType::EXAM_TRAINING->value =>
             (new ExamTrainingAssignmentResource($this->resource))->toArray($request),
             AssignmentType::VIDEO->value =>
             (new VideoAssignmentResource($this->resource))->toArray($request),

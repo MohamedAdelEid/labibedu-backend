@@ -4,14 +4,13 @@ namespace App\Domain\Enums;
 
 enum AssignmentType: string
 {
-    case EXAM = 'exam';
-    case TRAINING = 'training';
+    case EXAM_TRAINING = 'examTraining';
     case VIDEO = 'video';
     case BOOK = 'book';
 
-    public function isExamOrTraining(): bool
+    public function isExamTraining(): bool
     {
-        return in_array($this, [self::EXAM, self::TRAINING]);
+        return $this === self::EXAM_TRAINING;
     }
 
     public function isVideo(): bool

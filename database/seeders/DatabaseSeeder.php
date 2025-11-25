@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             ExamAttemptAnswerSeeder::class,
             AvatarCategorySeeder::class,
             AvatarSeeder::class,
-            LibrarySeeder::class,
+            // LibrarySeeder::class,
             JourneySeeder::class,
         ]);
     }

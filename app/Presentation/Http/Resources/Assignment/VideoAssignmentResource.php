@@ -10,31 +10,35 @@ class VideoAssignmentResource extends JsonResource
     public function toArray(Request $request): array
     {
         $assignment = $this->resource;
-        $video = $assignment->video;
+        // Use assignable polymorphic relationship or fallback to video
+        $video = $assignment->assignable ?? $assignment->video;
         $videoProgress = null; // Would need to be loaded separately
         $relatedTraining = $video?->relatedTraining;
         $trainingAttempt = null; // Would need to be loaded separately
         $trainingPerformance = null; // Would need to be calculated separately
         $performance = null; // Would need to be calculated separately
 
+        // Get pivot status
+        $pivotStatus = $assignment->students->first()?->pivot->status ?? 'not_started';
+
         $data = [
             'id' => $assignment->id,
-            'title' => $assignment->title,
-            'type' => $assignment->type,
-            'status' => $assignment->pivot->status ?? 'not_submitted',
+            'title' => [
+                'ar' => $assignment->title_ar,
+                'en' => $assignment->title_en,
+            ],
+            'type' => $assignment->assignable_type,
+            'status' => $pivotStatus,
             'period' => [
                 'start_date' => $assignment->start_date?->toIso8601String(),
                 'end_date' => $assignment->end_date?->toIso8601String(),
             ],
-            'assignment_rewards' => [
-                'marks' => ($relatedTraining->marks ?? 0),
-                'xp' => ($relatedTraining->xp ?? 0),
-                'coin' => ($relatedTraining->coins ?? 0),
-            ],
             'video_details' => [
                 'id' => $video->id,
-                'title_ar' => $video->title_ar,
-                'title_en' => $video->title_en,
+                'title' => [
+                    'ar' => $video->title_ar,
+                    'en' => $video->title_en,
+                ],
                 'url' => $video->url,
                 'cover' => $video->cover,
                 'video_progress' => $this->formatVideoProgress($videoProgress),
@@ -42,7 +46,7 @@ class VideoAssignmentResource extends JsonResource
             ],
         ];
 
-        if ($performance) {
+        if ($pivotStatus === 'completed' && $performance) {
             $data['result'] = [
                 'earned_marks' => $performance['earned_marks'] ?? 0,
                 'earned_xp' => $performance['earned_xp'] ?? 0,
@@ -77,12 +81,13 @@ class VideoAssignmentResource extends JsonResource
 
         $data = [
             'id' => $training->id,
-            'title' => $training->title,
+            'title' => [
+                'ar' => $training->title_ar ?? $training->title,
+                'en' => $training->title_en ?? $training->title,
+            ],
             'type' => $training->type->value,
-            'marks' => $training->marks ?? 0,
-            'xp' => $training->xp ?? 0,
-            'coin' => $training->coins ?? 0,
-            'attempt_info' => $this->formatAttemptInfo($attempt),
+            'questions_count' => $training->questions_count ?? 0,
+            'duration_minutes' => $training->duration ?? 0,
         ];
 
         if ($performance) {
