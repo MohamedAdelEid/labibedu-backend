@@ -21,7 +21,8 @@ class AssignmentService
         private ExamPerformanceCalculator $examPerformanceCalculator,
         private VideoPerformanceCalculator $videoPerformanceCalculator,
         private BookPerformanceCalculator $bookPerformanceCalculator
-    ) {}
+    ) {
+    }
 
     /**
      * Get assignments for student - returns raw data for Resources to format
@@ -29,6 +30,14 @@ class AssignmentService
     public function getAssignments(int $studentId, ?string $type, ?string $status, int $perPage): LengthAwarePaginator
     {
         return $this->assignmentRepository->getAssignmentsForStudent($studentId, $type, $status, $perPage);
+    }
+
+    /**
+     * Get assignments statistics for student
+     */
+    public function getAssignmentsStats(int $studentId): array
+    {
+        return $this->assignmentRepository->getAssignmentsStats($studentId);
     }
 
     /**

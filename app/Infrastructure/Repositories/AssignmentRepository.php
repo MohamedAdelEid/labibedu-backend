@@ -69,4 +69,23 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
             ])
             ->findOrFail($assignmentId);
     }
+
+    public function getAssignmentsStats(int $studentId): array
+    {
+        $baseQuery = $this->model->whereHas('students', function ($q) use ($studentId) {
+            $q->where('student_id', $studentId);
+        });
+
+        $total = $baseQuery->count();
+        $exams = (clone $baseQuery)->where('assignable_type', 'examTraining')->count();
+        $reading = (clone $baseQuery)->where('assignable_type', 'book')->count();
+        $watching = (clone $baseQuery)->where('assignable_type', 'video')->count();
+
+        return [
+            'total' => $total,
+            'exams' => $exams,
+            'reading' => $reading,
+            'watching' => $watching,
+        ];
+    }
 }

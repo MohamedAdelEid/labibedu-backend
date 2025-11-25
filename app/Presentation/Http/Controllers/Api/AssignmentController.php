@@ -30,15 +30,22 @@ class AssignmentController extends Controller
         $status = $request->input('status');
         $perPage = $request->input('per_page', 10);
 
+        // Get assignments with pagination
         $assignments = $this->assignmentService->getAssignments($studentId, $type, $status, $perPage);
 
+        // Get statistics
+        $stats = $this->assignmentService->getAssignmentsStats($studentId);
+
+        // Transform assignments
         $transformedAssignments = $assignments->through(
             fn($assignment) =>
             new AssignmentResource($assignment)
         );
 
-        return ApiResponse::paginated(
+        return ApiResponse::paginatedWithData(
             $transformedAssignments,
+            ['stats' => $stats],
+            null,
             'Assignments retrieved successfully.'
         );
     }
