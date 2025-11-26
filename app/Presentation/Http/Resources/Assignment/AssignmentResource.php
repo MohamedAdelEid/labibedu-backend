@@ -16,7 +16,7 @@ class AssignmentResource extends JsonResource
         $type = $this->assignable_type;
 
         return match ($type) {
-            AssignmentType::EXAM_TRAINING->value =>
+            AssignmentType::EXAM->value =>
             (new ExamTrainingAssignmentResource($this->resource))->toArray($request),
             AssignmentType::VIDEO->value =>
             (new VideoAssignmentResource($this->resource))->toArray($request),

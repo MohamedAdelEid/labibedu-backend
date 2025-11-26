@@ -155,23 +155,27 @@ class StudentService implements StudentServiceInterface
             throw new StudentNotFoundException("Student with ID {$studentId} not found");
         }
 
-        // Check if this is actually the first time
-        if (!$student->is_first_time) {
-            throw new \Exception("Student has already completed first-time setup");
+        // Prepare data to update (only fields that are provided)
+        $updateData = [];
+
+        if (isset($data['name'])) {
+            $updateData['name'] = $data['name'];
         }
 
-        // Automatically set theme based on gender
-        $theme = $data['gender'] === 'male' ? 'blue' : 'pink';
+        if (isset($data['age_group_id'])) {
+            $updateData['age_group_id'] = $data['age_group_id'];
+        }
 
-        $updatedStudent = $this->studentRepository->updateFirstSetup($studentId, [
-            'name' => $data['name'],
-            'age_group_id' => $data['age_group_id'],
-            'gender' => $data['gender'],
-            'theme' => $theme,
-        ]);
+        if (isset($data['gender'])) {
+            $updateData['gender'] = $data['gender'];
+            // Automatically set theme based on gender
+            $updateData['theme'] = $data['gender'] === 'male' ? 'blue' : 'pink';
+        }
+
+        $updatedStudent = $this->studentRepository->updateFirstSetup($studentId, $updateData);
 
         return [
-            'message' => 'First-time setup completed successfully',
+            'message' => 'Setup updated successfully',
             'student' => $updatedStudent,
         ];
     }

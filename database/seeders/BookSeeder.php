@@ -46,7 +46,7 @@ class BookSeeder extends Seeder
                 'coins' => 40,
                 'marks' => 75,
                 'subject_id' => null,
-                'level_id' => null,
+                'level_id' => 3, // Advanced
                 'related_training_title_ar' => 'تدريب كتاب سناء في الفضاء',
                 'pages' => [
                     'دائما ما يَسْحَرُ عَالَمُ الْفَضاءِ، تلميذة الصف الخامس سَناء.',
@@ -77,7 +77,7 @@ class BookSeeder extends Seeder
                 'coins' => 50,
                 'marks' => 75,
                 'subject_id' => null,
-                'level_id' => null,
+                'level_id' => 1, // Beginner
                 'related_training_title_ar' => 'تدريب كتاب آدم يتخيل النحلة',
                 'pages' => [
                     'جَذَبَتْ آدَمَ رَائِحَةُ الزُّهُورِ الْمُتَفَتِّحَةِ بِجانِبِ مَنْزِلِهِ؛ فَاقْتَرَبَ مِنْها لِيَشُمَّها؛ فَحَذَرَهُ أَخوهُ: اِنْتَبِه قَدْ تَكونُ هُناكَ نَحْلَةٌ دَاخِلَ الزَّهْرَةِ. سَأَلَ آدَمُ: مَا هِيَ النَّحْلَةُ؟ أَجَابَ الْأَخُ: حَشَرَةٌ تَطيرُ كالذُّبابَةِ، لَهَا إِبْرَةٌ صغيرةٌ، وَتَقْرُصُ قَرْصَةً مُؤْلِمَةً إِنْ أَزْعَجْتَها.',
@@ -103,7 +103,7 @@ class BookSeeder extends Seeder
                 'coins' => 50,
                 'marks' => 75,
                 'subject_id' => null,
-                'level_id' => null,
+                'level_id' => 4, // Proficient
                 'related_training_title_ar' => 'تدريب كتاب عندما فقدت قطتي عقلها',
                 'pages' => [
                     'سَأَحْكِي لَكُمْ حِكَايَةً يَا أَصْدِقَائي: كانَ يَوْمِي أَمْسِ فِي الْمَدْرَسَةِ مُرْهِقًا جِدًّا. يَحْدُثُ ذلِكَ أَحْيَانًا، وَلا رَيْبَ أَنَّكُمْ تَرَوْنَ أَيَّامًا مِثْلَهُ بَيْنَ فَيْنَةٍ وَأُخْرى. عُدْتُ إِلى مَنْزِلِي مُتْعَبًا وَمُشْتاقًا لِرُؤْيَةِ قِطَّتِي مِشْمِشَةَ. وَلَكِنِّي لَمْ أَتَوَقَّعْ أَبَدًا مَا كَانَ بِانْتِظَارِي!',
@@ -140,7 +140,7 @@ class BookSeeder extends Seeder
                 'coins' => 50,
                 'marks' => 75,
                 'subject_id' => null,
-                'level_id' => null,
+                'level_id' => 2, // Intermediate
                 'related_training_title_ar' => 'تدريب كتاب لماذا انا مربع',
                 'pages' => [
                     'في زمانِ غَيْر هذا الزمان وَفِي عَالَم لَمْ تَسْمَحْ أَوْ تَرَ مِثْلَهُ مِنْ قَبْلُ، عَاشَ أَبْطَالُ قِصَّتِنا.',
@@ -168,7 +168,7 @@ class BookSeeder extends Seeder
                 'coins' => 50,
                 'marks' => 75,
                 'subject_id' => null,
-                'level_id' => null,
+                'level_id' => 1, // Beginner
                 'related_training_title_ar' => null, // No training for this book
                 'pages' => [
                     'يُحكى أَنَّ عُصْفُورًا اِسْمُهُ زيزو كانَ يَطيرُ عاليًا، عاليًا في السَّماءِ.',

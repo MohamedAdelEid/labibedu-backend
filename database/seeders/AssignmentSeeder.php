@@ -13,131 +13,178 @@ class AssignmentSeeder extends Seeder
 {
     public function run(): void
     {
-        // Get first available records
-        $examTraining = ExamTraining::first();
-        $video = Video::first();
-        $book = Book::first();
+        $this->command->info('🎯 Starting Assignments Seeding...');
 
-        if (!$examTraining || !$video || !$book) {
-            $this->command->warn('Please seed ExamTrainings, Videos, and Books first!');
+        // Get all exam trainings
+        $exams = ExamTraining::where('type', 'exam')->get();
+        $trainings = ExamTraining::where('type', 'training')->get();
+        $videos = Video::all();
+        $books = Book::all();
+
+        if ($exams->isEmpty() || $trainings->isEmpty() || $videos->isEmpty() || $books->isEmpty()) {
+            $this->command->warn('⚠️  Please seed ExamTrainings, Videos, and Books first!');
             return;
         }
 
-        // Assignment 1: ExamTraining (not_started)
-        $assignment1 = Assignment::create([
+        // ========== CURRENT TAB (not_started) ==========
+        $this->command->info('📝 Creating CURRENT (not_started) assignments...');
+
+        // Current: Exam (not_started)
+        $this->createAssignment([
             'title_ar' => 'اختبار الرياضيات النهائي',
             'title_en' => 'Mathematics Final Exam',
             'assignable_type' => 'examTraining',
-            'assignable_id' => $examTraining->id,
+            'assignable_id' => $exams->first()->id,
             'teacher_id' => 1,
             'start_date' => now(),
             'end_date' => now()->addDays(7),
-        ]);
+        ], 1, 'not_started');
 
-        // Assign to students with different statuses
-        DB::table('assignment_student')->insert([
-            [
-                'assignment_id' => $assignment1->id,
-                'student_id' => 1,
-                'status' => 'not_started',
-                'assigned_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'assignment_id' => $assignment1->id,
-                'student_id' => 2,
-                'status' => 'in_progress',
-                'assigned_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-
-        // Assignment 2: ExamTraining (completed)
-        $assignment2 = Assignment::create([
-            'title_ar' => 'تدريب على الجبر',
-            'title_en' => 'Algebra Training',
+        // Current: Training (not_started)
+        $this->createAssignment([
+            'title_ar' => 'تدريب جديد - سناء في الفضاء',
+            'title_en' => 'New Training - Sanaa in Space',
             'assignable_type' => 'examTraining',
-            'assignable_id' => $examTraining->id,
-            'teacher_id' => 1,
-            'start_date' => now()->subDays(10),
-            'end_date' => now()->subDays(3),
-        ]);
-
-        DB::table('assignment_student')->insert([
-            'assignment_id' => $assignment2->id,
-            'student_id' => 1,
-            'status' => 'completed',
-            'assigned_at' => now()->subDays(10),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // Assignment 3: Video (not_started)
-        $assignment3 = Assignment::create([
-            'title_ar' => 'مشاهدة درس الفيزياء',
-            'title_en' => 'Physics Lesson Video',
-            'assignable_type' => 'video',
-            'assignable_id' => $video->id,
+            'assignable_id' => $trainings->first()->id,
             'teacher_id' => 1,
             'start_date' => now(),
             'end_date' => now()->addDays(14),
-        ]);
+        ], 1, 'not_started');
 
-        DB::table('assignment_student')->insert([
-            [
-                'assignment_id' => $assignment3->id,
-                'student_id' => 1,
-                'status' => 'not_started',
-                'assigned_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'assignment_id' => $assignment3->id,
-                'student_id' => 2,
-                'status' => 'in_progress',
-                'assigned_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        // Current: Video (not_started)
+        $this->createAssignment([
+            'title_ar' => 'مشاهدة درس جديد',
+            'title_en' => 'Watch New Lesson',
+            'assignable_type' => 'video',
+            'assignable_id' => $videos->first()->id,
+            'teacher_id' => 1,
+            'start_date' => now(),
+            'end_date' => now()->addDays(10),
+        ], 1, 'not_started');
 
-        // Assignment 4: Book (not_started)
-        $assignment4 = Assignment::create([
-            'title_ar' => 'قراءة كتاب الأدب العربي',
-            'title_en' => 'Arabic Literature Book Reading',
+        // Current: Book (not_started)
+        $this->createAssignment([
+            'title_ar' => 'قراءة كتاب جديد',
+            'title_en' => 'Read New Book',
             'assignable_type' => 'book',
-            'assignable_id' => $book->id,
+            'assignable_id' => $books->first()->id,
             'teacher_id' => 1,
             'start_date' => now(),
             'end_date' => now()->addDays(30),
-        ]);
+        ], 1, 'not_started');
 
-        DB::table('assignment_student')->insert([
-            [
-                'assignment_id' => $assignment4->id,
-                'student_id' => 1,
-                'status' => 'not_started',
-                'assigned_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'assignment_id' => $assignment4->id,
-                'student_id' => 2,
-                'status' => 'completed',
-                'assigned_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        // ========== EXAMS TAB (completed) ==========
+        $this->command->info('📝 Creating EXAMS (completed) assignments...');
+
+        $this->createAssignment([
+            'title_ar' => 'اختبار اللغة العربية',
+            'title_en' => 'Arabic Language Exam',
+            'assignable_type' => 'examTraining',
+            'assignable_id' => $exams->skip(1)->first()->id ?? $exams->first()->id,
+            'teacher_id' => 1,
+            'start_date' => now()->subDays(10),
+            'end_date' => now()->subDays(2),
+        ], 1, 'completed');
+
+        $this->createAssignment([
+            'title_ar' => 'اختبار العلوم',
+            'title_en' => 'Science Exam',
+            'assignable_type' => 'examTraining',
+            'assignable_id' => $exams->first()->id,
+            'teacher_id' => 1,
+            'start_date' => now()->subDays(15),
+            'end_date' => now()->subDays(8),
+        ], 1, 'in_progress');
+
+        // ========== TRAINING TAB (completed) ==========
+        $this->command->info('📝 Creating TRAINING (completed) assignments...');
+
+        $this->createAssignment([
+            'title_ar' => 'تدريب كتاب سناء في الفضاء',
+            'title_en' => 'Training: Sanaa in Space',
+            'assignable_type' => 'examTraining',
+            'assignable_id' => $trainings->first()->id,
+            'teacher_id' => 1,
+            'start_date' => now()->subDays(15),
+            'end_date' => now()->subDays(5),
+        ], 1, 'completed');
+
+        $this->createAssignment([
+            'title_ar' => 'تدريب كتاب آدم يتخيل النحلة',
+            'title_en' => 'Training: Adam Imagines the Bee',
+            'assignable_type' => 'examTraining',
+            'assignable_id' => $trainings->skip(1)->first()->id ?? $trainings->first()->id,
+            'teacher_id' => 1,
+            'start_date' => now()->subDays(12),
+            'end_date' => now()->subDays(3),
+        ], 1, 'in_progress');
+
+        // ========== WATCHING TAB (completed) ==========
+        $this->command->info('📝 Creating WATCHING (completed) assignments...');
+
+        $this->createAssignment([
+            'title_ar' => 'مشاهدة درس الفيزياء',
+            'title_en' => 'Physics Lesson Video',
+            'assignable_type' => 'video',
+            'assignable_id' => $videos->first()->id,
+            'teacher_id' => 1,
+            'start_date' => now()->subDays(8),
+            'end_date' => now()->subDays(1),
+        ], 1, 'completed');
+
+        $this->createAssignment([
+            'title_ar' => 'مشاهدة درس الكيمياء',
+            'title_en' => 'Chemistry Lesson Video',
+            'assignable_type' => 'video',
+            'assignable_id' => $videos->skip(1)->first()->id ?? $videos->first()->id,
+            'teacher_id' => 1,
+            'start_date' => now()->subDays(6),
+            'end_date' => now()->addDays(3),
+        ], 1, 'in_progress');
+
+        // ========== READING TAB (completed) ==========
+        $this->command->info('📝 Creating READING (completed) assignments...');
+
+        $this->createAssignment([
+            'title_ar' => 'قراءة كتاب الأدب العربي',
+            'title_en' => 'Arabic Literature Book',
+            'assignable_type' => 'book',
+            'assignable_id' => $books->first()->id,
+            'teacher_id' => 1,
+            'start_date' => now()->subDays(20),
+            'end_date' => now()->subDays(5),
+        ], 1, 'completed');
+
+        $this->createAssignment([
+            'title_ar' => 'قراءة كتاب التاريخ',
+            'title_en' => 'History Book',
+            'assignable_type' => 'book',
+            'assignable_id' => $books->skip(1)->first()->id ?? $books->first()->id,
+            'teacher_id' => 1,
+            'start_date' => now()->subDays(10),
+            'end_date' => now()->addDays(5),
+        ], 1, 'in_progress');
 
         $this->command->info('✅ Assignments seeded successfully!');
-        $this->command->info('   - 2 ExamTraining assignments');
-        $this->command->info('   - 1 Video assignment');
-        $this->command->info('   - 1 Book assignment');
-        $this->command->info('   - Various statuses: not_started, in_progress, completed');
+        $this->command->info('   📊 Summary:');
+        $this->command->info('   - Current (not_started): 4 assignments');
+        $this->command->info('   - Exams: 2 assignments');
+        $this->command->info('   - Training: 2 assignments');
+        $this->command->info('   - Watching: 2 assignments');
+        $this->command->info('   - Reading: 2 assignments');
+    }
+
+    private function createAssignment(array $data, int $studentId, string $status): void
+    {
+        $assignment = Assignment::create($data);
+
+        DB::table('assignment_student')->insert([
+            'assignment_id' => $assignment->id,
+            'student_id' => $studentId,
+            'status' => $status,
+            'assigned_at' => $data['start_date'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

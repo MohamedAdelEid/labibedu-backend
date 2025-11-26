@@ -20,11 +20,20 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
 
     public function getAssignmentsForStudent(int $studentId, ?string $type, ?string $status, int $perPage): LengthAwarePaginator
     {
-        $query = $this->model->whereHas('students', function ($q) use ($studentId, $status) {
+        // If type is 'current', force status to 'not_started'
+        // If type is other tabs (exams, training, reading, watching), exclude 'not_started'
+        if ($type === 'current' && !$status) {
+            $status = 'not_started';
+        }
+
+        $query = $this->model->whereHas('students', function ($q) use ($studentId, $status, $type) {
             $q->where('student_id', $studentId);
 
             if ($status) {
                 $q->where('assignment_student.status', $status);
+            } elseif (in_array($type, ['exams', 'training', 'reading', 'watching'])) {
+                // For other tabs, exclude 'not_started' status
+                $q->whereIn('assignment_student.status', ['in_progress', 'completed', 'not_submitted']);
             }
         })
             ->with([
@@ -42,8 +51,23 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
                     ->orWhere('end_date', '>=', now());
             });
         } elseif ($type === 'exams') {
-            // Exams: all examTraining types
-            $query->where('assignable_type', 'examTraining');
+            // Exams: only examTraining with type 'exam'
+            $query->where('assignable_type', 'examTraining')
+                ->whereExists(function ($q) {
+                    $q->selectRaw(1)
+                        ->from('exams_trainings')
+                        ->whereColumn('assignments.assignable_id', 'exams_trainings.id')
+                        ->where('exams_trainings.type', 'exam');
+                });
+        } elseif ($type === 'training') {
+            // Training: only examTraining with type 'training'
+            $query->where('assignable_type', 'examTraining')
+                ->whereExists(function ($q) {
+                    $q->selectRaw(1)
+                        ->from('exams_trainings')
+                        ->whereColumn('assignments.assignable_id', 'exams_trainings.id')
+                        ->where('exams_trainings.type', 'training');
+                });
         } elseif ($type === 'reading') {
             // Reading: all book types
             $query->where('assignable_type', 'book');
@@ -77,13 +101,30 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
         });
 
         $total = $baseQuery->count();
-        $exams = (clone $baseQuery)->where('assignable_type', 'examTraining')->count();
+
+        $exams = (clone $baseQuery)->where('assignable_type', 'examTraining')
+            ->whereExists(function ($q) {
+                $q->selectRaw(1)
+                    ->from('exams_trainings')
+                    ->whereColumn('assignments.assignable_id', 'exams_trainings.id')
+                    ->where('exams_trainings.type', 'exam');
+            })->count();
+
+        $training = (clone $baseQuery)->where('assignable_type', 'examTraining')
+            ->whereExists(function ($q) {
+                $q->selectRaw(1)
+                    ->from('exams_trainings')
+                    ->whereColumn('assignments.assignable_id', 'exams_trainings.id')
+                    ->where('exams_trainings.type', 'training');
+            })->count();
+
         $reading = (clone $baseQuery)->where('assignable_type', 'book')->count();
         $watching = (clone $baseQuery)->where('assignable_type', 'video')->count();
 
         return [
             'total' => $total,
             'exams' => $exams,
+            'training' => $training,
             'reading' => $reading,
             'watching' => $watching,
         ];

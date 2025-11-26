@@ -27,13 +27,45 @@ class ExamTrainingSeeder extends Seeder
     }
 
     /**
-     * Get all book trainings data configuration
+     * Get all book trainings and exams data configuration
      * 
      * To add a new book training, simply add a new array to this method
      */
     private function getBookTrainingsData(): array
     {
         return [
+            // ========== EXAMS ==========
+            // Exam 1: Mathematics
+            [
+                'title' => 'Mathematics Final Exam',
+                'title_ar' => 'اختبار الرياضيات النهائي',
+                'description' => 'Final exam covering all mathematics topics',
+                'description_ar' => 'اختبار نهائي يغطي جميع موضوعات الرياضيات',
+                'type' => 'exam',
+                'duration' => 60, // 60 minutes
+                'created_by' => 1,
+                'subject_id' => 1,
+                'group_id' => null,
+                'start_date' => Carbon::now()->subDays(3),
+                'end_date' => Carbon::now()->addDays(7),
+            ],
+
+            // Exam 2: Arabic Language
+            [
+                'title' => 'Arabic Language Exam',
+                'title_ar' => 'اختبار اللغة العربية',
+                'description' => 'Comprehensive Arabic language exam',
+                'description_ar' => 'اختبار شامل في اللغة العربية',
+                'type' => 'exam',
+                'duration' => 45,
+                'created_by' => 1,
+                'subject_id' => 2,
+                'group_id' => null,
+                'start_date' => Carbon::now()->subDays(5),
+                'end_date' => Carbon::now()->subDays(1),
+            ],
+
+            // ========== TRAININGS ==========
             // Training for Book: سناء في الفضاء
             [
                 'title' => 'Training: Sanaa in Space',
@@ -45,7 +77,7 @@ class ExamTrainingSeeder extends Seeder
                 'created_by' => 1,
                 'subject_id' => null,
                 'group_id' => null,
-                'start_date' => Carbon::now()->subDays(5),
+                'start_date' => Carbon::now()->subDays(10),
                 'end_date' => null,
             ],
 
@@ -60,7 +92,7 @@ class ExamTrainingSeeder extends Seeder
                 'created_by' => 1,
                 'subject_id' => null,
                 'group_id' => null,
-                'start_date' => Carbon::now()->subDays(5),
+                'start_date' => Carbon::now()->subDays(8),
                 'end_date' => null,
             ],
 
@@ -75,7 +107,7 @@ class ExamTrainingSeeder extends Seeder
                 'created_by' => 1,
                 'subject_id' => null,
                 'group_id' => null,
-                'start_date' => Carbon::now()->subDays(5),
+                'start_date' => Carbon::now()->subDays(6),
                 'end_date' => null,
             ],
 
@@ -90,7 +122,7 @@ class ExamTrainingSeeder extends Seeder
                 'created_by' => 1,
                 'subject_id' => null,
                 'group_id' => null,
-                'start_date' => Carbon::now()->subDays(5),
+                'start_date' => Carbon::now()->subDays(4),
                 'end_date' => null,
             ],
         ];

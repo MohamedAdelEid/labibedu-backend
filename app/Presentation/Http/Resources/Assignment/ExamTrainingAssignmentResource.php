@@ -13,8 +13,8 @@ class ExamTrainingAssignmentResource extends JsonResource
         // Use assignable polymorphic relationship or fallback to examTraining
         $examTraining = $assignment->assignable ?? $assignment->examTraining;
         $attempt = $this->attempt ?? null;
-        $performance = $this->resource['performance'] ?? null;
-        
+        $performance = $this->performance ?? $this->resource['performance'] ?? null;
+
         // Get pivot status
         $pivotStatus = $assignment->students->first()?->pivot->status ?? 'not_started';
 

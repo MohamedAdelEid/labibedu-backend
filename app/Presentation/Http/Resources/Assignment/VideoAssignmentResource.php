@@ -40,6 +40,7 @@ class VideoAssignmentResource extends JsonResource
                     'en' => $video->title_en,
                 ],
                 'url' => $video->url,
+                'duration' => $video->duration,
                 'cover' => $video->cover,
                 'video_progress' => $this->formatVideoProgress($videoProgress),
                 'related_training' => $this->formatRelatedTraining($relatedTraining, $trainingAttempt, $trainingPerformance),

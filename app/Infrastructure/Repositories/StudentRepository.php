@@ -104,13 +104,11 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
     public function updateFirstSetup(int $studentId, array $data): Student
     {
         $student = $this->findById($studentId);
-        $student->update([
-            'name' => $data['name'],
-            'age_group_id' => $data['age_group_id'],
-            'gender' => $data['gender'],
-            'theme' => $data['theme'] ?? null,
-            'is_first_time' => false,
-        ]);
+
+        // Only update fields that are provided
+        $updateData = array_filter($data, fn($value) => $value !== null);
+
+        $student->update($updateData);
 
         return $student->fresh(['ageGroup']);
     }

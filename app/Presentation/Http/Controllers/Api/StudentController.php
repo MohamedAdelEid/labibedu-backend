@@ -2,7 +2,6 @@
 
 namespace App\Presentation\Http\Controllers\Api;
 
-use App\Application\DTOs\Student\FirstSetupDTO;
 use App\Application\DTOs\Student\UpdateSettingsDTO;
 use App\Domain\Interfaces\Services\StudentServiceInterface;
 use App\Presentation\Http\Controllers\Controller;
@@ -11,6 +10,7 @@ use App\Presentation\Http\Resources\Student\StudentSettingsResource;
 use App\Presentation\Http\Requests\Student\FirstSetupRequest;
 use App\Presentation\Http\Requests\Student\UpdateSettingsRequest;
 use App\Infrastructure\Helpers\ApiResponse;
+use App\Presentation\Http\Resources\Student\FirstSetupResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,17 +49,25 @@ class StudentController extends Controller
      */
     public function firstSetup(FirstSetupRequest $request): JsonResponse
     {
-        $dto = FirstSetupDTO::fromRequest($request->validated());
+        $validated = $request->validated();
         $studentId = Auth::user()->student->id;
 
-        $result = $this->studentService->completeFirstSetup($studentId, [
-            'name' => $dto->name,
-            'age_group_id' => $dto->ageGroupId,
-            'gender' => $dto->gender,
-        ]);
+        // Build data array with only provided fields
+        $data = [];
+        if (isset($validated['name'])) {
+            $data['name'] = $validated['name'];
+        }
+        if (isset($validated['age_group_id'])) {
+            $data['age_group_id'] = $validated['age_group_id'];
+        }
+        if (isset($validated['gender'])) {
+            $data['gender'] = $validated['gender'];
+        }
+
+        $result = $this->studentService->completeFirstSetup($studentId, $data);
 
         return ApiResponse::success(
-            new StudentSettingsResource($result['student']),
+            new FirstSetupResource($result['student']),
             $result['message']
         );
     }

@@ -17,17 +17,11 @@ class VideoProgress extends Model
         'video_id',
         'watched_duration',
         'is_completed',
-        'earned_xp',
-        'earned_coins',
-        'earned_marks',
     ];
 
     protected $casts = [
         'watched_duration' => 'integer',
         'is_completed' => 'boolean',
-        'earned_xp' => 'integer',
-        'earned_coins' => 'integer',
-        'earned_marks' => 'integer',
     ];
 
     public function student(): BelongsTo

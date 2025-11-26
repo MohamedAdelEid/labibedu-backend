@@ -14,9 +14,9 @@ class FirstSetupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'age_group_id' => ['required', 'integer', 'exists:age_groups,id'],
-            'gender' => ['required', 'in:male,female'],
+            'name' => ['nullable', 'string', 'max:255'],
+            'age_group_id' => ['nullable', 'integer', 'exists:age_groups,id'],
+            'gender' => ['nullable', 'in:male,female'],
         ];
     }
 }

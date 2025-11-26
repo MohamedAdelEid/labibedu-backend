@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title_ar');
             $table->string('title_en');
             $table->string('url');
+            $table->integer('duration')->nullable();
             $table->string('cover')->nullable();
             $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('related_training_id')->nullable()->constrained('exams_trainings')->nullOnDelete();

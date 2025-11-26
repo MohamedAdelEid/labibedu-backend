@@ -16,6 +16,23 @@ class VideoSeeder extends Seeder
                 'title_ar' => 'إعادة التدوير',
                 'title_en' => 'Recycling',
                 'url' => 'https://youtu.be/stVbDrPusiw',
+                'duration' => 180, // 3 minutes in seconds
+                'subject_id' => null,
+                'related_training_id' => null,
+            ],
+            [
+                'title_ar' => 'درس الكيمياء',
+                'title_en' => 'Chemistry Lesson',
+                'url' => 'https://youtu.be/example123',
+                'duration' => 240, // 4 minutes in seconds
+                'subject_id' => null,
+                'related_training_id' => null,
+            ],
+            [
+                'title_ar' => 'درس الفيزياء',
+                'title_en' => 'Physics Lesson',
+                'url' => 'https://youtu.be/example456',
+                'duration' => 300, // 5 minutes in seconds
                 'subject_id' => null,
                 'related_training_id' => null,
             ],

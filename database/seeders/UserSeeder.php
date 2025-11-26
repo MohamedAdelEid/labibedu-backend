@@ -82,7 +82,7 @@ class UserSeeder extends Seeder
             ]);
 
             // Create the student profile - all in Grade 5
-            Student::create([
+            $student = Student::create([
                 'user_id' => $user->id,
                 'school_id' => $studentData['school_id'],
                 'classroom_id' => $studentData['classroom_id'],
@@ -91,6 +91,9 @@ class UserSeeder extends Seeder
                 'xp' => 0,
                 'coins' => 0,
             ]);
+
+            // Assign levels to student (1: Beginner, 2: Intermediate)
+            $student->levels()->attach([1, 2, 3, 4]);
         }
     }
 }
