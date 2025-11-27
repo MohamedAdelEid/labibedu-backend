@@ -14,8 +14,19 @@ class Video extends Model
         'title_en',
         'url',
         'cover',
+        'duration',
+        'xp',
+        'coins',
+        'marks',
         'subject_id',
         'related_training_id',
+    ];
+
+    protected $casts = [
+        'duration' => 'integer',
+        'xp' => 'integer',
+        'coins' => 'integer',
+        'marks' => 'integer',
     ];
 
     /**

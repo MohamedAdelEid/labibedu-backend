@@ -40,10 +40,10 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
                 'students' => function ($q) use ($studentId) {
                     $q->where('student_id', $studentId);
                 },
-                'assignable', // Load polymorphic relationship
+                'assignable', // Load base polymorphic relationship
             ]);
 
-        // Apply type filter
+        // Apply type filter and conditional eager loading
         if ($type === 'current') {
             // Current: all assignments that haven't ended yet
             $query->where(function ($q) {
@@ -58,7 +58,8 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
                         ->from('exams_trainings')
                         ->whereColumn('assignments.assignable_id', 'exams_trainings.id')
                         ->where('exams_trainings.type', 'exam');
-                });
+                })
+                ->with('assignable.questions'); // Load questions for exams
         } elseif ($type === 'training') {
             // Training: only examTraining with type 'training'
             $query->where('assignable_type', 'examTraining')
@@ -67,16 +68,37 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
                         ->from('exams_trainings')
                         ->whereColumn('assignments.assignable_id', 'exams_trainings.id')
                         ->where('exams_trainings.type', 'training');
-                });
+                })
+                ->with('assignable.questions'); // Load questions for training
         } elseif ($type === 'reading') {
             // Reading: all book types
-            $query->where('assignable_type', 'book');
+            $query->where('assignable_type', 'book')
+                ->with([
+                    'assignable.pages', // Load pages for books
+                    'assignable.relatedTraining.questions', // Load related training questions
+                ]);
         } elseif ($type === 'watching') {
             // Watching: all video types
-            $query->where('assignable_type', 'video');
+            $query->where('assignable_type', 'video')
+                ->with('assignable.relatedTraining.questions'); // Load related training questions
         }
 
-        return $query->orderBy('created_at', 'desc')->paginate($perPage);
+        $results = $query->orderBy('created_at', 'desc')->paginate($perPage);
+
+        // For 'current' tab (mixed types), load relationships after getting results
+        if ($type === 'current' || !$type) {
+            foreach ($results as $assignment) {
+                if ($assignment->assignable_type === 'examTraining') {
+                    $assignment->load('assignable.questions');
+                } elseif ($assignment->assignable_type === 'book') {
+                    $assignment->load('assignable.pages', 'assignable.relatedTraining.questions');
+                } elseif ($assignment->assignable_type === 'video') {
+                    $assignment->load('assignable.relatedTraining.questions');
+                }
+            }
+        }
+
+        return $results;
     }
 
     public function findAssignmentForStudent(int $assignmentId, int $studentId)

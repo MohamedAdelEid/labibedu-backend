@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('title_en');
             $table->string('url');
             $table->integer('duration')->nullable();
+            $table->integer('xp')->default(0);
+            $table->integer('coins')->default(0);
+            $table->integer('marks')->default(0);
             $table->string('cover')->nullable();
             $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('related_training_id')->nullable()->constrained('exams_trainings')->nullOnDelete();

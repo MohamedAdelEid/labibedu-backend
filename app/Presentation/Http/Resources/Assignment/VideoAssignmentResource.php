@@ -45,6 +45,11 @@ class VideoAssignmentResource extends JsonResource
                 'video_progress' => $this->formatVideoProgress($videoProgress),
                 'related_training' => $this->formatRelatedTraining($relatedTraining, $trainingAttempt, $trainingPerformance),
             ],
+            'actual' => [
+                'marks' => ($video->marks ?? 0) + ($relatedTraining ? $relatedTraining->getTotalMarks() : 0),
+                'xp' => ($video->xp ?? 0) + ($relatedTraining ? $relatedTraining->getTotalXp() : 0),
+                'coins' => ($video->coins ?? 0) + ($relatedTraining ? $relatedTraining->getTotalCoins() : 0),
+            ],
         ];
 
         if ($pivotStatus === 'completed' && $performance) {

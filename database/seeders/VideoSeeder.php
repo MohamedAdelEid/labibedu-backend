@@ -17,6 +17,9 @@ class VideoSeeder extends Seeder
                 'title_en' => 'Recycling',
                 'url' => 'https://youtu.be/stVbDrPusiw',
                 'duration' => 180, // 3 minutes in seconds
+                'xp' => 100,
+                'coins' => 80,
+                'marks' => 70,
                 'subject_id' => null,
                 'related_training_id' => null,
             ],
@@ -25,6 +28,9 @@ class VideoSeeder extends Seeder
                 'title_en' => 'Chemistry Lesson',
                 'url' => 'https://youtu.be/example123',
                 'duration' => 240, // 4 minutes in seconds
+                'xp' => 100,
+                'coins' => 80,
+                'marks' => 70,
                 'subject_id' => null,
                 'related_training_id' => null,
             ],
@@ -33,6 +39,9 @@ class VideoSeeder extends Seeder
                 'title_en' => 'Physics Lesson',
                 'url' => 'https://youtu.be/example456',
                 'duration' => 300, // 5 minutes in seconds
+                'xp' => 100,
+                'coins' => 80,
+                'marks' => 70,
                 'subject_id' => null,
                 'related_training_id' => null,
             ],
