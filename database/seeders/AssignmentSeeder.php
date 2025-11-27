@@ -16,29 +16,17 @@ class AssignmentSeeder extends Seeder
         $this->command->info('🎯 Starting Assignments Seeding...');
 
         // Get all exam trainings
-        $exams = ExamTraining::where('type', 'exam')->get();
         $trainings = ExamTraining::where('type', 'training')->get();
         $videos = Video::all();
         $books = Book::all();
 
-        if ($exams->isEmpty() || $trainings->isEmpty() || $videos->isEmpty() || $books->isEmpty()) {
+        if ($trainings->isEmpty() || $videos->isEmpty() || $books->isEmpty()) {
             $this->command->warn('⚠️  Please seed ExamTrainings, Videos, and Books first!');
             return;
         }
 
         // ========== CURRENT TAB (not_started) ==========
         $this->command->info('📝 Creating CURRENT (not_started) assignments...');
-
-        // Current: Exam (not_started)
-        $this->createAssignment([
-            'title_ar' => 'اختبار الرياضيات النهائي',
-            'title_en' => 'Mathematics Final Exam',
-            'assignable_type' => 'examTraining',
-            'assignable_id' => $exams->first()->id,
-            'teacher_id' => 1,
-            'start_date' => now(),
-            'end_date' => now()->addDays(7),
-        ], 1, 'not_started');
 
         // Current: Training (not_started)
         $this->createAssignment([
@@ -72,29 +60,6 @@ class AssignmentSeeder extends Seeder
             'start_date' => now(),
             'end_date' => now()->addDays(30),
         ], 1, 'not_started');
-
-        // ========== EXAMS TAB (completed) ==========
-        $this->command->info('📝 Creating EXAMS (completed) assignments...');
-
-        $this->createAssignment([
-            'title_ar' => 'اختبار اللغة العربية',
-            'title_en' => 'Arabic Language Exam',
-            'assignable_type' => 'examTraining',
-            'assignable_id' => $exams->skip(1)->first()->id ?? $exams->first()->id,
-            'teacher_id' => 1,
-            'start_date' => now()->subDays(10),
-            'end_date' => now()->subDays(2),
-        ], 1, 'completed');
-
-        $this->createAssignment([
-            'title_ar' => 'اختبار العلوم',
-            'title_en' => 'Science Exam',
-            'assignable_type' => 'examTraining',
-            'assignable_id' => $exams->first()->id,
-            'teacher_id' => 1,
-            'start_date' => now()->subDays(15),
-            'end_date' => now()->subDays(8),
-        ], 1, 'in_progress');
 
         // ========== TRAINING TAB (completed) ==========
         $this->command->info('📝 Creating TRAINING (completed) assignments...');
@@ -167,8 +132,7 @@ class AssignmentSeeder extends Seeder
 
         $this->command->info('✅ Assignments seeded successfully!');
         $this->command->info('   📊 Summary:');
-        $this->command->info('   - Current (not_started): 4 assignments');
-        $this->command->info('   - Exams: 2 assignments');
+        $this->command->info('   - Current (not_started): 3 assignments');
         $this->command->info('   - Training: 2 assignments');
         $this->command->info('   - Watching: 2 assignments');
         $this->command->info('   - Reading: 2 assignments');

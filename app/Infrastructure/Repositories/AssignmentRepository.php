@@ -121,12 +121,19 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
         $reading = (clone $baseQuery)->where('assignable_type', 'book')->count();
         $watching = (clone $baseQuery)->where('assignable_type', 'video')->count();
 
+        // Get current count (in_progress + not_started)
+        $current = $this->model->whereHas('students', function ($q) use ($studentId) {
+            $q->where('student_id', $studentId)
+                ->whereIn('assignment_student.status', ['in_progress', 'not_started']);
+        })->count();
+
         return [
             'total' => $total,
             'exams' => $exams,
             'training' => $training,
             'reading' => $reading,
             'watching' => $watching,
+            'current' => $current,
         ];
     }
 }

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             LessonCategorySeeder::class,
             LessonSeeder::class,
             QuestionSeeder::class,
+                // Assignment must be seeded before progress seeders
             AssignmentSeeder::class,
             ExamAttemptAnswerSeeder::class,
             VideoProgressSeeder::class,

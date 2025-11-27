@@ -9,6 +9,7 @@ use App\Domain\Interfaces\Repositories\AssignmentRepositoryInterface;
 use App\Domain\Interfaces\Repositories\AnswerRepositoryInterface;
 use App\Domain\Interfaces\Repositories\VideoRepositoryInterface;
 use App\Domain\Interfaces\Repositories\BookRepositoryInterface;
+use App\Domain\Interfaces\Repositories\ExamTrainingRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AssignmentService
@@ -20,7 +21,8 @@ class AssignmentService
         private BookRepositoryInterface $bookRepository,
         private ExamPerformanceCalculator $examPerformanceCalculator,
         private VideoPerformanceCalculator $videoPerformanceCalculator,
-        private BookPerformanceCalculator $bookPerformanceCalculator
+        private BookPerformanceCalculator $bookPerformanceCalculator,
+        private ExamTrainingRepositoryInterface $examTrainingRepository
     ) {
     }
 
@@ -45,10 +47,11 @@ class AssignmentService
      */
     public function getExamPerformance(int $studentId, int $examTrainingId): array
     {
-        $examTraining = $this->assignmentRepository->findAssignmentForStudent($examTrainingId, $studentId);
+        $examTraining = $this->examTrainingRepository->findOrFail($examTrainingId);
         $questions = $examTraining->questions;
+        
         $answers = $this->answerRepository->getAnswersForStudentExam($studentId, $examTrainingId);
-
+        // dump($questions, $answers);
         return $this->examPerformanceCalculator->calculate($questions, $answers);
     }
 
