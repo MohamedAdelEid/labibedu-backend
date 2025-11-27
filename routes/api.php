@@ -13,6 +13,7 @@ use App\Presentation\Http\Controllers\Api\JourneyController;
 use App\Presentation\Http\Controllers\Api\AgeGroupController;
 use App\Presentation\Http\Controllers\Api\LessonController;
 use App\Presentation\Http\Controllers\Api\SubjectController;
+use App\Presentation\Http\Controllers\Api\VideoController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -46,6 +47,11 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
         // Assignments
         Route::prefix('assignments')->group(function () {
             Route::get('/', [AssignmentController::class, 'index']);
+        });
+
+        // Videos
+        Route::prefix('videos')->group(function () {
+            Route::get('/{id}', [VideoController::class, 'show']);
         });
 
         // User Activity Tracking

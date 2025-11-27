@@ -8,6 +8,8 @@ interface VideoRepositoryInterface
 {
     public function findOrFail(int $id, array $columns = ['*']): Video;
 
+    public function findWithRelations(int $id): Video;
+
     public function getProgress(int $studentId, int $videoId);
 
     public function updateProgress(int $studentId, int $videoId, array $data);

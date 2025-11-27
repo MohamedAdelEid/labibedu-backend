@@ -18,6 +18,14 @@ class VideoRepository extends BaseRepository implements VideoRepositoryInterface
         return $this->model->findOrFail($id, $columns);
     }
 
+    public function findWithRelations(int $id): Video
+    {
+        return $this->model->with([
+            'subject',
+            'relatedTraining.questions.options'
+        ])->findOrFail($id);
+    }
+
     public function getProgress(int $studentId, int $videoId)
     {
         return VideoProgress::where('student_id', $studentId)
