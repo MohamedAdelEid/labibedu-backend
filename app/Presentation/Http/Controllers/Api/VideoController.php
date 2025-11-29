@@ -7,6 +7,7 @@ use App\Domain\Interfaces\Repositories\VideoRepositoryInterface;
 use App\Presentation\Http\Resources\Video\VideoResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use App\Infrastructure\Helpers\ApiResponse;
 
 class VideoController extends Controller
 {
@@ -26,16 +27,16 @@ class VideoController extends Controller
         try {
             $video = $this->videoRepository->findWithRelations($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Video retrieved successfully',
-                'data' => new VideoResource($video),
-            ]);
+            return ApiResponse::success(
+                new VideoResource($video),
+                'Video retrieved successfully'
+            );
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Video not found',
-            ], 404);
+            return ApiResponse::error(
+                'Video not found',
+                null,
+                404
+            );
         }
     }
 }
