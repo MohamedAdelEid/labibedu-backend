@@ -59,4 +59,20 @@ class ExamFacade
     {
         return $this->examService->submitEntireExam($dto);
     }
+
+    /**
+     * Get exam/training statistics after submission
+     */
+    public function getStatistics(int $examTrainingId, int $studentId): array
+    {
+        return $this->examService->getStatistics($examTrainingId, $studentId);
+    }
+
+    /**
+     * Get exam/training summary for a student
+     */
+    public function getSummary(int $examTrainingId, int $studentId): array
+    {
+        return $this->examService->getSummary($examTrainingId, $studentId);
+    }
 }

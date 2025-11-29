@@ -5,6 +5,7 @@ namespace App\Infrastructure\Repositories;
 use App\Domain\Interfaces\Repositories\QuestionRepositoryInterface;
 use App\Infrastructure\Models\Question;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class QuestionRepository extends BaseRepository implements QuestionRepositoryInterface
 {
@@ -24,6 +25,14 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
             ->where('exam_training_id', $examTrainingId)
             ->with('options')
             ->paginate($perPage);
+    }
+
+    public function getAllByExamTrainingId(int $examTrainingId): Collection
+    {
+        return $this->model
+            ->where('exam_training_id', $examTrainingId)
+            ->with('options')
+            ->get();
     }
 
 }

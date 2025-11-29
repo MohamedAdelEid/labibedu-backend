@@ -17,6 +17,9 @@ class ExamDetailsResource extends JsonResource
         // Get first related book if exists
         $book = $examTraining->book->first();
 
+        // Get first related video if exists
+        $video = $examTraining->video->first();
+
         return [
             'id' => $examTraining->id,
             'title' => $examTraining->title,
@@ -34,6 +37,15 @@ class ExamDetailsResource extends JsonResource
                 'title' => $book->title,
                 'cover' => $book->cover,
                 'thumbnail' => $book->thumbnail,
+            ] : null,
+            'video' => $video ? [
+                'id' => $video->id,
+                'title' => $video->title,
+                'title_ar' => $video->title_ar,
+                'title_en' => $video->title_en,
+                'url' => $video->url,
+                'cover' => $video->cover,
+                'duration' => $video->duration,
             ] : null,
             'attempt' => $attempt ? new ExamAttemptResource($attempt) : null,
             'questions' => [

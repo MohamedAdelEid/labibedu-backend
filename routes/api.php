@@ -38,6 +38,8 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
         Route::prefix('exams')->controller(ExamController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+            Route::get('/{id}/statistics', 'statistics');
+            Route::get('/{id}/summary', 'summary');
             Route::post('/{id}/start', 'start');
             Route::post('/submit-answer', 'submitAnswer');
             Route::post('/{id}/heartbeat', 'sendHeartbeat');

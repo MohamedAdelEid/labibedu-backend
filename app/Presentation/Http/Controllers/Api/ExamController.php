@@ -11,6 +11,8 @@ use App\Infrastructure\Helpers\ApiResponse;
 use App\Presentation\Http\Requests\Exam\SubmitEntireExamRequest;
 use App\Presentation\Http\Requests\Exam\SubmitAnswerRequest;
 use App\Presentation\Http\Resources\Exam\ExamDetailsResource;
+use App\Presentation\Http\Resources\Exam\ExamSummaryResource;
+use App\Presentation\Http\Resources\Exam\ExamStatisticsResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -96,5 +98,29 @@ class ExamController extends Controller
         $result = $this->examFacade->submitEntireExam($dto);
 
         return ApiResponse::success($result, 'Exam submitted successfully.');
+    }
+
+    public function statistics(int $id): JsonResponse
+    {
+        $studentId = auth()->user()->student->id;
+
+        $data = $this->examFacade->getStatistics($id, $studentId);
+
+        return ApiResponse::success(
+            new ExamStatisticsResource($data),
+            'Exam statistics retrieved successfully.'
+        );
+    }
+
+    public function summary(int $id): JsonResponse
+    {
+        $studentId = auth()->user()->student->id;
+
+        $data = $this->examFacade->getSummary($id, $studentId);
+
+        return ApiResponse::success(
+            new ExamSummaryResource($data),
+            'Exam summary retrieved successfully.'
+        );
     }
 }

@@ -44,7 +44,7 @@ class ExamService
         $this->examAttemptRepository->autoFinishExpiredAttempts();
 
         $examTraining = $this->examTrainingRepository->findOrFail($examId);
-        $examTraining->load('book');
+        $examTraining->load('book', 'video');
         $questions = $this->questionRepository->getByExamTrainingId($examId, $perPage);
 
         $attemptData = null;
@@ -353,5 +353,150 @@ class ExamService
         $attempt = $this->examAttemptRepository->findLatestAttempt($studentId, $examTrainingId);
 
         return $attempt && $attempt->isFinished();
+    }
+
+    /**
+     * Get exam/training statistics after submission
+     * Returns quick stats: total questions, score percentage, time spent, XP and coins earned
+     * 
+     * @param int $examTrainingId
+     * @param int $studentId
+     * @return array
+     */
+    public function getStatistics(int $examTrainingId, int $studentId): array
+    {
+        $examTraining = $this->examTrainingRepository->findOrFail($examTrainingId);
+
+        // Check if student has completed this exam/training
+        $attempt = $this->examAttemptRepository->findLatestAttempt($studentId, $examTrainingId);
+
+        if (!$attempt || !$attempt->isFinished()) {
+            throw new Exception('Exam/Training has not been completed yet.');
+        }
+
+        // Get all questions for this exam/training
+        $questions = $this->questionRepository->getAllByExamTrainingId($examTrainingId);
+
+        // Get all answers for this student
+        $answers = $this->answerRepository->getAnswersForStudentExam($studentId, $examTrainingId);
+
+        // Calculate performance metrics
+        $earnedXp = 0;
+        $earnedCoins = 0;
+        $correctCount = 0;
+
+        // Map answers by question_id for easier lookup
+        $answersMap = $answers->keyBy('question_id');
+
+        foreach ($questions as $question) {
+            $answer = $answersMap->get($question->id);
+            $evaluation = $this->answerEvaluationService->evaluateQuestion($question, $answer, null);
+
+            // Check if answer is correct
+            $isCorrect = $evaluation['is_correct'] ?? false;
+
+            if ($isCorrect) {
+                $correctCount++;
+                // Add XP and coins from question directly (same as ExamScoringCalculator)
+                $earnedXp += $question->xp ?? 0;
+                $earnedCoins += $question->coins ?? 0;
+            }
+        }
+
+        // Calculate score percentage
+        $totalQuestions = $questions->count();
+        $scorePercentage = $totalQuestions > 0 ? round(($correctCount / $totalQuestions) * 100, 2) : 0;
+
+        // Calculate time spent in seconds
+        $timeSpentSeconds = 0;
+        if ($attempt->start_time && $attempt->end_time) {
+            $timeSpentSeconds = $attempt->start_time->diffInSeconds($attempt->end_time);
+        }
+
+        return [
+            'examTraining' => $examTraining,
+            'attempt' => $attempt,
+            'total_questions' => $totalQuestions,
+            'correct_answers' => $correctCount,
+            'score_percentage' => $scorePercentage,
+            'time_spent_seconds' => $timeSpentSeconds,
+            'earned_xp' => $earnedXp,
+            'earned_coins' => $earnedCoins,
+        ];
+    }
+
+    /**
+     * Get exam/training summary for a student
+     * Returns total questions, score earned, total XP and coins, and all questions with answers
+     * 
+     * @param int $examTrainingId
+     * @param int $studentId
+     * @return array
+     */
+    public function getSummary(int $examTrainingId, int $studentId): array
+    {
+        $examTraining = $this->examTrainingRepository->findOrFail($examTrainingId);
+
+        // Check if student has completed this exam/training
+        $attempt = $this->examAttemptRepository->findLatestAttempt($studentId, $examTrainingId);
+
+        if (!$attempt || !$attempt->isFinished()) {
+            throw new Exception('Exam/Training has not been completed yet.');
+        }
+
+        // Get all questions for this exam/training
+        $questions = $this->questionRepository->getAllByExamTrainingId($examTrainingId);
+
+        // Get all answers for this student
+        $answers = $this->answerRepository->getAnswersForStudentExam($studentId, $examTrainingId);
+
+        // Calculate total marks available
+        $totalMarks = $questions->count();
+
+        // Calculate performance metrics
+        $earnedMarks = 0;
+        $earnedXp = 0;
+        $earnedCoins = 0;
+        $correctCount = 0;
+
+        // Map answers by question_id for easier lookup
+        $answersMap = $answers->keyBy('question_id');
+
+        // Prepare questions with their answers
+        $questionsWithAnswers = $questions->map(function ($question) use ($answersMap, &$earnedMarks, &$earnedXp, &$earnedCoins, &$correctCount) {
+            $answer = $answersMap->get($question->id);
+            $evaluation = $this->answerEvaluationService->evaluateQuestion($question, $answer, null);
+
+            // Check if answer is correct
+            $isCorrect = $evaluation['is_correct'] ?? false;
+
+            if ($isCorrect) {
+                $correctCount++;
+                $earnedMarks++;
+                // Add XP and coins from question directly (same as ExamScoringCalculator)
+                $earnedXp += $question->xp ?? 0;
+                $earnedCoins += $question->coins ?? 0;
+            }
+
+            return [
+                'question' => $question,
+                'answer' => $answer,
+                'is_correct' => $isCorrect,
+                'evaluation' => $evaluation,
+            ];
+        });
+
+        return [
+            'examTraining' => $examTraining,
+            'attempt' => $attempt,
+            'total_questions' => $questions->count(),
+            'total_marks' => $totalMarks,
+            'earned_marks' => $earnedMarks,
+            'earned_xp' => $earnedXp,
+            'earned_coins' => $earnedCoins,
+            'correct_answers' => $correctCount,
+            'wrong_answers' => $answers->count() - $correctCount,
+            'questions_with_answers' => $questionsWithAnswers,
+        ];
     }
 }
