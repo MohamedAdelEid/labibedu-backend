@@ -22,6 +22,7 @@ return [
     'allowed_origins' => [
         'http://localhost:5173',
         'https://labibedu.vercel.app',
+        'https://labibedu.com'
     ],
 
     'allowed_origins_patterns' => [],
