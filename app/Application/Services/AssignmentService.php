@@ -10,6 +10,7 @@ use App\Domain\Interfaces\Repositories\AnswerRepositoryInterface;
 use App\Domain\Interfaces\Repositories\VideoRepositoryInterface;
 use App\Domain\Interfaces\Repositories\BookRepositoryInterface;
 use App\Domain\Interfaces\Repositories\ExamTrainingRepositoryInterface;
+use App\Infrastructure\Models\Assignment;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AssignmentService
@@ -35,6 +36,14 @@ class AssignmentService
     }
 
     /**
+     * Get single assignment for student
+     */
+    public function getAssignmentForStudent(int $assignmentId, int $studentId)
+    {
+        return $this->assignmentRepository->findAssignmentForStudent($assignmentId, $studentId);
+    }
+
+    /**
      * Get assignments statistics for student
      */
     public function getAssignmentsStats(int $studentId): array
@@ -49,7 +58,7 @@ class AssignmentService
     {
         $examTraining = $this->examTrainingRepository->findOrFail($examTrainingId);
         $questions = $examTraining->questions;
-        
+
         $answers = $this->answerRepository->getAnswersForStudentExam($studentId, $examTrainingId);
         // dump($questions, $answers);
         return $this->examPerformanceCalculator->calculate($questions, $answers);
@@ -74,5 +83,13 @@ class AssignmentService
         $book = $this->bookRepository->findOrFail($bookId);
 
         return $this->bookPerformanceCalculator->calculate($book, $studentId, $relatedTrainingPerformance);
+    }
+
+    /**
+     * Activate assignment (change status from not_started to in_progress)
+     */
+    public function activateAssignment(int $assignmentId, int $studentId): Assignment
+    {
+        return $this->assignmentRepository->activateAssignment($assignmentId, $studentId);
     }
 }

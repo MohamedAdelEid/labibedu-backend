@@ -19,4 +19,6 @@ interface AssignmentRepositoryInterface
     public function findOrFail(int $id, array $columns = ['*']): Assignment;
 
     public function getAssignmentsStats(int $studentId): array;
+
+    public function activateAssignment(int $assignmentId, int $studentId): Assignment;
 }

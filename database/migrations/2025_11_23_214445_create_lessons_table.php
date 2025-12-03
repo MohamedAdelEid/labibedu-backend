@@ -12,8 +12,7 @@ return new class extends Migration {
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->string('title_ar');
-            $table->string('title_en');
+            $table->string('title');
             $table->foreignId('category_id')->constrained('lesson_categories')->onDelete('cascade');
             $table->foreignId('train_id')->constrained('exams_trainings')->onDelete('cascade');
             $table->foreignId('grade_id')->constrained('grades')->onDelete('cascade');

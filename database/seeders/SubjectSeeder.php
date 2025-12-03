@@ -21,7 +21,7 @@ class SubjectSeeder extends Seeder
             Subject::create([
                 'name_ar' => $subject['ar'],
                 'name_en' => $subject['en'],
-                'classroom_id' => 1, // Grade 5
+                'classroom_id' => 3, // Grade 5
             ]);
         }
     }

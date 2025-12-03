@@ -69,4 +69,43 @@ class AssignmentController extends Controller
             'Assignments retrieved successfully.'
         );
     }
+
+    /**
+     * Activate assignment (change status from not_started to in_progress)
+     */
+    public function activate(Request $request, int $id): JsonResponse
+    {
+        $studentId = Auth::user()->student->id;
+
+        try {
+            // Find assignment and verify it belongs to the student
+            $assignment = $this->assignmentService->getAssignmentForStudent($id, $studentId);
+
+            // Get current status
+            $currentStatus = $assignment->students->first()?->pivot->status ?? 'not_started';
+
+            if ($currentStatus !== 'not_started') {
+                return ApiResponse::error(
+                    'Assignment is already activated or completed.',
+                    400
+                );
+            }
+
+            // Activate the assignment
+            $activatedAssignment = $this->assignmentService->activateAssignment($id, $studentId);
+
+            // Transform the assignment
+            $transformedAssignment = new AssignmentResource($activatedAssignment);
+
+            return ApiResponse::success(
+                $transformedAssignment,
+                'Assignment activated successfully.'
+            );
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return ApiResponse::error(
+                'Assignment not found.',
+                404
+            );
+        }
+    }
 }

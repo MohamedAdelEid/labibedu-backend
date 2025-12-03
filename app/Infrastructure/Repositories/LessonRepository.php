@@ -20,14 +20,12 @@ class LessonRepository extends BaseRepository implements LessonRepositoryInterfa
         ?string $search,
         int $perPage
     ): LengthAwarePaginator {
-        // Get student to access grade_id through classroom
+
         $student = Student::with('classroom.grade')->findOrFail($studentId);
 
-        // Get grade_id from student's classroom
         $gradeId = $student->classroom?->grade_id;
 
         if (!$gradeId) {
-            // Return empty paginated result if student has no grade
             return $this->model->query()->whereRaw('1 = 0')->paginate($perPage);
         }
 

@@ -12,8 +12,7 @@ class Lesson extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title_ar',
-        'title_en',
+        'title',
         'category_id',
         'grade_id',
         'subject_id',
@@ -28,20 +27,11 @@ class Lesson extends Model
     ];
 
     /**
-     * Get the localized title based on the current app locale
-     */
-    public function getTitleAttribute(): string
-    {
-        $locale = app()->getLocale();
-        return $this->attributes['title_' . $locale] ?? $this->attributes['title_ar'] ?? '';
-    }
-
-    /**
      * Get the localized name (alias for title for consistency)
      */
     public function getNameAttribute(): string
     {
-        return $this->getTitleAttribute();
+        return $this->title;
     }
 
     public function grade(): BelongsTo

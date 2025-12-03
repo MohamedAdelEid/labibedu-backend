@@ -40,6 +40,7 @@ class ExamTrainingAssignmentResource extends JsonResource
                 'duration_minutes' => $examTraining->duration,
                 'questions_count' => $examTraining->questions_count ?? 0,
                 'type' => $examTraining->type->value ?? null,
+                'source_type' => $examTraining->getSourceType(),
             ],
             'actual' => [
                 'marks' => $examTraining->getTotalMarks(),

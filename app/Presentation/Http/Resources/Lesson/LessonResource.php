@@ -12,8 +12,7 @@ class LessonResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title_ar' => $this->title_ar,
-            'title_en' => $this->title_en,
+            'title' => $this->title,
             'train_id' => $this->train_id,
             'category' => $this->whenLoaded('category', function () {
                 return $this->category ? [

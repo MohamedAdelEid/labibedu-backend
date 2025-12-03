@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class ExamTraining extends Model
 {
@@ -70,6 +71,11 @@ class ExamTraining extends Model
         return $this->hasMany(Video::class, 'related_training_id');
     }
 
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class, 'train_id');
+    }
+
     public function isExam(): bool
     {
         return $this->type === ExamTrainingType::EXAM;
@@ -102,6 +108,52 @@ class ExamTraining extends Model
 
     public function getTotalMarks(): int
     {
+        return $this->questions()->sum('marks');
+    }
+
+    public function getQuestionsCountAttribute(): int
+    {
+        if ($this->relationLoaded('questions')) {
+            return $this->questions->count();
+        }
+
         return $this->questions()->count();
+    }
+
+    public function getSourceType(): ?string
+    {
+        $isInJourney = DB::table('journey_stage_contents')
+            ->where('content_type', 'examTraining')
+            ->where('content_id', $this->id)
+            ->exists();
+
+        if ($isInJourney) {
+            return 'journey';
+        }
+
+        $hasLessons = $this->lessons()->exists();
+        if ($hasLessons) {
+            return 'lessons';
+        }
+
+        $isInLibrary = DB::table('books')
+            ->where('related_training_id', $this->id)
+            ->where('is_in_library', true)
+            ->exists();
+
+        if ($isInLibrary) {
+            return 'library';
+        }
+
+        $isInAssignment = DB::table('assignments')
+            ->where('assignable_type', 'examTraining')
+            ->where('assignable_id', $this->id)
+            ->exists();
+
+        if ($isInAssignment) {
+            return 'assignment';
+        }
+
+        return null;
     }
 }

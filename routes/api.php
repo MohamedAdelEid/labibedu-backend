@@ -49,6 +49,7 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
         // Assignments
         Route::prefix('assignments')->group(function () {
             Route::get('/', [AssignmentController::class, 'index']);
+            Route::patch('/{id}/activate', [AssignmentController::class, 'activate']);
         });
 
         // Videos

@@ -25,6 +25,7 @@ class ExamDetailsResource extends JsonResource
             'title' => $examTraining->title,
             'description' => $examTraining->description,
             'type' => $examTraining->type->value,
+            'source_type' => $examTraining->getSourceType(),
             'duration' => $examTraining->duration,
             'startDate' => $examTraining->start_date?->toIso8601String(),
             'endDate' => $examTraining->end_date?->toIso8601String(),
