@@ -6,6 +6,8 @@ use App\Infrastructure\Models\Assignment;
 use App\Infrastructure\Models\ExamTraining;
 use App\Infrastructure\Models\Question;
 use App\Infrastructure\Models\QuestionOption;
+use App\Infrastructure\Models\Book;
+use App\Infrastructure\Models\Page;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -24,8 +26,12 @@ class AssignmentSeeder extends Seeder
             $this->createAssignmentWithTraining($assignmentData, $teacherId);
         }
 
+
+        // Create assignment from book (آدم يتخيل النحلة) - New separate method
+        $this->createAdamBeeBookAssignment($teacherId);
+
         $this->command->info('✅ Assignments seeded successfully!');
-        $this->command->info('📊 Total assignments created: ' . count($assignmentsData));
+        $this->command->info('📊 Total assignments created: ' . (count($assignmentsData) + 2));
     }
 
     /**
@@ -37,18 +43,21 @@ class AssignmentSeeder extends Seeder
             $this->getUnitOneTestAssignment(),
             $this->getUnitOneExamAssignment(),
             $this->getExamUnitOneAssignment(),
+
+            $this->getActiveParticipleAssignment(),
         ];
     }
 
     /**
-     * Assignment 1: اختبار نهاية الوحدة الأولى (تمرين)
+     * Assignment 1: اختبار نهاية الوحدة الأولى (امتحان)
      */
     private function getUnitOneTestAssignment(): array
     {
         return [
             'title_ar' => 'اختبار نهاية الوحدة الأولى',
             'title_en' => 'Unit One End Test',
-            'type' => 'training',
+            'type' => 'exam',
+            'duration' => 30,
             'total_xp' => 40,
             'total_coins' => 20,
             'total_marks' => 40,
@@ -260,6 +269,7 @@ class AssignmentSeeder extends Seeder
             'title_ar' => 'امتحان الوحدة الاولى',
             'title_en' => 'Unit One Exam',
             'type' => 'exam',
+            'duration' => 30,
             'total_xp' => 40,
             'total_coins' => 20,
             'total_marks' => 40,
@@ -468,14 +478,15 @@ class AssignmentSeeder extends Seeder
     }
 
     /**
-     * Assignment 3: Exam Unit One (تمرين)
+     * Assignment 3: Exam Unit One (امتحان)
      */
     private function getExamUnitOneAssignment(): array
     {
         return [
             'title_ar' => 'Exam Unit One',
             'title_en' => 'Exam Unit One',
-            'type' => 'training',
+            'type' => 'exam',
+            'duration' => 40,
             'total_xp' => 50,
             'total_coins' => 25,
             'total_marks' => 50,
@@ -742,6 +753,184 @@ class AssignmentSeeder extends Seeder
     }
 
     /**
+     * Assignment 4: اسم الفاعل (تمرين)
+     */
+    private function getActiveParticipleAssignment(): array
+    {
+        return [
+            'title_ar' => 'اسم الفاعل',
+            'title_en' => 'Active Participle',
+            'type' => 'training',
+            'total_xp' => 32,
+            'total_coins' => 16,
+            'total_marks' => 32,
+            'questions_count' => 16,
+            'questions' => [
+                // صح أو خطأ (4 أسئلة)
+                [
+                    'title' => 'اسم الفاعل يدل على من يقوم بالفعل.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
+                    'language' => 'ar',
+                ],
+                [
+                    'title' => 'يُصاغ اسم الفاعل من الفعل الثلاثي على وزن فاعل.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
+                    'language' => 'ar',
+                ],
+                [
+                    'title' => 'كلمة "مسافر" ليست اسم فاعل.',
+                    'type' => 'true_false',
+                    'is_correct' => false,
+                    'language' => 'ar',
+                ],
+                [
+                    'title' => 'اسم الفاعل دائمًا يكون منصوبًا.',
+                    'type' => 'true_false',
+                    'is_correct' => false,
+                    'language' => 'ar',
+                ],
+                // أكمل الفراغ (4 أسئلة)
+                [
+                    'title' => 'اسم الفاعل من الفعل (لعب) هو ________.',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'لاعب', 'is_correct' => true],
+                        ['text' => 'ملعوب', 'is_correct' => false],
+                        ['text' => 'يلعب', 'is_correct' => false],
+                        ['text' => 'لعبة', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'كلمة (ناجح) تُعد ________.',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'فعلًا ماضيًا', 'is_correct' => false],
+                        ['text' => 'اسم مفعول', 'is_correct' => false],
+                        ['text' => 'اسم فاعل', 'is_correct' => true],
+                        ['text' => 'ظرفًا', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'اسم الفاعل من الفعل (سمع) هو ________.',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'مسموع', 'is_correct' => false],
+                        ['text' => 'سمع', 'is_correct' => false],
+                        ['text' => 'يسمع', 'is_correct' => false],
+                        ['text' => 'سامع', 'is_correct' => true],
+                    ],
+                ],
+                [
+                    'title' => 'صيغة اسم الفاعل من الفعل الثلاثي تأتي غالبًا على وزن ________.',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'فعيل', 'is_correct' => false],
+                        ['text' => 'فاعل', 'is_correct' => true],
+                        ['text' => 'مفعول', 'is_correct' => false],
+                        ['text' => 'فاعلة', 'is_correct' => false],
+                    ],
+                ],
+                // اختر الإجابة الصحيحة (6 أسئلة)
+                [
+                    'title' => 'اسم الفاعل من الفعل (جلس) هو:',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'جالس', 'is_correct' => true],
+                        ['text' => 'مجلوس', 'is_correct' => false],
+                        ['text' => 'جلس', 'is_correct' => false],
+                        ['text' => 'يجلس', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'كلمة (راكض) تدل على:',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'زمان', 'is_correct' => false],
+                        ['text' => 'مكان', 'is_correct' => false],
+                        ['text' => 'من يقوم بالفعل', 'is_correct' => true],
+                        ['text' => 'آلة', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'أي الكلمات التالية ليست اسم فاعل؟',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'كاتب', 'is_correct' => false],
+                        ['text' => 'لاعب', 'is_correct' => false],
+                        ['text' => 'مكتوب', 'is_correct' => true],
+                        ['text' => 'سامع', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'اسم الفاعل من الفعل (فتح) هو:',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'مفتوح', 'is_correct' => false],
+                        ['text' => 'فاتح', 'is_correct' => true],
+                        ['text' => 'فتح', 'is_correct' => false],
+                        ['text' => 'يفْتَح', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'أي الجمل التالية تحتوي على اسم فاعل؟',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'الطفلُ يجري بسرعة', 'is_correct' => false],
+                        ['text' => 'الطالبُ مجتهدٌ', 'is_correct' => false],
+                        ['text' => 'الصانعُ ماهرٌ', 'is_correct' => true],
+                        ['text' => 'كان الجوُّ جميلًا', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'أي من التالي مثال لاسم فاعل يدل على مهنة؟',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'طائر', 'is_correct' => false],
+                        ['text' => 'كاتب', 'is_correct' => true],
+                        ['text' => 'ساجد', 'is_correct' => false],
+                        ['text' => 'نائم', 'is_correct' => false],
+                    ],
+                ],
+                // وصّل اسم الفاعل بالفعل المناسب (2 أسئلة - تم تحويلها لاختيار من متعدد)
+                [
+                    'title' => 'اسم الفاعل من الفعل (نصرَ) هو:',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'ناصرٌ', 'is_correct' => true],
+                        ['text' => 'منصور', 'is_correct' => false],
+                        ['text' => 'ينصر', 'is_correct' => false],
+                        ['text' => 'نصر', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'اسم الفاعل من الفعل (حفظَ) هو:',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'حافظٌ', 'is_correct' => true],
+                        ['text' => 'محفوظ', 'is_correct' => false],
+                        ['text' => 'يحفظ', 'is_correct' => false],
+                        ['text' => 'حفظ', 'is_correct' => false],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * Create assignment with training and questions
      */
     private function createAssignmentWithTraining(array $assignmentData, int $teacherId): void
@@ -756,10 +945,10 @@ class AssignmentSeeder extends Seeder
         $training = ExamTraining::create([
             'title' => $assignmentData['title_en'],
             'title_ar' => $assignmentData['title_ar'],
-            'description' => "Training for {$assignmentData['title_en']}",
-            'description_ar' => "تدريب لـ {$assignmentData['title_ar']}",
+            'description' => $assignmentData['type'] === 'exam' ? "Exam: {$assignmentData['title_en']}" : "Training for {$assignmentData['title_en']}",
+            'description_ar' => $assignmentData['type'] === 'exam' ? "امتحان: {$assignmentData['title_ar']}" : "تدريب لـ {$assignmentData['title_ar']}",
             'type' => $assignmentData['type'],
-            'duration' => $assignmentData['type'] === 'exam' ? 60 : null, // 60 minutes for exams
+            'duration' => $assignmentData['duration'] ?? ($assignmentData['type'] === 'exam' ? 60 : null),
             'created_by' => $teacherId,
             'subject_id' => null,
             'group_id' => null,
@@ -891,5 +1080,507 @@ class AssignmentSeeder extends Seeder
                 'arrange_order' => $option['order'],
             ]);
         }
+    }
+
+    /**
+     * Generate questions from book pages (آدم يتخيل النحلة)
+     */
+    private function generateBookQuestions($pages): array
+    {
+        $questions = [];
+
+        // Question 1: About the main character
+        $questions[] = [
+            'title' => 'ما اسم الشخصية الرئيسية في القصة؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'سناء', 'is_correct' => false],
+                ['text' => 'آدم', 'is_correct' => true],
+                ['text' => 'راغب', 'is_correct' => false],
+                ['text' => 'مشمسة', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 2: About what attracted آدم
+        $questions[] = [
+            'title' => 'ما الذي جذب آدم في البداية؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'صوت النحلة', 'is_correct' => false],
+                ['text' => 'رائحة الزهور المتفتحة', 'is_correct' => true],
+                ['text' => 'ألوان الزهور', 'is_correct' => false],
+                ['text' => 'شكل النحلة', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 3: About the bee description (brother)
+        $questions[] = [
+            'title' => 'كيف وصف أخ آدم النحلة في البداية؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'حشرة مفيدة', 'is_correct' => false],
+                ['text' => 'حشرة تطير كالذبابة، لها إبرة صغيرة وتقرص', 'is_correct' => true],
+                ['text' => 'حشرة ملونة بالأصفر والأسود', 'is_correct' => false],
+                ['text' => 'حشرة تصنع العسل', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 4: True/False about honey
+        $questions[] = [
+            'title' => 'العسل يأتي من النحلة.',
+            'type' => 'true_false',
+            'is_correct' => true,
+            'language' => 'ar',
+        ];
+
+        // Question 5: About what آدم thought about honey
+        $questions[] = [
+            'title' => 'ماذا كان يعتقد آدم عن مصدر العسل في البداية؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'يأتي من النحلة', 'is_correct' => false],
+                ['text' => 'ماما تصنعه', 'is_correct' => true],
+                ['text' => 'يأتي من الزهور', 'is_correct' => false],
+                ['text' => 'يأتي من المتجر', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 6: About the father's explanation
+        $questions[] = [
+            'title' => 'كيف وصف الأب النحلة؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'حشرة مخيفة', 'is_correct' => false],
+                ['text' => 'حشرة مفيدة تصنع لنا العسل من الأزهار', 'is_correct' => true],
+                ['text' => 'حشرة سوداء', 'is_correct' => false],
+                ['text' => 'حشرة تطير فقط', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 7: About the grandmother's gift
+        $questions[] = [
+            'title' => 'ماذا أهدت الجدة لآدم؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'كتاب عن النحل', 'is_correct' => false],
+                ['text' => 'جوارب صفراء منقطة بالأسود', 'is_correct' => true],
+                ['text' => 'لعبة نحلة', 'is_correct' => false],
+                ['text' => 'صورة نحلة', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 8: About bee colors
+        $questions[] = [
+            'title' => 'ما ألوان النحلة الحقيقية؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'سوداء فقط', 'is_correct' => false],
+                ['text' => 'ملونة بالأصفر والأسود', 'is_correct' => true],
+                ['text' => 'صفراء فقط', 'is_correct' => false],
+                ['text' => 'بيضاء', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 9: True/False about bee appearance
+        $questions[] = [
+            'title' => 'النحلة تشبه الذبابة تماماً.',
+            'type' => 'true_false',
+            'is_correct' => false,
+            'language' => 'ar',
+        ];
+
+        // Question 10: About what آدم asked his mother
+        $questions[] = [
+            'title' => 'ماذا سأل آدم والدته؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'من أين يأتي العسل؟', 'is_correct' => false],
+                ['text' => 'من منهم مخطئ في وصف النحلة؟', 'is_correct' => true],
+                ['text' => 'كيف تطير النحلة؟', 'is_correct' => false],
+                ['text' => 'ما شكل النحلة؟', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 11: About the mother's answer
+        $questions[] = [
+            'title' => 'ماذا قالت الأم لآدم؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'أخوك مخطئ', 'is_correct' => false],
+                ['text' => 'لا أحد مخطئ، كل منهم وصف النحلة بشكل صحيح من جانب واحد فقط', 'is_correct' => true],
+                ['text' => 'والدك مخطئ', 'is_correct' => false],
+                ['text' => 'جدتك مخطئة', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 12: About how آدم learned the truth
+        $questions[] = [
+            'title' => 'كيف عرف آدم شكل النحلة الحقيقي؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'من خلال الرسم', 'is_correct' => false],
+                ['text' => 'من خلال صورة في كتاب', 'is_correct' => true],
+                ['text' => 'من خلال مشاهدة نحلة حقيقية', 'is_correct' => false],
+                ['text' => 'من خلال الحلم', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 13: True/False about bee characteristics
+        $questions[] = [
+            'title' => 'النحلة لها إبرة صغيرة.',
+            'type' => 'true_false',
+            'is_correct' => true,
+            'language' => 'ar',
+        ];
+
+        // Question 14: About what bees eat
+        $questions[] = [
+            'title' => 'ماذا تأكل النحلة؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'اللحوم', 'is_correct' => false],
+                ['text' => 'من الزهور', 'is_correct' => true],
+                ['text' => 'الأوراق', 'is_correct' => false],
+                ['text' => 'الفواكه', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 15: About bee's purpose
+        $questions[] = [
+            'title' => 'لماذا تأكل النحلة من الزهور؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'لأنها جائعة', 'is_correct' => false],
+                ['text' => 'كي تصنع العسل', 'is_correct' => true],
+                ['text' => 'لأنها تحب الزهور', 'is_correct' => false],
+                ['text' => 'لأنها لا تجد طعاماً آخر', 'is_correct' => false],
+            ],
+        ];
+
+        return $questions;
+    }
+
+    /**
+     * Create assignment from book (آدم يتخيل النحلة) - New separate method
+     */
+    private function createAdamBeeBookAssignment(int $teacherId): void
+    {
+        // Find the book
+        $book = Book::create([
+            'title' => 'آدم يتخيل النحلة',
+            'cover' => 'books/adam-and-the-bee.jpg',
+            'thumbnail' => 'books/adam-and-the-bee.jpg',
+            'is_in_library' => false,
+            'language' => 'ar',
+            'has_sound' => true,
+        ]);
+
+        $assignment = Assignment::create([
+            'title_ar' => 'تمرين كتاب: آدم يتخيل النحلة',
+            'title_en' => 'Book Exercise: Adam Imagines the Bee',
+            'assignable_type' => 'book',
+            'assignable_id' => $book->id,
+            'teacher_id' => $teacherId,
+            'start_date' => Carbon::now(),
+            'end_date' => Carbon::now()->addDays(14),
+        ]);
+
+        // Attach student ID 1 to the assignment
+        $studentId = 1;
+        DB::table('assignment_student')->insert([
+            'assignment_id' => $assignment->id,
+            'student_id' => $studentId,
+            'status' => 'not_started',
+            'assigned_at' => Carbon::now(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // Get book pages
+        $pages = Page::where('book_id', $book->id)->orderBy('id')->get();
+
+        if ($pages->isEmpty()) {
+            $this->command->warn('⚠️  No pages found for book "آدم يتخيل النحلة". Skipping book assignment creation.');
+            return;
+        }
+
+        // Create questions based on book pages
+        $questions = $this->generateAdamBeeQuestions($pages);
+
+        // Calculate totals
+        $questionsCount = count($questions);
+        $totalXp = $book->xp ?? 100;
+        $totalCoins = $book->coins ?? 50;
+        $totalMarks = $book->marks ?? 75;
+
+        // Create ExamTraining related to the book
+        $training = ExamTraining::create([
+            'title' => 'Training: ' . $book->title,
+            'title_ar' => 'تدريب كتاب: ' . $book->title,
+            'description' => "Training based on the book: {$book->title}",
+            'description_ar' => "تدريب مبني على كتاب: {$book->title}",
+            'type' => 'training',
+            'duration' => null,
+            'created_by' => $teacherId,
+            'subject_id' => $book->subject_id,
+            'group_id' => null,
+            'start_date' => Carbon::now()->subDays(1),
+            'end_date' => Carbon::now()->addDays(2),
+        ]);
+
+        // Link training to book
+        $book->update(['related_training_id' => $training->id]);
+
+        $this->command->info("📝 Created training from book: {$book->title}");
+        $this->command->info("   🔗 Linked training to book (related_training_id)");
+
+        // Calculate points per question
+        $xpPerQuestion = (int) ($totalXp / $questionsCount);
+        $coinsPerQuestion = (int) ($totalCoins / $questionsCount);
+        $marksPerQuestion = (int) ($totalMarks / $questionsCount);
+
+        // Create questions
+        $questionCount = 0;
+        foreach ($questions as $questionData) {
+            $this->createQuestion(
+                $training->id,
+                $questionData,
+                $xpPerQuestion,
+                $coinsPerQuestion,
+                $marksPerQuestion
+            );
+            $questionCount++;
+        }
+
+        $this->command->info("   ✅ Created {$questionCount} questions from book pages");
+
+        // Create Assignment with assignable_type = 'book'
+        $assignment = Assignment::create([
+            'title_ar' => 'تمرين كتاب: ' . $book->title,
+            'title_en' => 'Book Exercise: ' . $book->title,
+            'assignable_type' => 'book',
+            'assignable_id' => $book->id,
+            'teacher_id' => $teacherId,
+            'start_date' => Carbon::now(),
+            'end_date' => Carbon::now()->addDays(14),
+        ]);
+
+        // Attach student ID 1 to the assignment
+        $studentId = 1;
+        DB::table('assignment_student')->insert([
+            'assignment_id' => $assignment->id,
+            'student_id' => $studentId,
+            'status' => 'not_started',
+            'assigned_at' => Carbon::now(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        $this->command->info("   ✅ Created assignment: {$assignment->title_ar}");
+        $this->command->info("   📚 Assignment type: book (related to book ID: {$book->id})");
+        $this->command->info("   👤 Assigned to student ID: {$studentId}");
+        $this->command->newLine();
+    }
+
+    /**
+     * Generate questions from book pages (آدم يتخيل النحلة)
+     */
+    private function generateAdamBeeQuestions($pages): array
+    {
+        $questions = [];
+
+        // Question 1: About the main character
+        $questions[] = [
+            'title' => 'ما اسم الشخصية الرئيسية في القصة؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'سناء', 'is_correct' => false],
+                ['text' => 'آدم', 'is_correct' => true],
+                ['text' => 'راغب', 'is_correct' => false],
+                ['text' => 'مشمسة', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 2: About what attracted آدم
+        $questions[] = [
+            'title' => 'ما الذي جذب آدم في البداية؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'صوت النحلة', 'is_correct' => false],
+                ['text' => 'رائحة الزهور المتفتحة', 'is_correct' => true],
+                ['text' => 'ألوان الزهور', 'is_correct' => false],
+                ['text' => 'شكل النحلة', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 3: About the bee description (brother)
+        $questions[] = [
+            'title' => 'كيف وصف أخ آدم النحلة في البداية؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'حشرة مفيدة', 'is_correct' => false],
+                ['text' => 'حشرة تطير كالذبابة، لها إبرة صغيرة وتقرص', 'is_correct' => true],
+                ['text' => 'حشرة ملونة بالأصفر والأسود', 'is_correct' => false],
+                ['text' => 'حشرة تصنع العسل', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 4: True/False about honey
+        $questions[] = [
+            'title' => 'العسل يأتي من النحلة.',
+            'type' => 'true_false',
+            'is_correct' => true,
+            'language' => 'ar',
+        ];
+
+        // Question 5: About what آدم thought about honey
+        $questions[] = [
+            'title' => 'ماذا كان يعتقد آدم عن مصدر العسل في البداية؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'يأتي من النحلة', 'is_correct' => false],
+                ['text' => 'ماما تصنعه', 'is_correct' => true],
+                ['text' => 'يأتي من الزهور', 'is_correct' => false],
+                ['text' => 'يأتي من المتجر', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 6: About the father's explanation
+        $questions[] = [
+            'title' => 'كيف وصف الأب النحلة؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'حشرة مخيفة', 'is_correct' => false],
+                ['text' => 'حشرة مفيدة تصنع لنا العسل من الأزهار', 'is_correct' => true],
+                ['text' => 'حشرة سوداء', 'is_correct' => false],
+                ['text' => 'حشرة تطير فقط', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 7: About the grandmother's gift
+        $questions[] = [
+            'title' => 'ماذا أهدت الجدة لآدم؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'كتاب عن النحل', 'is_correct' => false],
+                ['text' => 'جوارب صفراء منقطة بالأسود', 'is_correct' => true],
+                ['text' => 'لعبة نحلة', 'is_correct' => false],
+                ['text' => 'صورة نحلة', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 8: About bee colors
+        $questions[] = [
+            'title' => 'ما ألوان النحلة الحقيقية؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'سوداء فقط', 'is_correct' => false],
+                ['text' => 'ملونة بالأصفر والأسود', 'is_correct' => true],
+                ['text' => 'صفراء فقط', 'is_correct' => false],
+                ['text' => 'بيضاء', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 9: True/False about bee appearance
+        $questions[] = [
+            'title' => 'النحلة تشبه الذبابة تماماً.',
+            'type' => 'true_false',
+            'is_correct' => false,
+            'language' => 'ar',
+        ];
+
+        // Question 10: About what آدم asked his mother
+        $questions[] = [
+            'title' => 'ماذا سأل آدم والدته؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'من أين يأتي العسل؟', 'is_correct' => false],
+                ['text' => 'من منهم مخطئ في وصف النحلة؟', 'is_correct' => true],
+                ['text' => 'كيف تطير النحلة؟', 'is_correct' => false],
+                ['text' => 'ما شكل النحلة؟', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 11: About the mother's answer
+        $questions[] = [
+            'title' => 'ماذا قالت الأم لآدم؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'أخوك مخطئ', 'is_correct' => false],
+                ['text' => 'لا أحد مخطئ، كل منهم وصف النحلة بشكل صحيح من جانب واحد فقط', 'is_correct' => true],
+                ['text' => 'والدك مخطئ', 'is_correct' => false],
+                ['text' => 'جدتك مخطئة', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 12: About how آدم learned the truth
+        $questions[] = [
+            'title' => 'كيف عرف آدم شكل النحلة الحقيقي؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'من خلال الرسم', 'is_correct' => false],
+                ['text' => 'من خلال صورة في كتاب', 'is_correct' => true],
+                ['text' => 'من خلال مشاهدة نحلة حقيقية', 'is_correct' => false],
+                ['text' => 'من خلال الحلم', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 13: True/False about bee characteristics
+        $questions[] = [
+            'title' => 'النحلة لها إبرة صغيرة.',
+            'type' => 'true_false',
+            'is_correct' => true,
+            'language' => 'ar',
+        ];
+
+        // Question 14: About what bees eat
+        $questions[] = [
+            'title' => 'ماذا تأكل النحلة؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'اللحوم', 'is_correct' => false],
+                ['text' => 'من الزهور', 'is_correct' => true],
+                ['text' => 'الأوراق', 'is_correct' => false],
+                ['text' => 'الفواكه', 'is_correct' => false],
+            ],
+        ];
+
+        // Question 15: About bee's purpose
+        $questions[] = [
+            'title' => 'لماذا تأكل النحلة من الزهور؟',
+            'type' => 'choice',
+            'language' => 'ar',
+            'options' => [
+                ['text' => 'لأنها جائعة', 'is_correct' => false],
+                ['text' => 'كي تصنع العسل', 'is_correct' => true],
+                ['text' => 'لأنها تحب الزهور', 'is_correct' => false],
+                ['text' => 'لأنها لا تجد طعاماً آخر', 'is_correct' => false],
+            ],
+        ];
+
+        return $questions;
     }
 }

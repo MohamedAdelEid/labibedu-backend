@@ -37,8 +37,8 @@ class UserSeeder extends Seeder
                 'user_name' => 'user1',
                 'email' => 'user1@student.com',
                 'school_id' => 1,
-                'classroom_id' => 1, // Grade 5
-                'group_id' => 1,
+                'classroom_id' => 3, // Grade 5
+                'group_id' => 7,
                 'date_of_birth' => '2010-01-01',
             ],
             [
@@ -46,8 +46,8 @@ class UserSeeder extends Seeder
                 'user_name' => 'user2',
                 'email' => 'user2@student.com',
                 'school_id' => 1,
-                'classroom_id' => 1, // Grade 5
-                'group_id' => 1,
+                'classroom_id' => 3, // Grade 5
+                'group_id' => 7,
                 'date_of_birth' => '2010-02-02',
             ],
             [
@@ -55,8 +55,8 @@ class UserSeeder extends Seeder
                 'user_name' => 'user3',
                 'email' => 'user3@student.com',
                 'school_id' => 1,
-                'classroom_id' => 1, // Grade 5
-                'group_id' => 1,
+                'classroom_id' => 3, // Grade 5
+                'group_id' => 7,
                 'date_of_birth' => '2010-03-03',
             ],
             [
@@ -64,8 +64,8 @@ class UserSeeder extends Seeder
                 'user_name' => 'user4',
                 'email' => 'user4@student.com',
                 'school_id' => 1,
-                'classroom_id' => 1, // Grade 5
-                'group_id' => 1,
+                'classroom_id' => 3, // Grade 5
+                'group_id' => 7,
                 'date_of_birth' => '2010-04-04',
             ],
         ];

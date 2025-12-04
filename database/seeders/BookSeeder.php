@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Infrastructure\Models\Book;
 use App\Infrastructure\Models\Page;
 use App\Infrastructure\Models\ExamTraining;
+use App\Infrastructure\Models\StudentBook;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -23,6 +24,9 @@ class BookSeeder extends Seeder
         foreach ($booksData as $bookData) {
             $this->createBook($bookData);
         }
+
+        // Assign all books to student ID 1
+        $this->assignAllBooksToStudent(1);
 
         $this->command->info('✅ Books seeded successfully!');
         $this->command->info('📊 Total books created: ' . count($booksData));
@@ -240,5 +244,38 @@ class BookSeeder extends Seeder
         for ($i = 1; $i <= $numberOfPages; $i++) {
             File::makeDirectory("{$basePath}/pages/page_{$i}", 0755, true, true);
         }
+    }
+
+    /**
+     * Assign all books to a student
+     */
+    private function assignAllBooksToStudent(int $studentId): void
+    {
+        $books = Book::all();
+
+        if ($books->isEmpty()) {
+            $this->command->warn('⚠️  No books found. Skipping book assignment to student.');
+            return;
+        }
+
+        $assignedCount = 0;
+        foreach ($books as $book) {
+            // Check if already assigned to avoid duplicates
+            $existing = StudentBook::where('student_id', $studentId)
+                ->where('book_id', $book->id)
+                ->first();
+
+            if (!$existing) {
+                StudentBook::create([
+                    'student_id' => $studentId,
+                    'book_id' => $book->id,
+                    'last_read_page_id' => null,
+                    'is_favorite' => false,
+                ]);
+                $assignedCount++;
+            }
+        }
+
+        $this->command->info("📚 Assigned {$assignedCount} books to student ID: {$studentId}");
     }
 }
