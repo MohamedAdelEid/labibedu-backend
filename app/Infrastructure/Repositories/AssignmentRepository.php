@@ -103,17 +103,27 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
 
     public function findAssignmentForStudent(int $assignmentId, int $studentId)
     {
-        return $this->model->whereHas('students', function ($q) use ($studentId) {
+        $assignment = $this->model->whereHas('students', function ($q) use ($studentId) {
             $q->where('student_id', $studentId);
         })
             ->with([
                 'students' => function ($q) use ($studentId) {
                     $q->where('student_id', $studentId);
                 },
-                'assignable.questions.options',
-                'assignable.relatedTraining.questions.options',
+                'assignable',
             ])
             ->findOrFail($assignmentId);
+
+        // Conditionally load relationships based on assignable_type
+        if ($assignment->assignable_type === 'examTraining') {
+            $assignment->load('assignable.questions.options');
+        } elseif ($assignment->assignable_type === 'book') {
+            $assignment->load('assignable.relatedTraining.questions.options', 'assignable.pages');
+        } elseif ($assignment->assignable_type === 'video') {
+            $assignment->load('assignable.relatedTraining.questions.options');
+        }
+
+        return $assignment;
     }
 
     public function getAssignmentsStats(int $studentId): array
