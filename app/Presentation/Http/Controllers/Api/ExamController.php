@@ -100,11 +100,11 @@ class ExamController extends Controller
         return ApiResponse::success($result, 'Exam submitted successfully.');
     }
 
-    public function statistics(int $id): JsonResponse
+    public function statistics(string $id): JsonResponse
     {
         $studentId = auth()->user()->student->id;
 
-        $data = $this->examFacade->getStatistics($id, $studentId);
+        $data = $this->examFacade->getStatistics((int) $id, $studentId);
 
         return ApiResponse::success(
             new ExamStatisticsResource($data),
