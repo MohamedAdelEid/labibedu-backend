@@ -83,6 +83,7 @@ Route::middleware(['jwt.auth', 'user.activity'])->group(function () {
 
             // Journey
             Route::get('/journey', [JourneyController::class, 'index']);
+            Route::get('/journey/data', [JourneyController::class, 'getJourneyData']);
 
             // Lessons
             Route::get('/lessons', [LessonController::class, 'index']);

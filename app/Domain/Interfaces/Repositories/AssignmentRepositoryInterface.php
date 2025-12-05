@@ -21,4 +21,8 @@ interface AssignmentRepositoryInterface
     public function getAssignmentsStats(int $studentId): array;
 
     public function activateAssignment(int $assignmentId, int $studentId): Assignment;
+
+    public function getUpcomingExam(int $studentId, $now, $futureTime): ?Assignment;
+
+    public function getNotStartedCount(int $studentId): int;
 }

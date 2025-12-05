@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Repositories;
 
+use App\Domain\Enums\StudentStageStatus;
 use App\Domain\Interfaces\Repositories\JourneyRepositoryInterface;
 use App\Infrastructure\Models\JourneyLevel;
 use App\Infrastructure\Models\StudentStageProgress;
@@ -55,5 +56,23 @@ class JourneyRepository extends BaseRepository implements JourneyRepositoryInter
             ->whereIn('stage_id', $stageIds)
             ->get()
             ->keyBy('stage_id');
+    }
+
+    public function getCurrentStage(int $studentId): ?StudentStageProgress
+    {
+        return StudentStageProgress::where('student_id', $studentId)
+            ->whereIn('status', [StudentStageStatus::NOT_STARTED->value, StudentStageStatus::IN_PROGRESS->value])
+            ->orderBy('created_at', 'asc')
+            ->first();
+    }
+
+    public function initializeFirstStage(int $studentId, int $firstStageId): StudentStageProgress
+    {
+        return StudentStageProgress::create([
+            'student_id' => $studentId,
+            'stage_id' => $firstStageId,
+            'status' => StudentStageStatus::NOT_STARTED,
+            'earned_stars' => 0,
+        ]);
     }
 }

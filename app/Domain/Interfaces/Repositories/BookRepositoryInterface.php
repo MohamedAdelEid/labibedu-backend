@@ -35,4 +35,6 @@ interface BookRepositoryInterface
         ?string $search,
         int $perPage
     ): LengthAwarePaginator;
+
+    public function findByTitle(string $title): ?Book;
 }

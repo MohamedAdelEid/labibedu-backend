@@ -214,4 +214,31 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
 
         return $assignment;
     }
+
+    public function getUpcomingExam(int $studentId, $now, $futureTime): ?Assignment
+    {
+        return $this->model->whereHas('students', function ($q) use ($studentId) {
+            $q->where('student_id', $studentId);
+        })
+            ->where('assignable_type', 'examTraining')
+            ->whereExists(function ($q) {
+                $q->selectRaw(1)
+                    ->from('exams_trainings')
+                    ->whereColumn('assignments.assignable_id', 'exams_trainings.id')
+                    ->where('exams_trainings.type', 'exam');
+            })
+            ->whereNotNull('end_date')
+            ->whereBetween('end_date', [$now, $futureTime])
+            ->with('assignable')
+            ->orderBy('end_date', 'asc')
+            ->first();
+    }
+
+    public function getNotStartedCount(int $studentId): int
+    {
+        return $this->model->whereHas('students', function ($q) use ($studentId) {
+            $q->where('student_id', $studentId)
+                ->where('assignment_student.status', 'not_started');
+        })->count();
+    }
 }

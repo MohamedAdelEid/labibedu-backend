@@ -25,6 +25,8 @@ class JourneySeeder extends Seeder
 
         $levels = $this->createLevels();
         $this->createFirstLevelStage($levels['beginner']);
+        $this->createEmptyStagesForLevel($levels['skillChallenge']);
+        $this->createEmptyStagesForLevel($levels['knowledgeLegend']);
 
         $this->command->info('✅ Journey seeded successfully!');
     }
@@ -39,13 +41,13 @@ class JourneySeeder extends Seeder
             'order' => 1,
         ]);
 
-        JourneyLevel::create([
+        $levels['skillChallenge'] = JourneyLevel::create([
             'name_ar' => 'تحدّي المهارة',
             'name_en' => 'Skill Challenge',
             'order' => 2,
         ]);
 
-        JourneyLevel::create([
+        $levels['knowledgeLegend'] = JourneyLevel::create([
             'name_ar' => 'أسطورة المعرفة',
             'name_en' => 'Knowledge Legend',
             'order' => 3,
@@ -65,6 +67,21 @@ class JourneySeeder extends Seeder
         $this->createFifthStage($level);
 
         $this->command->info('✅ Created first level stages and contents');
+    }
+
+    private function createEmptyStagesForLevel(JourneyLevel $level): void
+    {
+        $types = ['book', 'examTraining', 'video', 'book', 'examTraining'];
+
+        for ($i = 1; $i <= 5; $i++) {
+            JourneyStage::create([
+                'level_id' => $level->id,
+                'type' => $types[$i - 1],
+                'order' => $i,
+            ]);
+        }
+
+        $this->command->info("✅ Created 5 empty stages for level: {$level->name_en}");
     }
 
     private function createFirstStage(JourneyLevel $level): void

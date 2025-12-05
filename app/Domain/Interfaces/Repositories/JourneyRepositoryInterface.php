@@ -26,4 +26,14 @@ interface JourneyRepositoryInterface extends BaseRepositoryInterface
      * Get all student stage progress records by stage IDs
      */
     public function getStudentProgressByStageIds(int $studentId, array $stageIds): Collection;
+
+    /**
+     * Get current stage for student (status = in_progress or not_started)
+     */
+    public function getCurrentStage(int $studentId): ?StudentStageProgress;
+
+    /**
+     * Initialize first stage for student if no progress exists
+     */
+    public function initializeFirstStage(int $studentId, int $firstStageId): StudentStageProgress;
 }

@@ -108,4 +108,11 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
 
         return $query->paginate($perPage);
     }
+
+    public function findByTitle(string $title): ?Book
+    {
+        return $this->model->where('title', $title)
+            ->with(['level', 'pages'])
+            ->first();
+    }
 }

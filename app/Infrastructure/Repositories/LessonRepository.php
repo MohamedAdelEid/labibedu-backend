@@ -30,7 +30,9 @@ class LessonRepository extends BaseRepository implements LessonRepositoryInterfa
         }
 
         $query = $this->model->query()
-            ->with(['books', 'videos', 'subject', 'grade', 'category'])
+            ->with(['books' => function ($query) {
+                $query->withCount('pages');
+            }, 'videos', 'subject', 'grade', 'category'])
             ->withCount(['books', 'videos'])
             ->where('subject_id', $subjectId)
             ->where('grade_id', $gradeId);
