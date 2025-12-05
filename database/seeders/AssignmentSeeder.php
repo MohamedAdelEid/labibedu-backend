@@ -1312,28 +1312,6 @@ class AssignmentSeeder extends Seeder
                 'is_text_to_speech' => false,
             ]);
         }
-        
-
-        $assignment = Assignment::create([
-            'title_ar' => 'تمرين كتاب: آدم يتخيل النحلة',
-            'title_en' => 'Book Exercise: Adam Imagines the Bee',
-            'assignable_type' => 'book',
-            'assignable_id' => $book->id,
-            'teacher_id' => $teacherId,
-            'start_date' => Carbon::now(),
-            'end_date' => Carbon::now()->addDays(14),
-        ]);
-
-        // Attach student ID 1 to the assignment
-        $studentId = 1;
-        DB::table('assignment_student')->insert([
-            'assignment_id' => $assignment->id,
-            'student_id' => $studentId,
-            'status' => 'not_started',
-            'assigned_at' => Carbon::now(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
 
         // Get book pages
         $pages = Page::where('book_id', $book->id)->orderBy('id')->get();
@@ -1393,16 +1371,16 @@ class AssignmentSeeder extends Seeder
 
         $this->command->info("   ✅ Created {$questionCount} questions from book pages");
 
-        // // Create Assignment with assignable_type = 'book'
-        // $assignment = Assignment::create([
-        //     'title_ar' => 'تمرين كتاب: ' . $book->title,
-        //     'title_en' => 'Book Exercise: ' . $book->title,
-        //     'assignable_type' => 'book',
-        //     'assignable_id' => $book->id,
-        //     'teacher_id' => $teacherId,
-        //     'start_date' => Carbon::now(),
-        //     'end_date' => Carbon::now()->addDays(14),
-        // ]);
+        // Create Assignment with assignable_type = 'book'
+        $assignment = Assignment::create([
+            'title_ar' => 'تمرين كتاب: ' . $book->title,
+            'title_en' => 'Book Exercise: ' . $book->title,
+            'assignable_type' => 'book',
+            'assignable_id' => $book->id,
+            'teacher_id' => $teacherId,
+            'start_date' => Carbon::now(),
+            'end_date' => Carbon::now()->addDays(14),
+        ]);
 
         // Attach student ID 1 to the assignment
         $studentId = 1;
