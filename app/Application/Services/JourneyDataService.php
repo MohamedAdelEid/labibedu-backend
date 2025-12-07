@@ -33,13 +33,14 @@ class JourneyDataService
     public function getJourneyData(int $studentId): array
     {
         $exam = $this->getUpcomingExam($studentId);
-        $assignmentCount = $this->getNotStartedAssignmentCount($studentId);
+        $assignmentData = $this->getNotStartedExamTrainingAssignmentData($studentId);
         $bookCard = $this->getSanaaInSpaceBook();
         $levels = $this->getLevelsWithProgress($studentId);
 
         return [
             'exam' => $exam,
-            'assignmentCount' => $assignmentCount,
+            'assignmentCount' => $assignmentData['count'],
+            'assignmentType' => $assignmentData['type'],
             'bookCard' => $bookCard,
             'levels' => $levels,
         ];
@@ -85,6 +86,16 @@ class JourneyDataService
     private function getNotStartedAssignmentCount(int $studentId): int
     {
         return $this->assignmentRepository->getNotStartedCount($studentId);
+    }
+
+    private function getNotStartedExamTrainingAssignmentData(int $studentId): array
+    {
+        $count = $this->assignmentRepository->getNotStartedExamTrainingCount($studentId);
+
+        return [
+            'count' => $count,
+            'type' => 'training',
+        ];
     }
 
     private function getSanaaInSpaceBook(): ?array

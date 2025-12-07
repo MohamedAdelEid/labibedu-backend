@@ -12,6 +12,7 @@ class JourneyDataResource extends JsonResource
         return [
             'exam' => $this->resource['exam'],
             'assignmentCount' => $this->resource['assignmentCount'],
+            // 'assignmentType' => $this->resource['assignmentType'] ?? null,
             'bookCard' => $this->resource['bookCard'],
             'levels' => JourneyLevelDataResource::collection($this->resource['levels']),
         ];

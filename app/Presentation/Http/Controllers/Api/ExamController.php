@@ -16,6 +16,7 @@ use App\Presentation\Http\Resources\Exam\ExamStatisticsResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 
 class ExamController extends Controller
 {

@@ -250,6 +250,22 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
         })->count();
     }
 
+    public function getNotStartedExamTrainingCount(int $studentId): int
+    {
+        return $this->model->whereHas('students', function ($q) use ($studentId) {
+            $q->where('student_id', $studentId)
+                ->where('assignment_student.status', 'not_started');
+        })
+            ->where('assignable_type', 'examTraining')
+            ->whereExists(function ($q) {
+                $q->selectRaw(1)
+                    ->from('exams_trainings')
+                    ->whereColumn('assignments.assignable_id', 'exams_trainings.id')
+                    ->where('exams_trainings.type', 'training');
+            })
+            ->count();
+    }
+
     /**
      * Complete assignment for student (change status to completed)
      */
