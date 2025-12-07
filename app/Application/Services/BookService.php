@@ -31,9 +31,9 @@ class BookService implements BookServiceInterface
         // Check if book is completed using BookProgressService
         $isCompleted = $this->bookProgressService->getReadingStatus($book, $studentId) === 'completed';
 
-        if (!$isCompleted) {
-            throw new Exception('Book must be completed first before scoring');
-        }
+        // if (!$isCompleted) {
+        //     throw new Exception('Book must be completed first before scoring');
+        // }
 
         // Get student book record for updated_at timestamp
         $studentBook = $this->studentBookRepository->findByStudentAndBook($studentId, $bookId);

@@ -18,6 +18,7 @@ use App\Presentation\Http\Requests\Auth\ResendOtpRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -45,7 +46,7 @@ class AuthController extends Controller
     {
         /** @var Request $request */
         $refreshToken = $request->cookie('refresh_token');
-
+        Log::info('Refresh token: ' . $refreshToken);
         if (!$refreshToken) {
             return ApiResponse::error(__('auth.no_refresh_token'), null, 401);
         }

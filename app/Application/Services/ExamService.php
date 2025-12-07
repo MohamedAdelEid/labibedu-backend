@@ -50,17 +50,17 @@ class ExamService
         $attemptData = null;
         $previousAnswers = collect();
 
-        if ($examTraining->isExam()) {
-            $attempt = $this->examAttemptRepository->findLatestAttempt($studentId, $examId);
+        // Get attempt for both exams and trainings
+        $attempt = $this->examAttemptRepository->findLatestAttempt($studentId, $examId);
 
-            if ($attempt) {
-                if ($attempt->isInProgress() && $attempt->hasExpired()) {
-                    $attempt->markAsFinished();
-                }
-
-                $attemptData = $attempt;
-                $previousAnswers = $this->answerRepository->getAnswersForStudentExam($studentId, $examId);
+        if ($attempt) {
+            // For exams, check if expired and mark as finished
+            if ($examTraining->isExam() && $attempt->isInProgress() && $attempt->hasExpired()) {
+                $attempt->markAsFinished();
             }
+
+            $attemptData = $attempt;
+            $previousAnswers = $this->answerRepository->getAnswersForStudentExam($studentId, $examId);
         } else {
             $previousAnswers = $this->answerRepository->getAnswersForStudentExam($studentId, $examId);
         }

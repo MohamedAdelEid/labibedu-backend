@@ -13,6 +13,7 @@ use App\Domain\Interfaces\Services\AuthServiceInterface;
 use App\Domain\Interfaces\Services\UserActivityServiceInterface;
 use App\Infrastructure\Models\Otp;
 use App\Infrastructure\Models\PasswordResetTokens;
+use App\Infrastructure\Models\User;
 use App\Presentation\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class AuthService implements AuthServiceInterface
 {
@@ -46,6 +48,7 @@ class AuthService implements AuthServiceInterface
 
         $accessToken = JWTAuth::fromUser($user);
         $refreshToken = $this->generateRefreshToken($user);
+        Log::info('Generated refresh token: ' . $refreshToken);
 
         // Track login activity
         if ($ipAddress && $userAgent) {
@@ -63,14 +66,14 @@ class AuthService implements AuthServiceInterface
     public function refresh(string $refreshToken): array
     {
         $user = $this->validateRefreshToken($refreshToken);
-
+        Log::info('User: ' . json_encode($user));
         if (!$user) {
             throw new InvalidTokenException(__('auth.invalid_token'));
         }
 
         $newAccessToken = JWTAuth::fromUser($user);
         $newRefreshToken = $this->generateRefreshToken($user);
-
+        Log::info('New access token: ' . $newAccessToken);
         // Invalidate old refresh token
         $user->refresh_token = null;
         $user->save();
@@ -238,7 +241,8 @@ class AuthService implements AuthServiceInterface
     private function validateRefreshToken(string $token)
     {
         $users = $this->userRepository->all();
-
+        Log::info('user 3: ' . User::find(3)->refresh_token);
+        Log::info('Users: ' . json_encode($users));
         foreach ($users as $user) {
             if ($user->refresh_token && Hash::check($token, $user->refresh_token)) {
                 return $user;
