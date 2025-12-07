@@ -90,7 +90,7 @@ class JourneyDataService
 
     private function getNotStartedExamTrainingAssignmentData(int $studentId): array
     {
-        $count = $this->assignmentRepository->getNotStartedExamTrainingCount($studentId);
+        $count = $this->assignmentRepository->getNotStartedAssignmentsExceptExamCount($studentId);
 
         return [
             'count' => $count,

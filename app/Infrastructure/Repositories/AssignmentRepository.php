@@ -266,6 +266,29 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
             ->count();
     }
 
+    public function getNotStartedAssignmentsExceptExamCount(int $studentId): int
+    {
+        return $this->model->whereHas('students', function ($q) use ($studentId) {
+            $q->where('student_id', $studentId)
+                ->where('assignment_student.status', 'not_started');
+        })
+            ->where(function ($query) {
+                // Include all assignments except examTraining with type 'exam'
+                $query->where('assignable_type', '!=', 'examTraining')
+                    ->orWhere(function ($q) {
+                    // Include examTraining but exclude those with type 'exam'
+                    $q->where('assignable_type', 'examTraining')
+                        ->whereExists(function ($subQ) {
+                        $subQ->selectRaw(1)
+                            ->from('exams_trainings')
+                            ->whereColumn('assignments.assignable_id', 'exams_trainings.id')
+                            ->where('exams_trainings.type', '!=', 'exam');
+                    });
+                });
+            })
+            ->count();
+    }
+
     /**
      * Complete assignment for student (change status to completed)
      */

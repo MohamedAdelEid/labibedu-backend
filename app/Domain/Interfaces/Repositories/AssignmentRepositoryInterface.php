@@ -28,5 +28,7 @@ interface AssignmentRepositoryInterface
 
     public function getNotStartedExamTrainingCount(int $studentId): int;
 
+    public function getNotStartedAssignmentsExceptExamCount(int $studentId): int;
+
     public function completeAssignmentForStudent(int $assignmentId, int $studentId): void;
 }
