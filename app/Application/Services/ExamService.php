@@ -13,10 +13,16 @@ use App\Domain\Interfaces\Repositories\AnswerRepositoryInterface;
 use App\Domain\Interfaces\Repositories\ExamAttemptRepositoryInterface;
 use App\Domain\Interfaces\Repositories\ExamTrainingRepositoryInterface;
 use App\Domain\Interfaces\Repositories\QuestionRepositoryInterface;
+use App\Domain\Interfaces\Repositories\JourneyRepositoryInterface;
+use App\Domain\Interfaces\Repositories\AssignmentRepositoryInterface;
 use App\Domain\Interfaces\Services\StudentServiceInterface;
 use App\Domain\Interfaces\Services\BookServiceInterface;
 use App\Domain\Interfaces\Services\VideoServiceInterface;
 use App\Domain\Services\AnswerEvaluationService;
+use App\Domain\Enums\StudentStageStatus;
+use App\Infrastructure\Models\StudentStageProgress;
+use App\Infrastructure\Models\StageContent;
+use App\Infrastructure\Models\Assignment;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -35,7 +41,9 @@ class ExamService
         private BookServiceInterface $bookService,
         private VideoServiceInterface $videoService,
         private VideoRepositoryInterface $videoRepository,
-        private BookRepositoryInterface $bookRepository
+        private BookRepositoryInterface $bookRepository,
+        private JourneyRepositoryInterface $journeyRepository,
+        private AssignmentRepositoryInterface $assignmentRepository
     ) {
     }
 
@@ -226,8 +234,15 @@ class ExamService
 
             $attempt->markAsFinished();
 
-            // Process completion scoring with new flow
             $scoringResult = $this->processExamCompletionScoring($dto->studentId, $dto->examTrainingId);
+
+            if ($dto->source === 'journey' && $dto->sourceId) {
+                $this->handleJourneyProgress($dto->studentId, $dto->examTrainingId);
+            }
+
+            if ($dto->source === 'assignment' && $dto->sourceId) {
+                $this->handleAssignmentCompletion($dto->studentId, $dto->examTrainingId, $dto->sourceId);
+            }
 
             return [
                 'total_questions' => $scoringResult['total_questions'],
@@ -498,5 +513,168 @@ class ExamService
             'wrong_answers' => $answers->count() - $correctCount,
             'questions_with_answers' => $questionsWithAnswers,
         ];
+    }
+
+    private function handleJourneyProgress(int $studentId, int $examTrainingId): void
+    {
+        $examTraining = $this->examTrainingRepository->findOrFail($examTrainingId);
+
+        $relatedBook = $this->bookRepository->getByRelatedTrainingId($examTrainingId)->first();
+        $relatedVideo = $this->videoRepository->getByRelatedTrainingId($examTrainingId)->first();
+
+        $stageContent = null;
+        $contentId = null;
+        $contentType = null;
+
+        if ($relatedBook) {
+            $stageContent = StageContent::where('content_type', 'book')
+                ->where('content_id', $relatedBook->id)
+                ->first();
+            if ($stageContent) {
+                $contentId = $relatedBook->id;
+                $contentType = 'book';
+            }
+        }
+
+        if (!$stageContent && $relatedVideo) {
+            $stageContent = StageContent::where('content_type', 'video')
+                ->where('content_id', $relatedVideo->id)
+                ->first();
+            if ($stageContent) {
+                $contentId = $relatedVideo->id;
+                $contentType = 'video';
+            }
+        }
+
+        if (!$stageContent) {
+            $stageContent = StageContent::where('content_type', 'examTraining')
+                ->where('content_id', $examTrainingId)
+                ->first();
+            if ($stageContent) {
+                $contentId = $examTrainingId;
+                $contentType = 'examTraining';
+            }
+        }
+
+        if (!$stageContent) {
+            return;
+        }
+
+        $stage = $stageContent->stage;
+        $contents = $stage->contents()->orderBy('id', 'asc')->get();
+        $lastContent = $contents->last();
+
+        if (!$lastContent || $lastContent->id !== $stageContent->id) {
+            return;
+        }
+
+        $currentProgress = $this->journeyRepository->getStudentStageProgress($studentId, $stage->id);
+
+        if ($currentProgress) {
+            $currentProgress->update([
+                'status' => StudentStageStatus::COMPLETED,
+            ]);
+        }
+
+        $levels = $this->journeyRepository->getAllLevelsWithStages();
+        $nextStage = $this->findNextStage($levels, $stage);
+
+        if ($nextStage) {
+            $existingProgress = $this->journeyRepository->getStudentStageProgress($studentId, $nextStage->id);
+            if (!$existingProgress) {
+                StudentStageProgress::create([
+                    'student_id' => $studentId,
+                    'stage_id' => $nextStage->id,
+                    'status' => StudentStageStatus::NOT_STARTED,
+                    'earned_stars' => 0,
+                ]);
+            }
+        }
+    }
+
+    private function findNextStage($levels, $currentStage)
+    {
+        foreach ($levels as $level) {
+            $stages = $level->stages->sortBy('order');
+            $currentIndex = $stages->search(fn($s) => $s->id === $currentStage->id);
+
+            if ($currentIndex !== false) {
+                $nextIndex = $currentIndex + 1;
+                if ($nextIndex < $stages->count()) {
+                    return $stages->values()[$nextIndex];
+                }
+
+                $levelIndex = $levels->search(fn($l) => $l->id === $level->id);
+                if ($levelIndex !== false && ($levelIndex + 1) < $levels->count()) {
+                    $nextLevel = $levels->values()[$levelIndex + 1];
+                    return $nextLevel->stages->sortBy('order')->first();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Handle assignment completion when exam/training is submitted
+     * Checks if exam is related to book/video and if book/video is related to assignment
+     * Also checks if exam/training is directly related to assignment
+     */
+    private function handleAssignmentCompletion(int $studentId, int $examTrainingId, int $assignmentId): void
+    {
+        $examTraining = $this->examTrainingRepository->findOrFail($examTrainingId);
+
+        // Check if exam/training is directly related to assignment
+        $directAssignment = Assignment::where('id', $assignmentId)
+            ->where('assignable_type', 'examTraining')
+            ->where('assignable_id', $examTrainingId)
+            ->whereHas('students', function ($q) use ($studentId) {
+                $q->where('student_id', $studentId);
+            })
+            ->first();
+
+        if ($directAssignment) {
+            // Update assignment status to completed
+            $this->assignmentRepository->completeAssignmentForStudent($assignmentId, $studentId);
+            return;
+        }
+
+        // Check if exam is related to book or video
+        $relatedBook = $this->bookRepository->getByRelatedTrainingId($examTrainingId)->first();
+        $relatedVideo = $this->videoRepository->getByRelatedTrainingId($examTrainingId)->first();
+
+        // Check if book is related to assignment
+        if ($relatedBook) {
+            $bookAssignment = Assignment::where('id', $assignmentId)
+                ->where('assignable_type', 'book')
+                ->where('assignable_id', $relatedBook->id)
+                ->whereHas('students', function ($q) use ($studentId) {
+                    $q->where('student_id', $studentId);
+                })
+                ->first();
+
+            if ($bookAssignment) {
+                // Update assignment status to completed
+                $this->assignmentRepository->completeAssignmentForStudent($assignmentId, $studentId);
+                return;
+            }
+        }
+
+        // Check if video is related to assignment
+        if ($relatedVideo) {
+            $videoAssignment = Assignment::where('id', $assignmentId)
+                ->where('assignable_type', 'video')
+                ->where('assignable_id', $relatedVideo->id)
+                ->whereHas('students', function ($q) use ($studentId) {
+                    $q->where('student_id', $studentId);
+                })
+                ->first();
+
+            if ($videoAssignment) {
+                // Update assignment status to completed
+                $this->assignmentRepository->completeAssignmentForStudent($assignmentId, $studentId);
+                return;
+            }
+        }
     }
 }

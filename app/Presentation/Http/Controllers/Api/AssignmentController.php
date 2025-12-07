@@ -84,7 +84,7 @@ class AssignmentController extends Controller
             // Get current status
             $currentStatus = $assignment->students->first()?->pivot->status ?? 'not_started';
 
-            if ($currentStatus !== 'not_started') {
+            if ($currentStatus !== 'not_started' && $currentStatus !== 'in_progress') {
                 return ApiResponse::error(
                     'Assignment is already activated or completed.',
                     400

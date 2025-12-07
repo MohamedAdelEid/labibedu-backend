@@ -25,4 +25,6 @@ interface AssignmentRepositoryInterface
     public function getUpcomingExam(int $studentId, $now, $futureTime): ?Assignment;
 
     public function getNotStartedCount(int $studentId): int;
+
+    public function completeAssignmentForStudent(int $assignmentId, int $studentId): void;
 }

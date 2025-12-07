@@ -88,11 +88,13 @@ class ExamController extends Controller
         return ApiResponse::success($result, 'Heartbeat sent successfully.');
     }
 
-    public function submitEntireExam(int $id): JsonResponse
+    public function submitEntireExam(int $id, SubmitEntireExamRequest $request): JsonResponse
     {
         $dto = new SubmitEntireExamDTO(
             studentId: auth()->user()->student->id,
             examTrainingId: $id,
+            source: $request->input('source'),
+            sourceId: $request->input('sourceId'),
         );
 
         $result = $this->examFacade->submitEntireExam($dto);

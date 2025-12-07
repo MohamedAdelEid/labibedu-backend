@@ -20,20 +20,17 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
 
     public function getAssignmentsForStudent(int $studentId, ?string $type, ?string $status, int $perPage): LengthAwarePaginator
     {
-        // If type is 'current', force status to 'not_started'
-        // If type is other tabs (exams, training, reading, watching), exclude 'not_started'
-        if ($type === 'current' && !$status) {
-            $status = 'not_started';
-        }
-
         $query = $this->model->whereHas('students', function ($q) use ($studentId, $status, $type) {
             $q->where('student_id', $studentId);
 
             if ($status) {
                 $q->where('assignment_student.status', $status);
+            } elseif ($type === 'current') {
+                // For 'current' tab, include both 'not_started' and 'in_progress'
+                $q->whereIn('assignment_student.status', ['not_started', 'in_progress']);
             } elseif (in_array($type, ['exams', 'training', 'reading', 'watching'])) {
-                // For other tabs, exclude 'not_started' status
-                $q->whereIn('assignment_student.status', ['in_progress', 'completed', 'not_submitted']);
+                // For other tabs, only include 'completed' and 'not_submitted'
+                $q->whereIn('assignment_student.status', ['completed', 'not_submitted']);
             }
         })
             ->with([
@@ -134,7 +131,7 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
 
         $total = $baseQuery->count();
 
-        // For other tabs (exams, training, reading, watching), count only completed assignments
+        // For other tabs (exams, training, reading, watching), count only completed and not_submitted assignments
         $exams = (clone $baseQuery)->where('assignable_type', 'examTraining')
             ->whereExists(function ($q) {
                 $q->selectRaw(1)
@@ -144,7 +141,7 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
             })
             ->whereHas('students', function ($q) use ($studentId) {
                 $q->where('student_id', $studentId)
-                    ->where('assignment_student.status', 'completed');
+                    ->whereIn('assignment_student.status', ['completed', 'not_submitted']);
             })->count();
 
         $training = (clone $baseQuery)->where('assignable_type', 'examTraining')
@@ -171,11 +168,16 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
                     ->where('assignment_student.status', 'completed');
             })->count();
 
-        // Get current count (in_progress + not_started)
+        // Get current count (in_progress + not_started) for assignments that haven't ended yet
         $current = $this->model->whereHas('students', function ($q) use ($studentId) {
             $q->where('student_id', $studentId)
                 ->whereIn('assignment_student.status', ['in_progress', 'not_started']);
-        })->count();
+        })
+            ->where(function ($q) {
+                $q->whereNull('end_date')
+                    ->orWhere('end_date', '>=', now());
+            })
+            ->count();
 
         return [
             'total' => $total,
@@ -192,17 +194,23 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
      */
     public function activateAssignment(int $assignmentId, int $studentId): Assignment
     {
-        // Find assignment and verify it belongs to the student with not_started status
+        // Find assignment and verify it belongs to the student with not_started or in_progress status
         $assignment = $this->model->whereHas('students', function ($q) use ($studentId) {
             $q->where('student_id', $studentId)
-                ->where('assignment_student.status', 'not_started');
+                ->whereIn('assignment_student.status', ['not_started', 'in_progress']);
         })->findOrFail($assignmentId);
 
-        // Update pivot status from not_started to in_progress
-        $assignment->students()->updateExistingPivot($studentId, [
-            'status' => 'in_progress',
-            'updated_at' => now(),
-        ]);
+        // Get current status
+        $currentStatus = $assignment->students->first()?->pivot->status ?? 'not_started';
+
+        // Only update if status is not_started, if already in_progress, just reload
+        if ($currentStatus === 'not_started') {
+            // Update pivot status from not_started to in_progress
+            $assignment->students()->updateExistingPivot($studentId, [
+                'status' => 'in_progress',
+                'updated_at' => now(),
+            ]);
+        }
 
         // Reload the assignment with updated relationships
         $assignment->load([
@@ -240,5 +248,21 @@ class AssignmentRepository extends BaseRepository implements AssignmentRepositor
             $q->where('student_id', $studentId)
                 ->where('assignment_student.status', 'not_started');
         })->count();
+    }
+
+    /**
+     * Complete assignment for student (change status to completed)
+     */
+    public function completeAssignmentForStudent(int $assignmentId, int $studentId): void
+    {
+        $assignment = $this->model->whereHas('students', function ($q) use ($studentId) {
+            $q->where('student_id', $studentId);
+        })->findOrFail($assignmentId);
+
+        // Update pivot status to completed
+        $assignment->students()->updateExistingPivot($studentId, [
+            'status' => 'completed',
+            'updated_at' => now(),
+        ]);
     }
 }

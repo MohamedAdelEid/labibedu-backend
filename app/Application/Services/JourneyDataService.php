@@ -293,11 +293,11 @@ class JourneyDataService
     private function isBookContentCompleted(int $studentId, int $bookId): bool
     {
         $book = $this->bookRepository->findOrFail($bookId);
-        $isRead = $this->bookProgressService->isRead($book, $studentId);
+        // $isRead = $this->bookProgressService->isRead($book, $studentId);
 
-        if (!$isRead) {
-            return false;
-        }
+        // if (!$isRead) {
+        //     return false;
+        // }
 
         if ($book->related_training_id) {
             return $this->examService->isExamTrainingCompleted($studentId, $book->related_training_id);
