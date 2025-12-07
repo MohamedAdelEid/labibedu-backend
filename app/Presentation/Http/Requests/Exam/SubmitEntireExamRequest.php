@@ -14,7 +14,7 @@ class SubmitEntireExamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'source' => 'nullable|string|in:journey,assignment',
+            'source' => 'nullable|string',
             'sourceId' => 'nullable|integer',
         ];
     }
