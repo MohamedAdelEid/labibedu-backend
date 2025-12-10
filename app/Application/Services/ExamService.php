@@ -23,6 +23,8 @@ use App\Domain\Enums\StudentStageStatus;
 use App\Infrastructure\Models\StudentStageProgress;
 use App\Infrastructure\Models\StageContent;
 use App\Infrastructure\Models\Assignment;
+use App\Infrastructure\Models\Book;
+use App\Infrastructure\Models\Video;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -568,11 +570,14 @@ class ExamService
             return;
         }
 
+        $earnedStars = $this->calculateStageStars($studentId, $stage);
+
         $currentProgress = $this->journeyRepository->getStudentStageProgress($studentId, $stage->id);
 
         if ($currentProgress) {
             $currentProgress->update([
                 'status' => StudentStageStatus::COMPLETED,
+                'earned_stars' => $earnedStars,
             ]);
         }
 
@@ -589,6 +594,62 @@ class ExamService
                     'earned_stars' => 0,
                 ]);
             }
+        }
+    }
+
+    private function calculateStageStars(int $studentId, $stage): int
+    {
+        $examTrainingIds = collect();
+
+        $stageContents = $stage->contents()->get();
+
+        foreach ($stageContents as $content) {
+            if ($content->content_type === 'examTraining') {
+                $examTrainingIds->push($content->content_id);
+            } elseif ($content->content_type === 'book') {
+                $book = Book::find($content->content_id);
+                if ($book && $book->related_training_id) {
+                    $examTrainingIds->push($book->related_training_id);
+                }
+            } elseif ($content->content_type === 'video') {
+                $video = Video::find($content->content_id);
+                if ($video && $video->related_training_id) {
+                    $examTrainingIds->push($video->related_training_id);
+                }
+            }
+        }
+
+        $examTrainingIds = $examTrainingIds->unique();
+
+        $totalCorrectAnswers = 0;
+
+        foreach ($examTrainingIds as $examTrainingId) {
+            $attempt = $this->examAttemptRepository->findLatestAttempt($studentId, $examTrainingId);
+            if (!$attempt || !$attempt->isFinished()) {
+                continue;
+            }
+
+            $questions = $this->questionRepository->getAllByExamTrainingId($examTrainingId);
+            $answers = $this->answerRepository->getAnswersForStudentExam($studentId, $examTrainingId);
+
+            $answersMap = $answers->keyBy('question_id');
+
+            foreach ($questions as $question) {
+                $answer = $answersMap->get($question->id);
+                $evaluation = $this->answerEvaluationService->evaluateQuestion($question, $answer, $attempt);
+                if ($evaluation['is_correct'] ?? false) {
+                    $totalCorrectAnswers++;
+                }
+            }
+        }
+
+        // return (int) floor($totalCorrectAnswers / 3);
+        if ($totalCorrectAnswers < 15) {
+            return 1;
+        } elseif ($totalCorrectAnswers < 24) {
+            return 2;
+        } else {
+            return 3;
         }
     }
 

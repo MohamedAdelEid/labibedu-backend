@@ -34,7 +34,7 @@ class ExamController extends Controller
         $studentId = auth()->user()->student->id;
         $perPage = $request->input('per_page', 10);
 
-        $data = $this->examFacade->getExamDetails($id, $studentId, 4);
+        $data = $this->examFacade->getExamDetails($id, $studentId, 10);
 
         return ApiResponse::success(
             new ExamDetailsResource($data),
