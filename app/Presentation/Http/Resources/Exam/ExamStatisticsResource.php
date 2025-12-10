@@ -12,7 +12,7 @@ class ExamStatisticsResource extends JsonResource
         $examTraining = $this->resource['examTraining'];
         $attempt = $this->resource['attempt'];
 
-        return [
+        $data = [
             'exam' => [
                 'id' => $examTraining->id,
                 'title' => $examTraining->title,
@@ -27,6 +27,13 @@ class ExamStatisticsResource extends JsonResource
             'started_at' => $attempt->start_time?->toIso8601String(),
             'completed_at' => $attempt->end_time?->toIso8601String(),
         ];
+
+        // Only include marks if they are present (not excluded)
+        if (isset($this->resource['earned_marks'])) {
+            $data['earned_marks'] = $this->resource['earned_marks'];
+        }
+
+        return $data;
     }
 }
 

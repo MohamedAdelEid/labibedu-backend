@@ -380,6 +380,69 @@ class ExamService
      * @param int $studentId
      * @return array
      */
+    /**
+     * Check if marks should be excluded for this exam/training
+     * Marks are excluded if:
+     * 1. Exam is directly related to journey content
+     * 2. Exam is related to a book that is related to journey
+     * 3. Exam is related to a video that is related to journey
+     * 4. Exam is related to a book that has is_in_library = true
+     */
+    private function shouldExcludeMarks(int $examTrainingId): bool
+    {
+        // Check if exam is directly in journey_stage_contents
+        $isInJourney = DB::table('journey_stage_contents')
+            ->where('content_type', 'examTraining')
+            ->where('content_id', $examTrainingId)
+            ->exists();
+
+        if ($isInJourney) {
+            return true;
+        }
+
+        // Check if exam is related to a book that is in journey
+        $bookInJourney = DB::table('books')
+            ->where('related_training_id', $examTrainingId)
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('journey_stage_contents')
+                    ->whereColumn('journey_stage_contents.content_id', 'books.id')
+                    ->where('journey_stage_contents.content_type', 'book');
+            })
+            ->exists();
+
+        if ($bookInJourney) {
+            return true;
+        }
+
+        // Check if exam is related to a video that is in journey
+        $videoInJourney = DB::table('videos')
+            ->where('related_training_id', $examTrainingId)
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('journey_stage_contents')
+                    ->whereColumn('journey_stage_contents.content_id', 'videos.id')
+                    ->where('journey_stage_contents.content_type', 'video');
+            })
+            ->exists();
+
+        if ($videoInJourney) {
+            return true;
+        }
+
+        // Check if exam is related to a book that has is_in_library = true
+        $bookIsLibrary = DB::table('books')
+            ->where('related_training_id', $examTrainingId)
+            ->where('is_in_library', true)
+            ->exists();
+
+        if ($bookIsLibrary) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getStatistics(int $examTrainingId, int $studentId): array
     {
         $examTraining = $this->examTrainingRepository->findOrFail($examTrainingId);
@@ -391,6 +454,9 @@ class ExamService
             throw new Exception('Exam/Training has not been completed yet.');
         }
 
+        // Check if marks should be excluded
+        $shouldExcludeMarks = $this->shouldExcludeMarks($examTrainingId);
+
         // Get all questions for this exam/training
         $questions = $this->questionRepository->getAllByExamTrainingId($examTrainingId);
 
@@ -400,6 +466,7 @@ class ExamService
         // Calculate performance metrics
         $earnedXp = 0;
         $earnedCoins = 0;
+        $earnedMarks = 0;
         $correctCount = 0;
 
         // Map answers by question_id for easier lookup
@@ -417,6 +484,11 @@ class ExamService
                 // Add XP and coins from question directly (same as ExamScoringCalculator)
                 $earnedXp += $question->xp ?? 0;
                 $earnedCoins += $question->coins ?? 0;
+
+                // Only calculate marks if they should be included
+                if (!$shouldExcludeMarks) {
+                    $earnedMarks += $question->marks ?? 0;
+                }
             }
         }
 
@@ -430,7 +502,7 @@ class ExamService
             $timeSpentSeconds = $attempt->start_time->diffInSeconds($attempt->end_time);
         }
 
-        return [
+        $result = [
             'examTraining' => $examTraining,
             'attempt' => $attempt,
             'total_questions' => $totalQuestions,
@@ -440,6 +512,13 @@ class ExamService
             'earned_xp' => $earnedXp,
             'earned_coins' => $earnedCoins,
         ];
+
+        // Only include marks if they should not be excluded
+        if (!$shouldExcludeMarks) {
+            $result['earned_marks'] = $earnedMarks;
+        }
+
+        return $result;
     }
 
     /**
@@ -461,14 +540,17 @@ class ExamService
             throw new Exception('Exam/Training has not been completed yet.');
         }
 
+        // Check if marks should be excluded
+        $shouldExcludeMarks = $this->shouldExcludeMarks($examTrainingId);
+
         // Get all questions for this exam/training
         $questions = $this->questionRepository->getAllByExamTrainingId($examTrainingId);
 
         // Get all answers for this student
         $answers = $this->answerRepository->getAnswersForStudentExam($studentId, $examTrainingId);
 
-        // Calculate total marks available
-        $totalMarks = $questions->count();
+        // Calculate total marks available (only if marks should be included)
+        $totalMarks = $shouldExcludeMarks ? null : $questions->sum('marks');
 
         // Calculate performance metrics
         $earnedMarks = 0;
@@ -480,7 +562,7 @@ class ExamService
         $answersMap = $answers->keyBy('question_id');
 
         // Prepare questions with their answers
-        $questionsWithAnswers = $questions->map(function ($question) use ($answersMap, &$earnedMarks, &$earnedXp, &$earnedCoins, &$correctCount) {
+        $questionsWithAnswers = $questions->map(function ($question) use ($answersMap, &$earnedMarks, &$earnedXp, &$earnedCoins, &$correctCount, $shouldExcludeMarks) {
             $answer = $answersMap->get($question->id);
             $evaluation = $this->answerEvaluationService->evaluateQuestion($question, $answer, null);
 
@@ -489,7 +571,10 @@ class ExamService
 
             if ($isCorrect) {
                 $correctCount++;
-                $earnedMarks++;
+                // Only calculate marks if they should be included
+                if (!$shouldExcludeMarks) {
+                    $earnedMarks += $question->marks ?? 0;
+                }
                 // Add XP and coins from question directly (same as ExamScoringCalculator)
                 $earnedXp += $question->xp ?? 0;
                 $earnedCoins += $question->coins ?? 0;
@@ -503,18 +588,25 @@ class ExamService
             ];
         });
 
-        return [
+        $result = [
             'examTraining' => $examTraining,
             'attempt' => $attempt,
             'total_questions' => $questions->count(),
-            'total_marks' => $totalMarks,
-            'earned_marks' => $earnedMarks,
             'earned_xp' => $earnedXp,
             'earned_coins' => $earnedCoins,
             'correct_answers' => $correctCount,
             'wrong_answers' => $answers->count() - $correctCount,
             'questions_with_answers' => $questionsWithAnswers,
+            'should_exclude_marks' => $shouldExcludeMarks,
         ];
+
+        // Only include marks if they should not be excluded
+        if (!$shouldExcludeMarks) {
+            $result['total_marks'] = $totalMarks;
+            $result['earned_marks'] = $earnedMarks;
+        }
+
+        return $result;
     }
 
     private function handleJourneyProgress(int $studentId, int $examTrainingId): void
