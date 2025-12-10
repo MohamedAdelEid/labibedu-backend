@@ -34,7 +34,7 @@ class JourneyDataService
     {
         $exam = $this->getUpcomingExam($studentId);
         $assignmentData = $this->getNotStartedExamTrainingAssignmentData($studentId);
-        $bookCard = $this->getSanaaInSpaceBook();
+        $bookCard = $this->getSanaaInSpaceBook($studentId);
         $levels = $this->getLevelsWithProgress($studentId);
 
         return [
@@ -98,11 +98,19 @@ class JourneyDataService
         ];
     }
 
-    private function getSanaaInSpaceBook(): ?array
+    private function getSanaaInSpaceBook(int $studentId): ?array
     {
         $book = $this->bookRepository->findByTitle('سناء في الفضاء');
 
         if (!$book) {
+            return null;
+        }
+
+        // Check if the book has been started (has last_read_page_id)
+        // If it has been started, don't return it
+        $isNew = $this->bookProgressService->isNew($studentId, $book->id);
+        if (!$isNew) {
+            // Book has been started (has last_read_page_id), so don't return it
             return null;
         }
 

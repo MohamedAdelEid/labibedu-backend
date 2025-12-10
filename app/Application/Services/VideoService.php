@@ -29,13 +29,13 @@ class VideoService implements VideoServiceInterface
             ->with('video')
             ->first();
 
-        if (!$videoProgress) {
-            throw new Exception('Video must be completed first before scoring');
-        }
+        // if (!$videoProgress) {
+        //     throw new Exception('Video must be completed first before scoring');
+        // }
 
-        if (!$videoProgress->video) {
-            throw new Exception('Video not found');
-        }
+        // if (!$videoProgress->video) {
+        //     throw new Exception('Video not found');
+        // }
 
         return [
             'success' => true,

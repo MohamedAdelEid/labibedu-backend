@@ -240,8 +240,8 @@ class ExamService
                 $this->handleJourneyProgress($dto->studentId, $dto->examTrainingId);
             }
 
-            if ($dto->source === 'assignment' && $dto->sourceId) {
-                $this->handleAssignmentCompletion($dto->studentId, $dto->examTrainingId, $dto->sourceId);
+            if ($dto->source === 'assignment') {
+                $this->handleAssignmentCompletion($dto->studentId, $dto->examTrainingId);
             }
 
             return [
@@ -615,66 +615,45 @@ class ExamService
         return null;
     }
 
-    /**
-     * Handle assignment completion when exam/training is submitted
-     * Checks if exam is related to book/video and if book/video is related to assignment
-     * Also checks if exam/training is directly related to assignment
-     */
-    private function handleAssignmentCompletion(int $studentId, int $examTrainingId, int $assignmentId): void
+    private function handleAssignmentCompletion(int $studentId, int $examTrainingId): void
     {
         $examTraining = $this->examTrainingRepository->findOrFail($examTrainingId);
 
-        // Check if exam/training is directly related to assignment
-        $directAssignment = Assignment::where('id', $assignmentId)
-            ->where('assignable_type', 'examTraining')
-            ->where('assignable_id', $examTrainingId)
-            ->whereHas('students', function ($q) use ($studentId) {
-                $q->where('student_id', $studentId);
-            })
-            ->first();
-
-        if ($directAssignment) {
-            // Update assignment status to completed
-            $this->assignmentRepository->completeAssignmentForStudent($assignmentId, $studentId);
-            return;
-        }
-
-        // Check if exam is related to book or video
         $relatedBook = $this->bookRepository->getByRelatedTrainingId($examTrainingId)->first();
         $relatedVideo = $this->videoRepository->getByRelatedTrainingId($examTrainingId)->first();
 
-        // Check if book is related to assignment
+        $assignment = null;
+
         if ($relatedBook) {
-            $bookAssignment = Assignment::where('id', $assignmentId)
-                ->where('assignable_type', 'book')
+            dump('relatedBook', $relatedBook);
+            $assignment = Assignment::where('assignable_type', 'book')
                 ->where('assignable_id', $relatedBook->id)
                 ->whereHas('students', function ($q) use ($studentId) {
                     $q->where('student_id', $studentId);
                 })
                 ->first();
-
-            if ($bookAssignment) {
-                // Update assignment status to completed
-                $this->assignmentRepository->completeAssignmentForStudent($assignmentId, $studentId);
-                return;
-            }
         }
 
-        // Check if video is related to assignment
-        if ($relatedVideo) {
-            $videoAssignment = Assignment::where('id', $assignmentId)
-                ->where('assignable_type', 'video')
+        if (!$assignment && $relatedVideo) {
+            $assignment = Assignment::where('assignable_type', 'video')
                 ->where('assignable_id', $relatedVideo->id)
                 ->whereHas('students', function ($q) use ($studentId) {
                     $q->where('student_id', $studentId);
                 })
                 ->first();
+        }
 
-            if ($videoAssignment) {
-                // Update assignment status to completed
-                $this->assignmentRepository->completeAssignmentForStudent($assignmentId, $studentId);
-                return;
-            }
+        if (!$assignment) {
+            $assignment = Assignment::where('assignable_type', 'examTraining')
+                ->where('assignable_id', $examTrainingId)
+                ->whereHas('students', function ($q) use ($studentId) {
+                    $q->where('student_id', $studentId);
+                })
+                ->first();
+        }
+
+        if ($assignment) {
+            $this->assignmentRepository->completeAssignmentForStudent($assignment->id, $studentId);
         }
     }
 }
