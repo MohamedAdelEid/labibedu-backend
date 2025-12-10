@@ -11,6 +11,7 @@ use App\Infrastructure\Models\LessonCategory;
 use App\Infrastructure\Models\ExamTraining;
 use App\Infrastructure\Models\Question;
 use App\Infrastructure\Models\QuestionOption;
+use App\Infrastructure\Models\Video;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -964,6 +965,22 @@ class LessonSeeder extends Seeder
 
         // Attach book to lesson
         $lesson->books()->attach($book->id);
+
+        // Attach video to lesson if it exists (for recycling lesson)
+        if ($lessonData['title'] === 'إعادة التدوير') {
+            $video = Video::where('title_ar', 'إعادة التدوير')->first();
+            if ($video) {
+                // Attach video to lesson via many-to-many relationship
+                $lesson->videos()->attach($video->id);
+
+                // Also link video to training via related_training_id
+                $video->update(['related_training_id' => $training->id]);
+
+                $this->command->info("   🎥 Attached video: {$video->title_ar} to lesson");
+            } else {
+                $this->command->warn("   ⚠️  Video 'إعادة التدوير' not found. Make sure VideoSeeder runs before LessonSeeder.");
+            }
+        }
 
         $this->command->info("✅ Created lesson: {$lesson->title}");
     }
