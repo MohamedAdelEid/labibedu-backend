@@ -44,13 +44,13 @@ class ExamQuestionResource extends JsonResource
                 'id' => $opt->id,
                 'text' => $opt->text,
                 'image' => $opt->image,
-            ])->values();
+            ])->shuffle()->values();
 
             $right = $question->options->where('side', 'right')->map(fn($opt) => [
                 'id' => $opt->id,
                 'text' => $opt->text,
                 'image' => $opt->image,
-            ])->values();
+            ])->shuffle()->values();
 
             return [
                 'left' => $left,
