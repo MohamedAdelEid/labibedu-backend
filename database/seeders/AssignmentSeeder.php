@@ -1289,9 +1289,9 @@ class AssignmentSeeder extends Seeder
             'is_in_library' => false,
             'language' => 'ar',
             'has_sound' => true,
-            'xp' => 100,
-            'coins' => 50,
-            'marks' => 75,
+            'xp' => 0,
+            'coins' => 0,
+            'marks' => 0,
         ]);
 
         // create this pages
