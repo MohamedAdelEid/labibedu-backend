@@ -10,6 +10,7 @@ use App\Infrastructure\Models\Book;
 use App\Infrastructure\Models\Page;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class AssignmentSeeder extends Seeder
@@ -1277,11 +1278,14 @@ class AssignmentSeeder extends Seeder
      */
     private function createAdamBeeBookAssignment(int $teacherId): void
     {
+        // Generate folder name from title
+        $folderName = $this->titleToSlug('آدم يتخيل النحلة');
+
         // Find the book
         $book = Book::create([
             'title' => 'آدم يتخيل النحلة',
-            'cover' => 'books/adam-and-the-bee.jpg',
-            'thumbnail' => 'books/adam-and-the-bee.jpg',
+            'cover' => "books/{$folderName}/cover.svg",
+            'thumbnail' => "books/{$folderName}/thumbnail.jpg",
             'is_in_library' => false,
             'language' => 'ar',
             'has_sound' => true,
@@ -1587,5 +1591,21 @@ class AssignmentSeeder extends Seeder
         ];
 
         return $questions;
+    }
+
+    /**
+     * Convert Arabic title to English slug for folder naming
+     */
+    private function titleToSlug(string $title): string
+    {
+        if (class_exists('Transliterator')) {
+            $transliterator = \Transliterator::create('Any-Latin; Latin-ASCII');
+            if ($transliterator) {
+                $latinText = $transliterator->transliterate($title);
+                return Str::slug($latinText);
+            }
+        }
+
+        return Str::slug($title);
     }
 }
