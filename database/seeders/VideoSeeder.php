@@ -22,6 +22,18 @@ class VideoSeeder extends Seeder
                 'marks' => 70,
                 'subject_id' => null,
                 'related_training_id' => null,
+            ],
+            // Video related to lesson "إعادة التدوير" (not linked to training)
+            [
+                'title_ar' => 'إعادة التدوير',
+                'title_en' => 'Recycling',
+                'url' => 'https://youtu.be/stVbDrPusiw',
+                'duration' => 180, // 3 minutes in seconds
+                'xp' => 100,
+                'coins' => 80,
+                'marks' => 70,
+                'subject_id' => null,
+                'related_training_id' => null, // Not linked to training, will be linked to lesson
             ]
         ];
 
@@ -36,9 +48,13 @@ class VideoSeeder extends Seeder
             $videoData['cover'] = "videos/{$folderName}/cover.png";
 
             // Create video
-            Video::create($videoData);
+            $video = Video::create($videoData);
 
-            $this->command->info("✅ Created video: {$videoData['title_ar']} in folder: {$folderName}");
+            $infoMessage = "✅ Created video: {$videoData['title_ar']} in folder: {$folderName}";
+            if ($videoData['related_training_id']) {
+                $infoMessage .= " (linked to training ID: {$videoData['related_training_id']})";
+            }
+            $this->command->info($infoMessage);
         }
 
         $this->command->info('✅ Videos seeded successfully!');

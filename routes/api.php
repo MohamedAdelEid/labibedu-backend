@@ -14,6 +14,7 @@ use App\Presentation\Http\Controllers\Api\AgeGroupController;
 use App\Presentation\Http\Controllers\Api\LessonController;
 use App\Presentation\Http\Controllers\Api\SubjectController;
 use App\Presentation\Http\Controllers\Api\VideoController;
+use App\Presentation\Http\Controllers\Api\DatabaseController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -150,3 +151,6 @@ Route::prefix('avatar-categories')->controller(AvatarCategoryController::class)-
 
 Route::get('/levels', [LevelController::class, 'index']);
 Route::get('/age-groups', [AgeGroupController::class, 'index']);
+
+// Development only - Database refresh endpoint
+Route::post('/database/refresh-seed', [DatabaseController::class, 'refreshAndSeed']);

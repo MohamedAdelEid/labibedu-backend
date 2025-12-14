@@ -1421,15 +1421,33 @@ class JourneySeeder extends Seeder
 
     private function addVideoRecycling(JourneyStage $stage): void
     {
-        $video = Video::where('title_ar', 'إعادة التدوير')->first();
+        // Find video that is NOT linked to a lesson (has related_training_id or will be linked to training)
+        // First, try to find a video that is already linked to a training (for journey)
+        $video = Video::where('title_ar', 'إعادة التدوير')
+            ->whereNotNull('related_training_id')
+            ->first();
+
+        // If not found, find a video that is not linked to any training yet
+        // Take the second video (skip the first one which is for lesson)
+        if (!$video) {
+            $video = Video::where('title_ar', 'إعادة التدوير')
+                ->whereNull('related_training_id')
+                ->orderBy('id', 'asc')
+                ->skip(1) // Skip the first video (for lesson)
+                ->first();
+        }
 
         if (!$video) {
-            $this->command->warn('⚠️ Video "إعادة التدوير" not found. Please run VideoSeeder first.');
+            $this->command->warn('⚠️ Video "إعادة التدوير" not found for journey. Please run VideoSeeder first.');
             return;
         }
 
+        // Create training and link video to it (if not already linked)
         $training = $this->createRecyclingTraining();
-        $video->update(['related_training_id' => $training->id]);
+        if (!$video->related_training_id) {
+            $video->update(['related_training_id' => $training->id]);
+            $this->command->info("   🔗 Linked video to training for journey: {$training->title_ar} (Video ID: {$video->id})");
+        }
 
         StageContent::create([
             'stage_id' => $stage->id,

@@ -978,17 +978,20 @@ class LessonSeeder extends Seeder
 
         // Attach video to lesson if it exists (for recycling lesson)
         if ($lessonData['title'] === 'إعادة التدوير') {
-            $video = Video::where('title_ar', 'إعادة التدوير')->first();
+            // Find video that is NOT linked to any training (videos in lessons should not have related_training_id)
+            // Take the first video that is not linked to training (for lesson)
+            $video = Video::where('title_ar', 'إعادة التدوير')
+                ->whereNull('related_training_id')
+                ->orderBy('id', 'asc')
+                ->first();
+
             if ($video) {
                 // Attach video to lesson via many-to-many relationship
                 $lesson->videos()->attach($video->id);
 
-                // Also link video to training via related_training_id
-                $video->update(['related_training_id' => $training->id]);
-
-                $this->command->info("   🎥 Attached video: {$video->title_ar} to lesson");
+                $this->command->info("   🎥 Attached video: {$video->title_ar} to lesson (ID: {$video->id})");
             } else {
-                $this->command->warn("   ⚠️  Video 'إعادة التدوير' not found. Make sure VideoSeeder runs before LessonSeeder.");
+                $this->command->warn("   ⚠️  Video 'إعادة التدوير' (without related_training_id) not found. Make sure VideoSeeder runs before LessonSeeder.");
             }
         }
 
