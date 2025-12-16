@@ -98,16 +98,28 @@ class ExamTraining extends Model
 
     public function getTotalXp(): int
     {
+        if ($this->relationLoaded('questions')) {
+            return $this->questions->sum('xp');
+        }
+
         return $this->questions()->sum('xp');
     }
 
     public function getTotalCoins(): int
     {
+        if ($this->relationLoaded('questions')) {
+            return $this->questions->sum('coins');
+        }
+
         return $this->questions()->sum('coins');
     }
 
     public function getTotalMarks(): int
     {
+        if ($this->relationLoaded('questions')) {
+            return $this->questions->sum('marks');
+        }
+        
         return $this->questions()->sum('marks');
     }
 

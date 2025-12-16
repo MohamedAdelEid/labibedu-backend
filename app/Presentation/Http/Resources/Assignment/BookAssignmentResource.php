@@ -12,9 +12,9 @@ class BookAssignmentResource extends JsonResource
         $assignment = $this->resource;
         $book = $assignment->assignable ?? $assignment->book;
         $bookProgress = null;
-        $relatedTraining = $book?->relatedTraining;
-        $trainingPerformance = null;
-        $performance = null;
+        $relatedTraining = $book->relatedTraining;
+        $trainingPerformance = $this->performance ?? $this->resource['performance'] ?? null;
+        $performance = $this->performance ?? $this->resource['performance'] ?? null;
 
         // Get pivot status
         $pivotStatus = $assignment->students->first()?->pivot->status ?? 'not_started';
@@ -41,9 +41,9 @@ class BookAssignmentResource extends JsonResource
                 'related_training' => $this->formatRelatedTraining($relatedTraining, $trainingPerformance),
             ],
             'actual' => [
-                'marks' => ($book->marks ?? 0) + ($relatedTraining ? $relatedTraining->getTotalMarks() : 0),
-                'xp' => ($book->xp ?? 0) + ($relatedTraining ? $relatedTraining->getTotalXp() : 0),
-                'coins' => ($book->coins ?? 0) + ($relatedTraining ? $relatedTraining->getTotalCoins() : 0),
+                'marks' => $book->marks + $relatedTraining->getTotalMarks(),
+                'xp' => $book->xp + $relatedTraining->getTotalXp(),
+                'coins' => $book->coins + $relatedTraining->getTotalCoins(),
             ],
         ];
 

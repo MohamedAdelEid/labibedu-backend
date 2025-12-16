@@ -12,11 +12,11 @@ class VideoAssignmentResource extends JsonResource
         $assignment = $this->resource;
         // Use assignable polymorphic relationship or fallback to video
         $video = $assignment->assignable ?? $assignment->video;
-        $videoProgress = null; // Would need to be loaded separately
+        $videoProgress = null;
         $relatedTraining = $video?->relatedTraining;
-        $trainingAttempt = null; // Would need to be loaded separately
-        $trainingPerformance = null; // Would need to be calculated separately
-        $performance = null; // Would need to be calculated separately
+        $trainingAttempt = null;
+        $trainingPerformance = null;
+        $performance = $this->performance ?? $this->resource['performance'] ?? null;
 
         // Get pivot status
         $pivotStatus = $assignment->students->first()?->pivot->status ?? 'not_started';
