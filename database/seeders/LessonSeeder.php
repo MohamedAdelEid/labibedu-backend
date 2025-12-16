@@ -958,7 +958,7 @@ class LessonSeeder extends Seeder
         }
 
         // Create book
-        $book = $this->createBook($lessonData['book'], $subject->id);
+        $book = $this->createBook($lessonData['book'], $subject->id, $lessonData['is_in_library'] ?? false);
         if (!$book) {
             $this->command->warn("⚠️  Failed to create book for lesson: {$lessonData['title']}");
             return;
@@ -1093,7 +1093,7 @@ class LessonSeeder extends Seeder
     /**
      * Create book with pages
      */
-    private function createBook(array $bookData, int $subjectId): ?Book
+    private function createBook(array $bookData, int $subjectId, bool $isInLibrary = false): ?Book
     {
         $pages = $bookData['pages'] ?? [];
 
@@ -1103,7 +1103,7 @@ class LessonSeeder extends Seeder
         // Create book
         $book = Book::create([
             'title' => $bookData['title'],
-            'is_in_library' => true,
+            'is_in_library' => $isInLibrary,
             'language' => $bookData['language'],
             'has_sound' => $bookData['has_sound'],
             'xp' => 100,

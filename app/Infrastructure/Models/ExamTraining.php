@@ -122,6 +122,7 @@ class ExamTraining extends Model
 
     public function getSourceType(): ?string
     {
+        // First: Check if examTraining is directly in journey_stage_contents
         $isInJourney = DB::table('journey_stage_contents')
             ->where('content_type', 'examTraining')
             ->where('content_id', $this->id)
@@ -131,11 +132,62 @@ class ExamTraining extends Model
             return 'journey';
         }
 
+        // Second: If not directly in journey, check if related book is in journey
+        $relatedBook = DB::table('books')
+            ->where('related_training_id', $this->id)
+            ->first();
+
+        if ($relatedBook) {
+            $bookInJourney = DB::table('journey_stage_contents')
+                ->where('content_type', 'book')
+                ->where('content_id', $relatedBook->id)
+                ->exists();
+
+            $isBookInAssignment = DB::table('assignments')
+                ->where('assignable_type', 'book')
+                ->where('assignable_id', $relatedBook->id)
+                ->exists();
+
+            if ($isBookInAssignment) {
+                return 'assignment';
+            }
+
+            if ($bookInJourney) {
+                return 'journey';
+            }
+        }
+
+        $relatedVideo = DB::table('videos')
+            ->where('related_training_id', $this->id)
+            ->first();
+
+        if ($relatedVideo) {
+            $videoInJourney = DB::table('journey_stage_contents')
+                ->where('content_type', 'video')
+                ->where('content_id', $relatedVideo->id)
+                ->exists();
+
+            $isVideoInAssignment = DB::table('assignments')
+                ->where('assignable_type', 'video')
+                ->where('assignable_id', $relatedVideo->id)
+                ->exists();
+
+            if ($isVideoInAssignment) {
+                return 'assignment';
+            }
+
+            if ($videoInJourney) {
+                return 'journey';
+            }
+        }
+
+        // Third: Check lessons
         $hasLessons = $this->lessons()->exists();
         if ($hasLessons) {
             return 'lessons';
         }
 
+        // Fourth: Check library
         $isInLibrary = DB::table('books')
             ->where('related_training_id', $this->id)
             ->where('is_in_library', true)
@@ -145,6 +197,7 @@ class ExamTraining extends Model
             return 'library';
         }
 
+        // Fifth: Check assignment
         $isInAssignment = DB::table('assignments')
             ->where('assignable_type', 'examTraining')
             ->where('assignable_id', $this->id)

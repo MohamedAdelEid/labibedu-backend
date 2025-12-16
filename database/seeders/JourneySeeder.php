@@ -148,18 +148,12 @@ class JourneySeeder extends Seeder
     private function addBookWhyAmISquare(JourneyStage $stage): void
     {
         $book = $this->createBookWhyAmISquare();
-        $training = $this->createTrainingWhyAmISquare($book->id);
+        $this->createTrainingWhyAmISquare($book->id);
 
         StageContent::create([
             'stage_id' => $stage->id,
             'content_type' => 'book',
             'content_id' => $book->id,
-        ]);
-
-        StageContent::create([
-            'stage_id' => $stage->id,
-            'content_type' => 'examTraining',
-            'content_id' => $training->id,
         ]);
     }
 
