@@ -314,19 +314,7 @@ class ExamService
         $totalCoins = 0;
         $relatedContent = [];
 
-        // Check if there are videos related to this exam/training
-        $relatedVideos = $this->videoRepository->getByRelatedTrainingId($examTraining->id);
-        foreach ($relatedVideos as $video) {
-            // Skip videos that are not completed - no longer required
-            if (!$this->videoService->isVideoCompleted($studentId, $video->id)) {
-                continue;
-            }
-
-            $videoScoring = $this->videoService->getVideoCompletionScoring($studentId, $video->id);
-            $totalXp += $videoScoring['xp'];
-            $totalCoins += $videoScoring['coins'];
-            $relatedContent['videos'][] = $videoScoring;
-        }
+        // Videos removed - no longer included in scoring calculation
 
         // Check if there are books related to this exam/training
         $relatedBooks = $this->bookRepository->getByRelatedTrainingId($examTraining->id);

@@ -42,7 +42,7 @@ class VideoService implements VideoServiceInterface
             'xp' => 0, // Videos no longer have direct XP/coins, only through related training
             'coins' => 0,
             'video_id' => $videoId,
-            'completed_at' => $videoProgress?->updated_at,
+            'completed_at' => $videoProgress->updated_at,
         ];
     }
 
