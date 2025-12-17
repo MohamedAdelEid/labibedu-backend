@@ -58,6 +58,14 @@ class ExamQuestionResource extends JsonResource
             ];
         }
 
+        if ($question->type->value === QuestionType::ARRANGE->value) {
+            return $question->options->map(fn($opt) => [
+                'id' => $opt->id,
+                'text' => $opt->text,
+                'image' => $opt->image,
+            ])->shuffle()->values();
+        }
+
         if ($question->type->value === QuestionType::TRUE_FALSE->value) {
             return null;
         }
