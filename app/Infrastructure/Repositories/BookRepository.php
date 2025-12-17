@@ -50,6 +50,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
     ): LengthAwarePaginator {
         $query = $this->model->query()
             ->with(['subject', 'level', 'relatedTraining'])
+            ->where('is_in_library', true)
             ->withCount('pages')
             ->where(function ($q) use ($studentId) {
                 $q->where('is_in_library', true)

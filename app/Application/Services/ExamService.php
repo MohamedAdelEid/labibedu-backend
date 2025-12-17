@@ -317,15 +317,15 @@ class ExamService
         // Check if there are videos related to this exam/training
         $relatedVideos = $this->videoRepository->getByRelatedTrainingId($examTraining->id);
         foreach ($relatedVideos as $video) {
-            try {
-                $videoScoring = $this->videoService->getVideoCompletionScoring($studentId, $video->id);
-                $totalXp += $videoScoring['xp'];
-                $totalCoins += $videoScoring['coins'];
-                $relatedContent['videos'][] = $videoScoring;
-            } catch (Exception $e) {
-                $videoTitle = $video->title_ar ?? $video->title_en ?? 'Video';
-                throw new Exception("You must finish the video '{$videoTitle}' first: {$e->getMessage()}");
+            // Skip videos that are not completed - no longer required
+            if (!$this->videoService->isVideoCompleted($studentId, $video->id)) {
+                continue;
             }
+
+            $videoScoring = $this->videoService->getVideoCompletionScoring($studentId, $video->id);
+            $totalXp += $videoScoring['xp'];
+            $totalCoins += $videoScoring['coins'];
+            $relatedContent['videos'][] = $videoScoring;
         }
 
         // Check if there are books related to this exam/training

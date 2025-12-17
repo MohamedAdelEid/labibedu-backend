@@ -1308,12 +1308,14 @@ class AssignmentSeeder extends Seeder
             'مُخَطَّطَةٌ بِالْأَصْفَرِ وَالْأَسْوَدِ، لَهَا إِبْرَةٌ صَغِيرَةٌ. تَأْكُلُ مِنَ الزُّهُورِ؛ كَيْ تَصْنَعَ الْعَسَلَ. لَكِنَّهَا لَمْ تَكُنْ تُشْبِهُ الذُّبَابَةَ أَبَدًا هَذِهِ الْمَرَّةَ.',
         ];
 
-        foreach ($pages as $page) {
+        foreach ($pages as $index => $page) {
+            $pageNumber = $index + 1;
+
             $book->pages()->create([
                 'text' => $page,
-                'image' => null,
-                'mp3' => null,
-                'is_text_to_speech' => false,
+                'image' => "books/{$folderName}/pages/page_{$pageNumber}/image.png",
+                'mp3' => $book->has_sound ? "books/{$folderName}/pages/page_{$pageNumber}/audio.mp3" : null,
+                'is_text_to_speech' => !$book->has_sound,
             ]);
         }
 
