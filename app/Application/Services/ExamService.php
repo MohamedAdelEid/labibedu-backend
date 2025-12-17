@@ -238,6 +238,9 @@ class ExamService
 
             $scoringResult = $this->processExamCompletionScoring($dto->studentId, $dto->examTrainingId);
 
+            // Handle video progress if exam is related to a video
+            $this->handleVideoProgress($dto->studentId, $dto->examTrainingId);
+
             if ($dto->source === 'journey' && $dto->sourceId) {
                 $this->handleJourneyProgress($dto->studentId, $dto->examTrainingId);
             }
@@ -595,6 +598,37 @@ class ExamService
         }
 
         return $result;
+    }
+
+    /**
+     * Handle video progress when exam is submitted
+     * If exam is related to a video, create/update video_progress with is_completed = true
+     */
+    private function handleVideoProgress(int $studentId, int $examTrainingId): void
+    {
+        $relatedVideo = $this->videoRepository->getByRelatedTrainingId($examTrainingId)->first();
+
+        if (!$relatedVideo) {
+            return;
+        }
+
+        // Get existing progress if any
+        $existingProgress = $this->videoRepository->getProgress($studentId, $relatedVideo->id);
+
+        // Prepare data for video progress
+        $progressData = [
+            'is_completed' => true,
+        ];
+
+        // If there's existing progress, keep the watched_duration, otherwise set it to video duration
+        if ($existingProgress && $existingProgress->watched_duration) {
+            $progressData['watched_duration'] = $existingProgress->watched_duration;
+        } else {
+            $progressData['watched_duration'] = $relatedVideo->duration ?? 0;
+        }
+
+        // Update or create video progress
+        $this->videoRepository->updateProgress($studentId, $relatedVideo->id, $progressData);
     }
 
     private function handleJourneyProgress(int $studentId, int $examTrainingId): void
