@@ -37,6 +37,7 @@ class QuestionSeeder extends Seeder
             $this->getBookTrainingQuestions('تدريب كتاب سناء في الفضاء'),
             $this->getBookTrainingQuestions('تدريب كتاب آدم يتخيل النحلة'),
             $this->getBookTrainingQuestions('تدريب كتاب عندما فقدت قطتي عقلها'),
+            $this->getBookTrainingQuestions('تدريب كتاب ماذا رأى زيزو'),
             $this->getBookTrainingQuestions('تدريب كتاب لماذا انا مربع'),
         ];
     }
@@ -53,6 +54,7 @@ class QuestionSeeder extends Seeder
             'تدريب كتاب سناء في الفضاء' => $this->getSanaaInSpaceQuestions(),
             'تدريب كتاب آدم يتخيل النحلة' => $this->getAdamImaginesBeeQuestions(),
             'تدريب كتاب عندما فقدت قطتي عقلها' => $this->getWhenMyCatLostHerMindQuestions(),
+            'تدريب كتاب ماذا رأى زيزو' => $this->getWhatDidZezoSeeQuestions(),
             'تدريب كتاب لماذا انا مربع' => $this->getWhyAmISquareQuestions(),
             default => [],
         };
@@ -787,6 +789,135 @@ class QuestionSeeder extends Seeder
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => false, // خطأ
+            ],
+        ];
+    }
+
+    /**
+     * Questions for book: ماذا رأى زيزو
+     */
+    private function getWhatDidZezoSeeQuestions(): array
+    {
+        return [
+            // True/False Questions
+            [
+                'title' => 'طائر زيزو كان يطير منخفضًا بالقرب من الأرض.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'is_correct' => false, // خطأ
+            ],
+            [
+                'title' => 'اصطدم زيزو بشيء ضخم أثناء طيرانه.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            [
+                'title' => 'ظنّ زيزو أولًا أن الشيء الضخم هو عش كبير.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            [
+                'title' => 'شعر زيزو ببرودة شديدة عندما اقترب من الشيء.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'is_correct' => false, // خطأ
+            ],
+            [
+                'title' => 'في النهاية عرف زيزو أن الشيء الضخم هو المنطاد.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+
+            // Choice Questions
+            [
+                'title' => 'ماذا حدث لزيزو فجأة أثناء طيرانه؟',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'اصطاد دودة', 'is_correct' => false],
+                    ['text' => 'اصطدم بشيء ضخم', 'is_correct' => true],
+                    ['text' => 'نام على غصن', 'is_correct' => false],
+                    ['text' => 'وقع في الماء', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'ماذا ظنّ زيزو في البداية أن الشيء الضخم هو؟',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'جبل', 'is_correct' => false],
+                    ['text' => 'شمس', 'is_correct' => false],
+                    ['text' => 'عش ضخم', 'is_correct' => true],
+                    ['text' => 'غيمة', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'ما الشيء الذي قفز عليه زيزو؟',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'حبل طويل', 'is_correct' => true],
+                    ['text' => 'غصن شجرة', 'is_correct' => false],
+                    ['text' => 'شبكة صياد', 'is_correct' => false],
+                    ['text' => 'سلم خشبي', 'is_correct' => false],
+                ],
+            ],
+            [
+                'title' => 'ماذا كان ذلك الشيء الضخم في الحقيقة؟',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'دودة كبيرة', 'is_correct' => false],
+                    ['text' => 'جبل مرتفع', 'is_correct' => false],
+                    ['text' => 'بالون صغير', 'is_correct' => false],
+                    ['text' => 'المنطاد', 'is_correct' => true],
+                ],
+            ],
+
+            // Fill in the blank (Choice type)
+            [
+                'title' => 'شعر زيزو أثناء اقترابه من الشيء بــ ________.',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 2,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'برد شديد', 'is_correct' => false],
+                    ['text' => 'حرارة شديدة', 'is_correct' => true],
+                    ['text' => 'ريح قوية', 'is_correct' => false],
+                    ['text' => 'خوف شديد', 'is_correct' => false],
+                ],
             ],
         ];
     }

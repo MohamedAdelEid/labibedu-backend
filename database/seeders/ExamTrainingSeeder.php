@@ -80,20 +80,35 @@ class ExamTrainingSeeder extends Seeder
                 'end_date' => null,
             ],
 
+            // Training for Book: ماذا رأى زيزو
+            [
+                'title' => 'Training: What Did Zezo See',
+                'title_ar' => 'تدريب كتاب ماذا رأى زيزو',
+                'description' => 'Training exercises for the book What Did Zezo See',
+                'description_ar' => 'تمارين تدريبية لكتاب ماذا رأى زيزو',
+                'type' => 'training',
+                'duration' => null,
+                'created_by' => 1,
+                'subject_id' => null,
+                'group_id' => null,
+                'start_date' => Carbon::now()->subDays(4),
+                'end_date' => null,
+            ],
+
             // Training for Book: لماذا انا مربع
-            // [
-            //     'title' => 'Training: Why Am I Square',
-            //     'title_ar' => 'تدريب كتاب لماذا انا مربع',
-            //     'description' => 'Training exercises for the book Why Am I Square',
-            //     'description_ar' => 'تمارين تدريبية لكتاب لماذا انا مربع',
-            //     'type' => 'training',
-            //     'duration' => null,
-            //     'created_by' => 1,
-            //     'subject_id' => null,
-            //     'group_id' => null,
-            //     'start_date' => Carbon::now()->subDays(4),
-            //     'end_date' => null,
-            // ],
+            [
+                'title' => 'Training: Why Am I Square',
+                'title_ar' => 'تدريب كتاب لماذا انا مربع',
+                'description' => 'Training exercises for the book Why Am I Square',
+                'description_ar' => 'تمارين تدريبية لكتاب لماذا انا مربع',
+                'type' => 'training',
+                'duration' => null,
+                'created_by' => 1,
+                'subject_id' => null,
+                'group_id' => null,
+                'start_date' => Carbon::now()->subDays(2),
+                'end_date' => null,
+            ],
         ];
     }
 }

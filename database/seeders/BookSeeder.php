@@ -140,12 +140,12 @@ class BookSeeder extends Seeder
                 'is_in_library' => true,
                 'language' => 'ar',
                 'has_sound' => true,
-                'xp' => 100,
-                'coins' => 50,
-                'marks' => 75,
+                'xp' => 0,
+                'coins' => 0,
+                'marks' => 0,
                 'subject_id' => null,
                 'level_id' => 1, // Beginner
-                'related_training_title_ar' => null, // No training for this book
+                'related_training_title_ar' => 'تدريب كتاب ماذا رأى زيزو',
                 'pages' => [
                     'يُحكى أَنَّ عُصْفُورًا اِسْمُهُ زيزو كانَ يَطيرُ عاليًا، عاليًا في السَّماءِ.',
                     'فَجْأَةً، اِصْطَدَمَ زيزو بِشَيْءٍ ضَخْمِ! طاخ، دُم، طاخْ!',
@@ -167,12 +167,12 @@ class BookSeeder extends Seeder
                 'is_in_library' => true,
                 'language' => 'ar',
                 'has_sound' => true,
-                'xp' => 100,
-                'coins' => 50,
-                'marks' => 75,
+                'xp' => 0,
+                'coins' => 0,
+                'marks' => 0,
                 'subject_id' => null,
                 'level_id' => 2, // Intermediate
-                'related_training_title_ar' => null, // No training for this book
+                'related_training_title_ar' => 'تدريب كتاب لماذا انا مربع',
                 'pages' => [
                     'في زمانِ غَيْر هذا الزمان وَفِي عَالَم لَمْ تَسْمَحْ أَوْ تَرَ مِثْلَهُ مِنْ قَبْلُ، عَاشَ أَبْطَالُ قِصَّتِنا.',
                     'تَزَوَّجَ بابا - دائرة - مِنْ ماما - دائرة - وَعَاشَا فِي سَعَادَةٍ فِي الْبَيْتِ الدَائِرِي',
