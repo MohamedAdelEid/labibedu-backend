@@ -14,13 +14,19 @@ class TrueFalseAnswerChecker implements AnswerCheckerInterface
             return false;
         }
 
-        $correctOption = $question->options->where('is_correct', true)->first();
+        // For true/false questions, there's only one option representing "True"
+        // The is_correct value of this option indicates the correct answer:
+        // - is_correct = true means the correct answer is "True"
+        // - is_correct = false means the correct answer is "False"
+        $option = $question->options->first();
         
-        if (!$correctOption) {
+        if (!$option) {
             return false;
         }
         
-        // Compare the student's boolean answer with the correct option's is_correct value
-        return $answer->true_false_answer === $correctOption->is_correct;
+        // Compare the student's boolean answer with the option's is_correct value
+        // If option.is_correct = true, correct answer is true
+        // If option.is_correct = false, correct answer is false
+        return $answer->true_false_answer === $option->is_correct;
     }
 }
