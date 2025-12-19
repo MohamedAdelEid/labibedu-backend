@@ -18,7 +18,7 @@ class StudentProfileResource extends JsonResource
         $student = $this->resource['student'];
 
         return [
-            'name' => $student->user->name,
+            'name' => $student->name,
             'avatar' => new AvatarResource($this->resource['avatar'] ?? null),
             'coins' => $student->coins,
             'xp' => $student->xp,
