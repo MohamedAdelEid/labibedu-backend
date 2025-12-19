@@ -42,6 +42,15 @@ class UserSeeder extends Seeder
                 'date_of_birth' => '2010-01-01',
             ],
             [
+                'name' => 'Nadia',
+                'user_name' => 'nadia_mostafa',
+                'email' => 'nadia_mostafa@student.com',
+                'school_id' => 1,
+                'classroom_id' => 3, // Grade 5
+                'group_id' => 7,
+                'date_of_birth' => '2010-01-01',
+            ],
+            [
                 'name' => 'User 2',
                 'user_name' => 'user2',
                 'email' => 'user2@student.com',
