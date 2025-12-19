@@ -89,7 +89,7 @@ class UserSeeder extends Seeder
                 'group_id' => $studentData['group_id'],
                 'date_of_birth' => $studentData['date_of_birth'],
                 'xp' => 0,
-                'coins' => 0,
+                'coins' => 15,
             ]);
 
             // Assign levels to student (1: Beginner, 2: Intermediate)

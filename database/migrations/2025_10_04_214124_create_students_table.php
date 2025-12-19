@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->boolean('notifications_enabled')->default(true);
             $table->boolean('haptic_feedback_enabled')->default(true);
             $table->integer('xp')->default(0);
-            $table->integer('coins')->default(0);
+            $table->integer('coins')->default(15);
             $table->date('date_of_birth')->nullable();
             $table->foreignId('school_id')->nullable()->constrained('schools')->onDelete('set null');
             $table->foreignId('classroom_id')->nullable()->constrained('classrooms')->onDelete('set null');

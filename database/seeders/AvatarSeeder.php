@@ -150,19 +150,19 @@ class AvatarSeeder extends Seeder
             // Purchase first avatar from Labib category
             $firstLabibAvatar = Avatar::where('category_id', $labibCategory->id)->first();
             $student->avatars()->attach($firstLabibAvatar->id, ['purchased_at' => now()]);
-            // Removed coins deduction - students should start with 0 coins
+            // $student->coins -= $firstLabibAvatar->coins;
 
             // Purchase first two avatars from Dinosaur category
             $firstTwoDinosaurAvatars = Avatar::where('category_id', $dinosaurCategory->id)->limit(2)->get();
             foreach ($firstTwoDinosaurAvatars as $avatar) {
                 $student->avatars()->attach($avatar->id, ['purchased_at' => now()]);
-                // Removed coins deduction - students should start with 0 coins
+                // $student->coins -= $avatar->coins;
             }
 
             // Purchase first avatar from Robot category
             $firstRobotAvatar = Avatar::where('category_id', $robotCategory->id)->first();
             $student->avatars()->attach($firstRobotAvatar->id, ['purchased_at' => now()]);
-            // Removed coins deduction - students should start with 0 coins
+            // $student->coins -= $firstRobotAvatar->coins;
 
             // Set first Labib avatar as active
             $student->active_avatar_id = $firstLabibAvatar->id;
@@ -170,12 +170,12 @@ class AvatarSeeder extends Seeder
             $student->save();
         }
 
-        // Reset coins to 0 for user1 (user_name = 'user1')
+        // Reset coins to 15 for user1 (user_name = 'user1')
         $user1 = User::where('user_name', 'user1')->first();
         if ($user1 && $user1->student) {
-            $user1->student->coins = 0;
+            $user1->student->coins = 15;
             $user1->student->save();
-            $this->command->info('✅ Reset coins to 0 for user1');
+            $this->command->info('✅ Reset coins to 15 for user1');
         }
     }
 }
