@@ -54,6 +54,38 @@ class AssignmentController extends Controller
                     $assignment->performance = null;
                 }
             }
+            // Calculate performance for completed book assignments
+            elseif ($pivotStatus === 'completed' && $assignment->assignable_type === 'book') {
+                try {
+                    $book = $assignment->assignable ?? $assignment->book;
+                    $relatedTraining = $book->relatedTraining;
+                    $relatedTrainingPerformance = null;
+
+                    // Get related training performance if exists
+                    if ($relatedTraining) {
+                        try {
+                            $relatedTrainingPerformance = $this->assignmentService->getExamPerformance(
+                                $studentId,
+                                $relatedTraining->id
+                            );
+                        } catch (\Exception $e) {
+                            // If no answers found for training, continue without it
+                            $relatedTrainingPerformance = null;
+                        }
+                    }
+
+                    // Calculate book performance
+                    $performance = $this->assignmentService->getBookPerformance(
+                        $studentId,
+                        $assignment->assignable_id,
+                        $relatedTrainingPerformance
+                    );
+                    $assignment->performance = $performance;
+                } catch (\Exception $e) {
+                    // If error occurs, set null performance
+                    $assignment->performance = null;
+                }
+            }
         }
 
         // Transform assignments

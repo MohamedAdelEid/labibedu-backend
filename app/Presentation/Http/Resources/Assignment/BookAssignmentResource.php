@@ -41,9 +41,9 @@ class BookAssignmentResource extends JsonResource
                 'related_training' => $this->formatRelatedTraining($relatedTraining, $trainingPerformance),
             ],
             'actual' => [
-                'marks' => $book->marks + $relatedTraining->getTotalMarks(),
-                'xp' => $book->xp + $relatedTraining->getTotalXp(),
-                'coins' => $book->coins + $relatedTraining->getTotalCoins(),
+                'marks' => $book->marks + ($relatedTraining ? $relatedTraining->getTotalMarks() : 0),
+                'xp' => $book->xp + ($relatedTraining ? $relatedTraining->getTotalXp() : 0),
+                'coins' => $book->coins + ($relatedTraining ? $relatedTraining->getTotalCoins() : 0),
             ],
         ];
 
