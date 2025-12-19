@@ -75,8 +75,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'كانت سناء تلميذة في الصف __________.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -89,8 +89,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'أهدى خالها لها __________ لتراقب به الكواكب.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -103,8 +103,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'سافرت سناء مع خالها إلى كوكب __________.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -117,8 +117,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'قال خالها إنّ رحلتهما كانت أسرع من __________.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -131,8 +131,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'الكلمة المخالفة في مجموعة الكلمات التالية هي: (كوكب – نجم – قمر – زهرة)',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -145,8 +145,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'الكلمة المخالفة في مجموعة الكلمات التالية هي: (كيبْلَر – المريخ – الزهرة – الرياض)',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -161,9 +161,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ الأهل',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'الأهل', 'order' => 1],
@@ -179,9 +179,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ المركبة',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'المركبة', 'order' => 1],
@@ -197,9 +197,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ سناء',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'سناء', 'order' => 1],
@@ -214,8 +214,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'كانت سناء تكره كتب الفلك لأنها مملة.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => false, // خطأ
@@ -223,8 +223,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'أهدى الخال راغب لابنة أخته سناء تلسكوبًا لمراقبة الكواكب.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
@@ -232,8 +232,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'صنع خال سناء مركبة فضائية تسير بسرعة الضوء.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
@@ -251,8 +251,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'جذبَتْ آدم رائحةُ __________ المتفتحة بجانب منزله.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -265,8 +265,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'قال الأخ إن النحلة تشبه __________ لكنها تلسع.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -279,8 +279,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'أوضح الأب أن النحلة حشرة __________ تصنع لنا العسل.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -293,8 +293,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'أهدت الجدة آدم جوارب __________ منقطة بالأسود.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -307,8 +307,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'ماذا جذب آدم في بداية القصة؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -321,8 +321,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'من حذّر آدم من وجود نحلة داخل الزهرة؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -335,8 +335,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'ما الذي أحضرته الجدة لآدم؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -349,8 +349,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'ماذا فعلت الأم في نهاية القصة؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -365,9 +365,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ آدم',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'آدم', 'order' => 1],
@@ -382,9 +382,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ الأم',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'الأم', 'order' => 1],
@@ -400,9 +400,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ الأب',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'الأب', 'order' => 1],
@@ -419,8 +419,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'تخيّل آدم في البداية أن النحلة حشرة سوداء مخيفة.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
@@ -428,8 +428,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رسم آدم في النهاية نحلة تجمع الصفات التي عرفها من الجميع.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
@@ -437,8 +437,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'أخبره أخوه أن النحلة طائر جميل له ريش.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => false, // خطأ
@@ -456,8 +456,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'من هو بطل القصة؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -470,8 +470,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'ما الشيء الذي كان داخل الصندوق مع القطة؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -484,8 +484,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'ما الذي يرمز إليه الصندوق في القصة؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -498,8 +498,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'كيف انتهت القصة؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -512,8 +512,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'املأ الفراغ بالكلمة المناسبة مما يلي: عاد رامي إلى المنزل وهو يشعر بالتعب من يومٍ __________.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -526,8 +526,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'لم يجد رامي قطته __________ في أي مكان.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -540,8 +540,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'قالت القطة إنها ليست مشمشَة، بل قطة __________.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -554,8 +554,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'دخلت القطة __________ وأغلقته على نفسها.',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -570,9 +570,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ رامي',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'رامي', 'order' => 1],
@@ -586,9 +586,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بــ عاد',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'عاد', 'order' => 1],
@@ -603,8 +603,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'عاد رامي إلى المنزل مسرورًا لأن يومه في المدرسة كان سهلًا.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => false, // خطأ
@@ -612,8 +612,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'انتهت القصة بعودة مشمشَة إلى طبيعتها ولعبها مع رامي.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
@@ -621,8 +621,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'لم يجد رامي قطته مشمشَة عندما عاد إلى المنزل.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
@@ -640,8 +640,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'لماذا كان المربّع مختلفًا عن الآخرين؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -654,8 +654,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'كيف ساعد المربّع زملاءه أثناء الزلزال؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -668,8 +668,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'ماذا تعلّم الجميع في نهاية القصة؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -682,8 +682,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'من ساعد ماما أثناء الولادة؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -696,8 +696,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'كيف كان ردّ فعل الدوائر بعد إنقاذهم؟',
                 'type' => 'choice',
-                'xp' => 10,
-                'coins' => 5,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'options' => [
@@ -712,9 +712,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ بابا',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'بابا', 'order' => 1],
@@ -731,9 +731,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ ذهب',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'ذهب', 'order' => 1],
@@ -748,9 +748,9 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ ساعد',
                 'type' => 'arrange',
-                'xp' => 15,
-                'coins' => 8,
-                'marks' => 2,
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'ساعد', 'order' => 1],
@@ -766,8 +766,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'وُلد الطفل على شكل مربع في عالم كله دوائر.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
@@ -775,8 +775,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'استخدم المربّع شجاعته ليساعد زملاءه أثناء الزلزال.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
@@ -784,8 +784,8 @@ class QuestionSeeder extends Seeder
             [
                 'title' => 'كانت الدوائر في المدرسة تُشجّع المربّع دائمًا وتُصفّق له.',
                 'type' => 'true_false',
-                'xp' => 8,
-                'coins' => 4,
+                'xp' => 2,
+                'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => false, // خطأ
@@ -805,7 +805,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'true_false',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => false, // خطأ
             ],
@@ -814,7 +814,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'true_false',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
             ],
@@ -823,7 +823,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'true_false',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
             ],
@@ -832,7 +832,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'true_false',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => false, // خطأ
             ],
@@ -841,7 +841,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'true_false',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true, // صح
             ],
@@ -852,7 +852,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'اصطاد دودة', 'is_correct' => false],
@@ -866,7 +866,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'جبل', 'is_correct' => false],
@@ -880,7 +880,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'حبل طويل', 'is_correct' => true],
@@ -894,7 +894,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'دودة كبيرة', 'is_correct' => false],
@@ -910,7 +910,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
-                'marks' => 2,
+                'marks' => 1,
                 'language' => 'ar',
                 'options' => [
                     ['text' => 'برد شديد', 'is_correct' => false],

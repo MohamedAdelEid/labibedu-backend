@@ -72,8 +72,8 @@ class LessonSeeder extends Seeder
                         'title' => 'Not all the planets in our solar system are rocky.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                     ],
@@ -81,8 +81,8 @@ class LessonSeeder extends Seeder
                         'title' => 'The rocky planets are the farthest planets from the Sun.',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                     ],
@@ -90,8 +90,8 @@ class LessonSeeder extends Seeder
                         'title' => 'There are volcanoes, valleys and craters on the rocky planets.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                     ],
@@ -99,8 +99,8 @@ class LessonSeeder extends Seeder
                         'title' => 'The Moon is a planet because it goes around the Sun.',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                     ],
@@ -108,8 +108,8 @@ class LessonSeeder extends Seeder
                         'title' => 'Scientists discovered another rocky planet outside our solar system.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                     ],
@@ -117,8 +117,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'How many rocky planets are there in our solar system?',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -131,8 +131,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'Which of the following is a rocky planet?',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -145,8 +145,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'What is the core of the rocky planets mostly made of?',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -159,8 +159,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'What did the scientists use to discover a rocky planet outside our solar system?',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -173,8 +173,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'Why is the Moon not considered a planet?',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -187,8 +187,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'The four rocky planets are Mercury, Venus, Earth and ________.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -201,8 +201,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'The rocky planets have a ________ surface.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -215,8 +215,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'Scientists discovered a rocky planet outside our ________.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -229,8 +229,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'The Moon is ________, but it isn\'t a planet.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -243,8 +243,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'The Moon goes around the ________.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'en',
                         'options' => [
@@ -295,8 +295,8 @@ class LessonSeeder extends Seeder
                         'title' => 'خرج الهدهد بعيدًا عن عشه واقترب من مملكة سبأ في اليمن.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -304,8 +304,8 @@ class LessonSeeder extends Seeder
                         'title' => 'كانت ملكة سبأ لا تستشير وزراءها في شؤون المملكة.',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -313,8 +313,8 @@ class LessonSeeder extends Seeder
                         'title' => 'رأى الهدهد قوم سبأ يعبدون الشمس من دون الله.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -322,8 +322,8 @@ class LessonSeeder extends Seeder
                         'title' => 'قبل سليمان –عليه السلام– الهدية التي أرسلتها الملكة.',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -331,8 +331,8 @@ class LessonSeeder extends Seeder
                         'title' => 'عندما رأت الملكة عرشها أمام سليمان قالت: (لا، هذا ليس عرشي).',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -340,8 +340,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'أين تقع مملكة سبأ؟',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -354,8 +354,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'ماذا رأى الهدهد قوم سبأ يعبدون؟',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -368,8 +368,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'لماذا رفض سليمان –عليه السلام– الهدية؟',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -382,8 +382,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'ماذا قررت الملكة بعد أن أخبرها الوزير برد سليمان؟',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -396,8 +396,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'كيف أجابت الملكة عندما سألها سليمان: (أهكذا عرشك؟)',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -411,8 +411,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'خرج الهدهد من عند سليمان –عليه السلام– وذهب إلى مملكة ________.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -425,8 +425,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'كان سليمان –عليه السلام– يفهم لغة ________.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -439,8 +439,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'اقترح الوزراء على الملكة أن تُرسل ________ لمحاربة سليمان.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -453,8 +453,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'أرادت الملكة التأكد من سلامة عرشها فأمرت الحرس ________.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -467,8 +467,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'عندما رأت الملكة عرشها عند سليمان ازداد يقينها بأنه ________.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -529,8 +529,8 @@ class LessonSeeder extends Seeder
                         'title' => 'تتطلب زراعة الفطر الاقتصادي درجات حرارة عالية جدًا تصل إلى (180°C) للقضاء على الفيروسات والميكروبات الضارة.',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -538,8 +538,8 @@ class LessonSeeder extends Seeder
                         'title' => 'تعتمد طريقة زراعة الفطر في الأكياس على تقطيع الفطر ومعالجته بالماء الساخن لقتل الجراثيم.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -547,8 +547,8 @@ class LessonSeeder extends Seeder
                         'title' => 'تُعدُّ الفطريات من النباتات التي تقوم بعملية التمثيل الضوئي لإنتاج غذائها.',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -556,8 +556,8 @@ class LessonSeeder extends Seeder
                         'title' => 'يجب فحص أبواغ الفطريات بالمجهر قبل استخدامها في زراعة الفطر للتأكد من خلوّها من البكتيريا الضارة.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -565,8 +565,8 @@ class LessonSeeder extends Seeder
                         'title' => 'الفطريات هي كائنات حية دقيقة تتكاثر بالأبواغ.',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -574,8 +574,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'أيٌّ مما يأتي هو المادة الرئيسية التي يتم تبريدها وتعقيمها في المرحلة الأولى من زراعة الفطر الاقتصادي؟',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -588,8 +588,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'ما هي أفضل نسبة رطوبة يجب توفيرها لضمان نجاح المشروع في المراحل الأولى لزراعة الفطر؟',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -602,8 +602,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'تُعتبر الفطريات كائنات:',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -616,8 +616,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'ما هو تركيب الفطريات الذي يُعدُّ الجزء الذي تتكون منه المادة الغذائية ويُستخدم في صناعة الأدوية؟',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -631,8 +631,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'تعدُّ الفطريات من الكائنات __________، مما يعني أنها لا تستطيع صنع غذائها بنفسها.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -645,8 +645,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'يُطلق على المجموعة التي ينتمي إليها الكائن الحي الذي لا يستطيع إنتاج غذائه بنفسه اسم __________.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -659,8 +659,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'للقيام بتجربة زراعة الفطر، نحتاج إلى توفير رطوبة بنسبة __________ أو أكثر مع تجنب أشعة الشمس المباشرة.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -673,8 +673,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'يُستخدم __________ في المرحلة الأخيرة من مراحل زراعة الفطر الاقتصادي، ويتم غمره بالماء المغلي لتعقيمه.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -687,8 +687,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'يمكن استنتاج أن الفطريات تحصل على الغذاء عن طريق __________ المواد العضوية الموجودة في الوسط الذي تنمو فيه.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -739,8 +739,8 @@ class LessonSeeder extends Seeder
                         'title' => 'تمثل المخلفات مشكلة بيئية تؤثر في صحة الإنسان.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -748,8 +748,8 @@ class LessonSeeder extends Seeder
                         'title' => 'تدوير المخلفات يعني التخلص منها نهائيًّا دون إعادة استخدامها.',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -757,8 +757,8 @@ class LessonSeeder extends Seeder
                         'title' => 'من المواد التي يمكن تدويرها الورق والبلاستيك والمعادن.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -766,8 +766,8 @@ class LessonSeeder extends Seeder
                         'title' => 'يساعد التدوير في المحافظة على موارد الطاقة للأجيال القادمة.',
                         'type' => 'true_false',
                         'is_correct' => true,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -775,8 +775,8 @@ class LessonSeeder extends Seeder
                         'title' => 'لا يوفر التدوير أي فرص عمل للأشخاص.',
                         'type' => 'true_false',
                         'is_correct' => false,
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                     ],
@@ -784,8 +784,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'أيٌّ من التالي يُعد من المخلفات التي يمكن تدويرها؟',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -798,8 +798,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'من فوائد تدوير المخلفات:',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -812,8 +812,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'تدوير المخلفات يساعد في تجنّب تلوث:',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -826,8 +826,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'لماذا يجب النظر إلى المخلفات على أنها مورد؟',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -841,8 +841,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'يطرح الإنسان كميات كبيرة من ______ يوميًّا.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -855,8 +855,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'من المخلفات التي يمكن تدويرها: الورق، والزجاج، و_______.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -869,8 +869,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'من فوائد التدوير: المحافظة على ______ الطبيعية.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -883,8 +883,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'يساعد التدوير في تجنُّب تلوث _______.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [
@@ -897,8 +897,8 @@ class LessonSeeder extends Seeder
                     [
                         'title' => 'أفكّر في عمل مشروع صغير لتدوير ______ المنزلية.',
                         'type' => 'choice',
-                        'xp' => 10,
-                        'coins' => 5,
+                        'xp' => 2,
+                        'coins' => 1,
                         'marks' => 1,
                         'language' => 'ar',
                         'options' => [

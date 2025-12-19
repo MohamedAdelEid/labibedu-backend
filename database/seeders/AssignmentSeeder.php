@@ -1014,15 +1014,20 @@ class AssignmentSeeder extends Seeder
         $type = $questionData['type'];
         $language = $questionData['language'] ?? 'ar';
 
+        // Use values from questionData if available, otherwise use passed parameters
+        $questionXp = $questionData['xp'] ?? $xp;
+        $questionCoins = $questionData['coins'] ?? $coins;
+        $questionMarks = $questionData['marks'] ?? $marks;
+
         // Create the question
         $question = Question::create([
             'exam_training_id' => $examTrainingId,
             'title' => $questionData['title'],
             'type' => $type,
             'language' => $language,
-            'xp' => $xp,
-            'coins' => $coins,
-            'marks' => $marks,
+            'xp' => $questionXp,
+            'coins' => $questionCoins,
+            'marks' => $questionMarks,
         ]);
 
         // Handle different question types
@@ -1095,6 +1100,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ما اسم الشخصية الرئيسية في القصة؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'سناء', 'is_correct' => false],
                 ['text' => 'آدم', 'is_correct' => true],
@@ -1108,6 +1116,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ما الذي جذب آدم في البداية؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'صوت النحلة', 'is_correct' => false],
                 ['text' => 'رائحة الزهور المتفتحة', 'is_correct' => true],
@@ -1121,6 +1132,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'كيف وصف أخ آدم النحلة في البداية؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'حشرة مفيدة', 'is_correct' => false],
                 ['text' => 'حشرة تطير كالذبابة، لها إبرة صغيرة وتقرص', 'is_correct' => true],
@@ -1135,6 +1149,9 @@ class AssignmentSeeder extends Seeder
             'type' => 'true_false',
             'is_correct' => true,
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
         ];
 
         // Question 5: About what آدم thought about honey
@@ -1142,6 +1159,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا كان يعتقد آدم عن مصدر العسل في البداية؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'يأتي من النحلة', 'is_correct' => false],
                 ['text' => 'ماما تصنعه', 'is_correct' => true],
@@ -1155,6 +1175,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'كيف وصف الأب النحلة؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'حشرة مخيفة', 'is_correct' => false],
                 ['text' => 'حشرة مفيدة تصنع لنا العسل من الأزهار', 'is_correct' => true],
@@ -1168,6 +1191,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا أهدت الجدة لآدم؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'كتاب عن النحل', 'is_correct' => false],
                 ['text' => 'جوارب صفراء منقطة بالأسود', 'is_correct' => true],
@@ -1181,6 +1207,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ما ألوان النحلة الحقيقية؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'سوداء فقط', 'is_correct' => false],
                 ['text' => 'ملونة بالأصفر والأسود', 'is_correct' => true],
@@ -1195,6 +1224,9 @@ class AssignmentSeeder extends Seeder
             'type' => 'true_false',
             'is_correct' => false,
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
         ];
 
         // Question 10: About what آدم asked his mother
@@ -1202,6 +1234,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا سأل آدم والدته؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'من أين يأتي العسل؟', 'is_correct' => false],
                 ['text' => 'من منهم مخطئ في وصف النحلة؟', 'is_correct' => true],
@@ -1215,6 +1250,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا قالت الأم لآدم؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'أخوك مخطئ', 'is_correct' => false],
                 ['text' => 'لا أحد مخطئ، كل منهم وصف النحلة بشكل صحيح من جانب واحد فقط', 'is_correct' => true],
@@ -1228,6 +1266,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'كيف عرف آدم شكل النحلة الحقيقي؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'من خلال الرسم', 'is_correct' => false],
                 ['text' => 'من خلال صورة في كتاب', 'is_correct' => true],
@@ -1242,6 +1283,9 @@ class AssignmentSeeder extends Seeder
             'type' => 'true_false',
             'is_correct' => true,
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
         ];
 
         // Question 14: About what bees eat
@@ -1249,6 +1293,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا تأكل النحلة؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'اللحوم', 'is_correct' => false],
                 ['text' => 'من الزهور', 'is_correct' => true],
@@ -1262,6 +1309,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'لماذا تأكل النحلة من الزهور؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'لأنها جائعة', 'is_correct' => false],
                 ['text' => 'كي تصنع العسل', 'is_correct' => true],
@@ -1417,6 +1467,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ما اسم الشخصية الرئيسية في القصة؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'سناء', 'is_correct' => false],
                 ['text' => 'آدم', 'is_correct' => true],
@@ -1430,6 +1483,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ما الذي جذب آدم في البداية؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'صوت النحلة', 'is_correct' => false],
                 ['text' => 'رائحة الزهور المتفتحة', 'is_correct' => true],
@@ -1443,6 +1499,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'كيف وصف أخ آدم النحلة في البداية؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'حشرة مفيدة', 'is_correct' => false],
                 ['text' => 'حشرة تطير كالذبابة، لها إبرة صغيرة وتقرص', 'is_correct' => true],
@@ -1457,6 +1516,9 @@ class AssignmentSeeder extends Seeder
             'type' => 'true_false',
             'is_correct' => true,
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
         ];
 
         // Question 5: About what آدم thought about honey
@@ -1464,6 +1526,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا كان يعتقد آدم عن مصدر العسل في البداية؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'يأتي من النحلة', 'is_correct' => false],
                 ['text' => 'ماما تصنعه', 'is_correct' => true],
@@ -1477,6 +1542,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'كيف وصف الأب النحلة؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'حشرة مخيفة', 'is_correct' => false],
                 ['text' => 'حشرة مفيدة تصنع لنا العسل من الأزهار', 'is_correct' => true],
@@ -1490,6 +1558,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا أهدت الجدة لآدم؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'كتاب عن النحل', 'is_correct' => false],
                 ['text' => 'جوارب صفراء منقطة بالأسود', 'is_correct' => true],
@@ -1503,6 +1574,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ما ألوان النحلة الحقيقية؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'سوداء فقط', 'is_correct' => false],
                 ['text' => 'ملونة بالأصفر والأسود', 'is_correct' => true],
@@ -1517,6 +1591,9 @@ class AssignmentSeeder extends Seeder
             'type' => 'true_false',
             'is_correct' => false,
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
         ];
 
         // Question 10: About what آدم asked his mother
@@ -1524,6 +1601,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا سأل آدم والدته؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'من أين يأتي العسل؟', 'is_correct' => false],
                 ['text' => 'من منهم مخطئ في وصف النحلة؟', 'is_correct' => true],
@@ -1537,6 +1617,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا قالت الأم لآدم؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'أخوك مخطئ', 'is_correct' => false],
                 ['text' => 'لا أحد مخطئ، كل منهم وصف النحلة بشكل صحيح من جانب واحد فقط', 'is_correct' => true],
@@ -1550,6 +1633,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'كيف عرف آدم شكل النحلة الحقيقي؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'من خلال الرسم', 'is_correct' => false],
                 ['text' => 'من خلال صورة في كتاب', 'is_correct' => true],
@@ -1564,6 +1650,9 @@ class AssignmentSeeder extends Seeder
             'type' => 'true_false',
             'is_correct' => true,
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
         ];
 
         // Question 14: About what bees eat
@@ -1571,6 +1660,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'ماذا تأكل النحلة؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'اللحوم', 'is_correct' => false],
                 ['text' => 'من الزهور', 'is_correct' => true],
@@ -1584,6 +1676,9 @@ class AssignmentSeeder extends Seeder
             'title' => 'لماذا تأكل النحلة من الزهور؟',
             'type' => 'choice',
             'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
             'options' => [
                 ['text' => 'لأنها جائعة', 'is_correct' => false],
                 ['text' => 'كي تصنع العسل', 'is_correct' => true],
