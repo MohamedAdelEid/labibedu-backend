@@ -33,9 +33,9 @@ class UserSeeder extends Seeder
         // Create 4 students - all in Grade 5 (classroom_id = 1)
         $students = [
             [
-                'name' => 'User 1',
-                'user_name' => 'user1',
-                'email' => 'user1@student.com',
+                'name' => 'Sabah Abdul-Fatah',
+                'user_name' => 'sabah_abdul-fatah',
+                'email' => 'sabah_abdul-fatah@student.com',
                 'school_id' => 1,
                 'classroom_id' => 3, // Grade 5
                 'group_id' => 7,
@@ -51,18 +51,18 @@ class UserSeeder extends Seeder
                 'date_of_birth' => '2010-01-01',
             ],
             [
-                'name' => 'User 2',
-                'user_name' => 'user2',
-                'email' => 'user2@student.com',
+                'name' => 'Abd Al-Rahman Al-Agendi',
+                'user_name' => 'abd_al-rahman_al-agendi',
+                'email' => 'abd_al-rahman_al-agendi@student.com',
                 'school_id' => 1,
                 'classroom_id' => 3, // Grade 5
                 'group_id' => 7,
                 'date_of_birth' => '2010-02-02',
             ],
             [
-                'name' => 'User 3',
-                'user_name' => 'user3',
-                'email' => 'user3@student.com',
+                'name' => 'Ashraf Abu Al-Fatah',
+                'user_name' => 'ashraf_abu_al-fatah',
+                'email' => 'ashraf_abu_al-fatah@student.com',
                 'school_id' => 1,
                 'classroom_id' => 3, // Grade 5
                 'group_id' => 7,
