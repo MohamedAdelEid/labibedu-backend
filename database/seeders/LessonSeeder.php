@@ -67,7 +67,7 @@ class LessonSeeder extends Seeder
                 'description' => 'Training exercises for the lesson Are all the planets rocky?',
                 'description_ar' => 'تمارين تدريبية لدرس هل كل الكواكب صخرية؟',
                 'questions' => [
-                    // A. True / False Questions (5 questions)
+                    // A. True / False Questions (3 questions)
                     [
                         'title' => 'Not all the planets in our solar system are rocky.',
                         'type' => 'true_false',
@@ -95,25 +95,9 @@ class LessonSeeder extends Seeder
                         'marks' => 1,
                         'language' => 'en',
                     ],
-                    [
-                        'title' => 'The Moon is a planet because it goes around the Sun.',
-                        'type' => 'true_false',
-                        'is_correct' => false,
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'en',
-                    ],
-                    [
-                        'title' => 'Scientists discovered another rocky planet outside our solar system.',
-                        'type' => 'true_false',
-                        'is_correct' => true,
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'en',
-                    ],
-                    // B. Multiple Choice Questions (10 questions)
+                    // Commented out: The Moon is a planet because it goes around the Sun.
+                    // Commented out: Scientists discovered another rocky planet outside our solar system.
+                    // B. Multiple Choice Questions (7 questions)
                     [
                         'title' => 'How many rocky planets are there in our solar system?',
                         'type' => 'choice',
@@ -212,48 +196,9 @@ class LessonSeeder extends Seeder
                             ['text' => 'Hard', 'is_correct' => true],
                         ],
                     ],
-                    [
-                        'title' => 'Scientists discovered a rocky planet outside our ________.',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'Galaxy', 'is_correct' => false],
-                            ['text' => 'Solar system', 'is_correct' => true],
-                            ['text' => 'Moon', 'is_correct' => false],
-                            ['text' => 'Universe', 'is_correct' => false],
-                        ],
-                    ],
-                    [
-                        'title' => 'The Moon is ________, but it isn\'t a planet.',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'Gassy', 'is_correct' => false],
-                            ['text' => 'Icy', 'is_correct' => false],
-                            ['text' => 'Rocky', 'is_correct' => true],
-                            ['text' => 'Watery', 'is_correct' => false],
-                        ],
-                    ],
-                    [
-                        'title' => 'The Moon goes around the ________.',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'en',
-                        'options' => [
-                            ['text' => 'Sun', 'is_correct' => false],
-                            ['text' => 'Mars', 'is_correct' => false],
-                            ['text' => 'Earth', 'is_correct' => true],
-                            ['text' => 'Venus', 'is_correct' => false],
-                        ],
-                    ],
+                    // Commented out: Scientists discovered a rocky planet outside our ________.
+                    // Commented out: The Moon is ________, but it isn't a planet.
+                    // Commented out: The Moon goes around the ________.
                 ],
             ],
             'book' => [
@@ -290,7 +235,7 @@ class LessonSeeder extends Seeder
                 'description' => 'Training exercises for the lesson قصة الهدهد وملكة سبأ',
                 'description_ar' => 'تمارين تدريبية لدرس قصة الهدهد وملكة سبأ',
                 'questions' => [
-                    // أولًا: أسئلة صح / خطأ (5 أسئلة)
+                    // أولًا: أسئلة صح / خطأ (3 أسئلة)
                     [
                         'title' => 'خرج الهدهد بعيدًا عن عشه واقترب من مملكة سبأ في اليمن.',
                         'type' => 'true_false',
@@ -318,25 +263,9 @@ class LessonSeeder extends Seeder
                         'marks' => 1,
                         'language' => 'ar',
                     ],
-                    [
-                        'title' => 'قبل سليمان –عليه السلام– الهدية التي أرسلتها الملكة.',
-                        'type' => 'true_false',
-                        'is_correct' => false,
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    [
-                        'title' => 'عندما رأت الملكة عرشها أمام سليمان قالت: (لا، هذا ليس عرشي).',
-                        'type' => 'true_false',
-                        'is_correct' => false,
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    // ثانيًا: أسئلة اختيار من متعدد (5 أسئلة)
+                    // Commented out: قبل سليمان –عليه السلام– الهدية التي أرسلتها الملكة.
+                    // Commented out: عندما رأت الملكة عرشها أمام سليمان قالت: (لا، هذا ليس عرشي).
+                    // ثانيًا: أسئلة اختيار من متعدد (4 أسئلة)
                     [
                         'title' => 'أين تقع مملكة سبأ؟',
                         'type' => 'choice',
@@ -393,21 +322,8 @@ class LessonSeeder extends Seeder
                             ['text' => 'الذهاب لمقابلته', 'is_correct' => true],
                         ],
                     ],
-                    [
-                        'title' => 'كيف أجابت الملكة عندما سألها سليمان: (أهكذا عرشك؟)',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'هذا ليس عرشي', 'is_correct' => false],
-                            ['text' => 'كأنه هو', 'is_correct' => true],
-                            ['text' => 'هو بالفعل', 'is_correct' => false],
-                            ['text' => 'ربما يشبهه فقط', 'is_correct' => false],
-                        ],
-                    ],
-                    // ثالثًا: أكمل الفراغ (5 أسئلة)
+                    // Commented out: كيف أجابت الملكة عندما سألها سليمان: (أهكذا عرشك؟)
+                    // ثالثًا: أكمل الفراغ (3 أسئلة)
                     [
                         'title' => 'خرج الهدهد من عند سليمان –عليه السلام– وذهب إلى مملكة ________.',
                         'type' => 'choice',
@@ -450,34 +366,8 @@ class LessonSeeder extends Seeder
                             ['text' => 'أسيرًا', 'is_correct' => false],
                         ],
                     ],
-                    [
-                        'title' => 'أرادت الملكة التأكد من سلامة عرشها فأمرت الحرس ________.',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'بتدميره', 'is_correct' => false],
-                            ['text' => 'بإخفائه', 'is_correct' => false],
-                            ['text' => 'بنقله', 'is_correct' => true],
-                            ['text' => 'ببيعه', 'is_correct' => false],
-                        ],
-                    ],
-                    [
-                        'title' => 'عندما رأت الملكة عرشها عند سليمان ازداد يقينها بأنه ________.',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'ملك', 'is_correct' => false],
-                            ['text' => 'ساحر', 'is_correct' => false],
-                            ['text' => 'نبي', 'is_correct' => true],
-                            ['text' => 'عالم', 'is_correct' => false],
-                        ],
-                    ],
+                    // Commented out: أرادت الملكة التأكد من سلامة عرشها فأمرت الحرس ________.
+                    // Commented out: عندما رأت الملكة عرشها عند سليمان ازداد يقينها بأنه ________.
                 ],
             ],
             'book' => [
@@ -524,7 +414,7 @@ class LessonSeeder extends Seeder
                 'description' => 'Training exercises for the lesson زراعة الفطر',
                 'description_ar' => 'تمارين تدريبية لدرس زراعة الفطر',
                 'questions' => [
-                    // أولاً: أسئلة صح/خطأ (5 أسئلة)
+                    // أولاً: أسئلة صح/خطأ (3 أسئلة)
                     [
                         'title' => 'تتطلب زراعة الفطر الاقتصادي درجات حرارة عالية جدًا تصل إلى (180°C) للقضاء على الفيروسات والميكروبات الضارة.',
                         'type' => 'true_false',
@@ -552,24 +442,8 @@ class LessonSeeder extends Seeder
                         'marks' => 1,
                         'language' => 'ar',
                     ],
-                    [
-                        'title' => 'يجب فحص أبواغ الفطريات بالمجهر قبل استخدامها في زراعة الفطر للتأكد من خلوّها من البكتيريا الضارة.',
-                        'type' => 'true_false',
-                        'is_correct' => true,
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    [
-                        'title' => 'الفطريات هي كائنات حية دقيقة تتكاثر بالأبواغ.',
-                        'type' => 'true_false',
-                        'is_correct' => false,
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
+                    // Commented out: يجب فحص أبواغ الفطريات بالمجهر قبل استخدامها في زراعة الفطر للتأكد من خلوّها من البكتيريا الضارة.
+                    // Commented out: الفطريات هي كائنات حية دقيقة تتكاثر بالأبواغ.
                     // اختر الإجابة (4 أسئلة)
                     [
                         'title' => 'أيٌّ مما يأتي هو المادة الرئيسية التي يتم تبريدها وتعقيمها في المرحلة الأولى من زراعة الفطر الاقتصادي؟',
@@ -627,7 +501,7 @@ class LessonSeeder extends Seeder
                             ['text' => 'الخيوط الجذرية', 'is_correct' => false],
                         ],
                     ],
-                    // املأ الفراغ (5 أسئلة)
+                    // املأ الفراغ (3 أسئلة)
                     [
                         'title' => 'تعدُّ الفطريات من الكائنات __________، مما يعني أنها لا تستطيع صنع غذائها بنفسها.',
                         'type' => 'choice',
@@ -670,34 +544,8 @@ class LessonSeeder extends Seeder
                             ['text' => '100%', 'is_correct' => false],
                         ],
                     ],
-                    [
-                        'title' => 'يُستخدم __________ في المرحلة الأخيرة من مراحل زراعة الفطر الاقتصادي، ويتم غمره بالماء المغلي لتعقيمه.',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'الركام الأخضر', 'is_correct' => false],
-                            ['text' => 'الأبواغ', 'is_correct' => false],
-                            ['text' => 'تربة التغطية', 'is_correct' => true],
-                            ['text' => 'الخيوط الجذرية', 'is_correct' => false],
-                        ],
-                    ],
-                    [
-                        'title' => 'يمكن استنتاج أن الفطريات تحصل على الغذاء عن طريق __________ المواد العضوية الموجودة في الوسط الذي تنمو فيه.',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'تخزين', 'is_correct' => false],
-                            ['text' => 'إنتاج', 'is_correct' => false],
-                            ['text' => 'امتصاص من الهواء', 'is_correct' => false],
-                            ['text' => 'تحليل', 'is_correct' => true],
-                        ],
-                    ],
+                    // Commented out: يُستخدم __________ في المرحلة الأخيرة من مراحل زراعة الفطر الاقتصادي، ويتم غمره بالماء المغلي لتعقيمه.
+                    // Commented out: يمكن استنتاج أن الفطريات تحصل على الغذاء عن طريق __________ المواد العضوية الموجودة في الوسط الذي تنمو فيه.
                 ],
             ],
             'book' => [
@@ -734,7 +582,7 @@ class LessonSeeder extends Seeder
                 'description' => 'Training exercises for the lesson إعادة التدوير',
                 'description_ar' => 'تمارين تدريبية لدرس إعادة التدوير',
                 'questions' => [
-                    // أولًا: أسئلة صح/خطأ (5 أسئلة)
+                    // أولًا: أسئلة صح/خطأ (3 أسئلة)
                     [
                         'title' => 'تمثل المخلفات مشكلة بيئية تؤثر في صحة الإنسان.',
                         'type' => 'true_false',
@@ -762,25 +610,9 @@ class LessonSeeder extends Seeder
                         'marks' => 1,
                         'language' => 'ar',
                     ],
-                    [
-                        'title' => 'يساعد التدوير في المحافظة على موارد الطاقة للأجيال القادمة.',
-                        'type' => 'true_false',
-                        'is_correct' => true,
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    [
-                        'title' => 'لا يوفر التدوير أي فرص عمل للأشخاص.',
-                        'type' => 'true_false',
-                        'is_correct' => false,
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                    ],
-                    // أيٌّ من التالي (3 أسئلة)
+                    // Commented out: يساعد التدوير في المحافظة على موارد الطاقة للأجيال القادمة.
+                    // Commented out: لا يوفر التدوير أي فرص عمل للأشخاص.
+                    // أيٌّ من التالي (2 أسئلة)
                     [
                         'title' => 'أيٌّ من التالي يُعد من المخلفات التي يمكن تدويرها؟',
                         'type' => 'choice',
@@ -809,34 +641,8 @@ class LessonSeeder extends Seeder
                             ['text' => 'تقليل النظافة', 'is_correct' => false],
                         ],
                     ],
-                    [
-                        'title' => 'تدوير المخلفات يساعد في تجنّب تلوث:',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'الماء والهواء', 'is_correct' => true],
-                            ['text' => 'الجبال', 'is_correct' => false],
-                            ['text' => 'الصحارى', 'is_correct' => false],
-                            ['text' => 'الفضاء', 'is_correct' => false],
-                        ],
-                    ],
-                    [
-                        'title' => 'لماذا يجب النظر إلى المخلفات على أنها مورد؟',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'لأنها ليس لها قيمة', 'is_correct' => false],
-                            ['text' => 'لأنها تزيد عدد السكان', 'is_correct' => false],
-                            ['text' => 'لأنها يمكن الاستفادة منها', 'is_correct' => true],
-                            ['text' => 'لأنها تستهلك الطاقة', 'is_correct' => false],
-                        ],
-                    ],
+                    // Commented out: تدوير المخلفات يساعد في تجنّب تلوث
+                    // Commented out: لماذا يجب النظر إلى المخلفات على أنها مورد؟
                     // اختر الإجابة الصحيحة (5 أسئلة)
                     [
                         'title' => 'يطرح الإنسان كميات كبيرة من ______ يوميًّا.',
@@ -894,20 +700,7 @@ class LessonSeeder extends Seeder
                             ['text' => 'الكتب', 'is_correct' => false],
                         ],
                     ],
-                    [
-                        'title' => 'أفكّر في عمل مشروع صغير لتدوير ______ المنزلية.',
-                        'type' => 'choice',
-                        'xp' => 2,
-                        'coins' => 1,
-                        'marks' => 1,
-                        'language' => 'ar',
-                        'options' => [
-                            ['text' => 'الملابس', 'is_correct' => false],
-                            ['text' => 'الألعاب', 'is_correct' => false],
-                            ['text' => 'المخلفات', 'is_correct' => true],
-                            ['text' => 'الأدوات', 'is_correct' => false],
-                        ],
-                    ],
+                    // Commented out: أفكّر في عمل مشروع صغير لتدوير ______ المنزلية.
                 ],
             ],
             'book' => [
@@ -1023,9 +816,13 @@ class LessonSeeder extends Seeder
 
         $this->command->info("   📝 Created training: {$training->title_ar}");
 
+        // Shuffle questions to mix types
+        $questions = $trainingData['questions'];
+        shuffle($questions);
+
         // Create questions
         $questionCount = 0;
-        foreach ($trainingData['questions'] as $questionData) {
+        foreach ($questions as $questionData) {
             $this->createQuestion($training->id, $questionData);
             $questionCount++;
         }

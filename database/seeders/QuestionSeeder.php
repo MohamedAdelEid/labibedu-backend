@@ -71,7 +71,8 @@ class QuestionSeeder extends Seeder
     private function getSanaaInSpaceQuestions(): array
     {
         return [
-            // Choice Questions
+            // تم إعادة ترتيب الأسئلة (12 سؤال: 6 choice + 3 arrange + 3 true_false)
+            // اختر الإجابة الصحيحة
             [
                 'title' => 'كانت سناء تلميذة في الصف __________.',
                 'type' => 'choice',
@@ -86,78 +87,17 @@ class QuestionSeeder extends Seeder
                     ['text' => 'الثالث', 'is_correct' => false],
                 ],
             ],
+            // صح أو خطأ
             [
-                'title' => 'أهدى خالها لها __________ لتراقب به الكواكب.',
-                'type' => 'choice',
+                'title' => 'كانت سناء تكره كتب الفلك لأنها مملة.',
+                'type' => 'true_false',
                 'xp' => 2,
                 'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
-                'options' => [
-                    ['text' => 'مجهرًا', 'is_correct' => false],
-                    ['text' => 'كتابًا', 'is_correct' => false],
-                    ['text' => 'تلسكوبًا', 'is_correct' => true],
-                    ['text' => 'هاتفًا', 'is_correct' => false],
-                ],
+                'is_correct' => false, // خطأ
             ],
-            [
-                'title' => 'سافرت سناء مع خالها إلى كوكب __________.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'المريخ', 'is_correct' => false],
-                    ['text' => 'كيبْلَر', 'is_correct' => true],
-                    ['text' => 'الزهرة', 'is_correct' => false],
-                    ['text' => 'عطارد', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'قال خالها إنّ رحلتهما كانت أسرع من __________.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'الريح', 'is_correct' => false],
-                    ['text' => 'الصوت', 'is_correct' => false],
-                    ['text' => 'الضوء', 'is_correct' => true],
-                    ['text' => 'الماء', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'الكلمة المخالفة في مجموعة الكلمات التالية هي: (كوكب – نجم – قمر – زهرة)',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'كوكب', 'is_correct' => false],
-                    ['text' => 'نجم', 'is_correct' => false],
-                    ['text' => 'قمر', 'is_correct' => false],
-                    ['text' => 'زهرة', 'is_correct' => true],
-                ],
-            ],
-            [
-                'title' => 'الكلمة المخالفة في مجموعة الكلمات التالية هي: (كيبْلَر – المريخ – الزهرة – الرياض)',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'كيبْلَر', 'is_correct' => false],
-                    ['text' => 'المريخ', 'is_correct' => false],
-                    ['text' => 'الزهرة', 'is_correct' => false],
-                    ['text' => 'الرياض', 'is_correct' => true],
-                ],
-            ],
-
-            // Arrange Questions
+            // رتب الكلمات
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ الأهل',
                 'type' => 'arrange',
@@ -176,6 +116,47 @@ class QuestionSeeder extends Seeder
                     ['text' => 'الطويلة', 'order' => 8],
                 ],
             ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'أهدى خالها لها __________ لتراقب به الكواكب.',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'مجهرًا', 'is_correct' => false],
+                    ['text' => 'كتابًا', 'is_correct' => false],
+                    ['text' => 'تلسكوبًا', 'is_correct' => true],
+                    ['text' => 'هاتفًا', 'is_correct' => false],
+                ],
+            ],
+            // صح أو خطأ
+            [
+                'title' => 'أهدى الخال راغب لابنة أخته سناء تلسكوبًا لمراقبة الكواكب.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'سافرت سناء مع خالها إلى كوكب __________.',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'المريخ', 'is_correct' => false],
+                    ['text' => 'كيبْلَر', 'is_correct' => true],
+                    ['text' => 'الزهرة', 'is_correct' => false],
+                    ['text' => 'عطارد', 'is_correct' => false],
+                ],
+            ],
+            // رتب الكلمات
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ المركبة',
                 'type' => 'arrange',
@@ -194,6 +175,32 @@ class QuestionSeeder extends Seeder
                     ['text' => 'كبيرة', 'order' => 8],
                 ],
             ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'قال خالها إنّ رحلتهما كانت أسرع من __________.',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الريح', 'is_correct' => false],
+                    ['text' => 'الصوت', 'is_correct' => false],
+                    ['text' => 'الضوء', 'is_correct' => true],
+                    ['text' => 'الماء', 'is_correct' => false],
+                ],
+            ],
+            // صح أو خطأ
+            [
+                'title' => 'صنع خال سناء مركبة فضائية تسير بسرعة الضوء.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            // رتب الكلمات
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ سناء',
                 'type' => 'arrange',
@@ -209,34 +216,35 @@ class QuestionSeeder extends Seeder
                     ['text' => 'بانبهار', 'order' => 5],
                 ],
             ],
-
-            // True/False Questions
+            // اختر الإجابة الصحيحة
             [
-                'title' => 'كانت سناء تكره كتب الفلك لأنها مملة.',
-                'type' => 'true_false',
+                'title' => 'الكلمة المخالفة في مجموعة الكلمات التالية هي: (كوكب – نجم – قمر – زهرة)',
+                'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
-                'is_correct' => false, // خطأ
+                'options' => [
+                    ['text' => 'كوكب', 'is_correct' => false],
+                    ['text' => 'نجم', 'is_correct' => false],
+                    ['text' => 'قمر', 'is_correct' => false],
+                    ['text' => 'زهرة', 'is_correct' => true],
+                ],
             ],
+            // اختر الإجابة الصحيحة
             [
-                'title' => 'أهدى الخال راغب لابنة أخته سناء تلسكوبًا لمراقبة الكواكب.',
-                'type' => 'true_false',
+                'title' => 'الكلمة المخالفة في مجموعة الكلمات التالية هي: (كيبْلَر – المريخ – الزهرة – الرياض)',
+                'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
-                'is_correct' => true, // صح
-            ],
-            [
-                'title' => 'صنع خال سناء مركبة فضائية تسير بسرعة الضوء.',
-                'type' => 'true_false',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'is_correct' => true, // صح
+                'options' => [
+                    ['text' => 'كيبْلَر', 'is_correct' => false],
+                    ['text' => 'المريخ', 'is_correct' => false],
+                    ['text' => 'الزهرة', 'is_correct' => false],
+                    ['text' => 'الرياض', 'is_correct' => true],
+                ],
             ],
         ];
     }
@@ -247,7 +255,8 @@ class QuestionSeeder extends Seeder
     private function getAdamImaginesBeeQuestions(): array
     {
         return [
-            // Choice Questions
+            // تم إعادة ترتيب الأسئلة واختيار 12 سؤال (6 choice + 3 arrange + 3 true_false)
+            // اختر الإجابة الصحيحة
             [
                 'title' => 'جذبَتْ آدم رائحةُ __________ المتفتحة بجانب منزله.',
                 'type' => 'choice',
@@ -262,106 +271,17 @@ class QuestionSeeder extends Seeder
                     ['text' => 'الأعشاب', 'is_correct' => false],
                 ],
             ],
+            // صح أو خطأ
             [
-                'title' => 'قال الأخ إن النحلة تشبه __________ لكنها تلسع.',
-                'type' => 'choice',
+                'title' => 'تخيّل آدم في البداية أن النحلة حشرة سوداء مخيفة.',
+                'type' => 'true_false',
                 'xp' => 2,
                 'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
-                'options' => [
-                    ['text' => 'الفراشة', 'is_correct' => false],
-                    ['text' => 'الذبابة', 'is_correct' => true],
-                    ['text' => 'النملة', 'is_correct' => false],
-                    ['text' => 'العصفور', 'is_correct' => false],
-                ],
+                'is_correct' => true, // صح
             ],
-            [
-                'title' => 'أوضح الأب أن النحلة حشرة __________ تصنع لنا العسل.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'مؤذية', 'is_correct' => false],
-                    ['text' => 'مفيدة', 'is_correct' => true],
-                    ['text' => 'صغيرة جدًا', 'is_correct' => false],
-                    ['text' => 'خطير', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'أهدت الجدة آدم جوارب __________ منقطة بالأسود.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'خضراء', 'is_correct' => false],
-                    ['text' => 'صفراء', 'is_correct' => true],
-                    ['text' => 'بيضاء', 'is_correct' => false],
-                    ['text' => 'زرقاء', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'ماذا جذب آدم في بداية القصة؟',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'صوت العصافير', 'is_correct' => false],
-                    ['text' => 'رائحة الزهور', 'is_correct' => true],
-                    ['text' => 'لون الفراشات', 'is_correct' => false],
-                    ['text' => 'طنين النحل', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'من حذّر آدم من وجود نحلة داخل الزهرة؟',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'والده', 'is_correct' => false],
-                    ['text' => 'أخوه', 'is_correct' => true],
-                    ['text' => 'جدته', 'is_correct' => false],
-                    ['text' => 'أمه', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'ما الذي أحضرته الجدة لآدم؟',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'قميصًا أزرق', 'is_correct' => false],
-                    ['text' => 'جوارب صفراء منقطة بالأسود', 'is_correct' => true],
-                    ['text' => 'كتابًا عن النحل', 'is_correct' => false],
-                    ['text' => 'قبعة ملونة', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'ماذا فعلت الأم في نهاية القصة؟',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'قدمت العسل لآدم', 'is_correct' => false],
-                    ['text' => 'عرضت عليه صورة النحلة في كتاب', 'is_correct' => true],
-                    ['text' => 'ذهبت لتشتري العسل', 'is_correct' => false],
-                    ['text' => 'طلبت منه نسيان النحل', 'is_correct' => false],
-                ],
-            ],
-
-            // Arrange Questions
+            // رتب الكلمات
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ آدم',
                 'type' => 'arrange',
@@ -379,6 +299,47 @@ class QuestionSeeder extends Seeder
                     ['text' => 'الجميلة', 'order' => 7],
                 ],
             ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'قال الأخ إن النحلة تشبه __________ لكنها تلسع.',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'الفراشة', 'is_correct' => false],
+                    ['text' => 'الذبابة', 'is_correct' => true],
+                    ['text' => 'النملة', 'is_correct' => false],
+                    ['text' => 'العصفور', 'is_correct' => false],
+                ],
+            ],
+            // صح أو خطأ
+            [
+                'title' => 'رسم آدم في النهاية نحلة تجمع الصفات التي عرفها من الجميع.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'أوضح الأب أن النحلة حشرة __________ تصنع لنا العسل.',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'مؤذية', 'is_correct' => false],
+                    ['text' => 'مفيدة', 'is_correct' => true],
+                    ['text' => 'صغيرة جدًا', 'is_correct' => false],
+                    ['text' => 'خطير', 'is_correct' => false],
+                ],
+            ],
+            // رتب الكلمات
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ الأم',
                 'type' => 'arrange',
@@ -397,6 +358,32 @@ class QuestionSeeder extends Seeder
                     ['text' => 'الحشرات', 'order' => 8],
                 ],
             ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'أهدت الجدة آدم جوارب __________ منقطة بالأسود.',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'خضراء', 'is_correct' => false],
+                    ['text' => 'صفراء', 'is_correct' => true],
+                    ['text' => 'بيضاء', 'is_correct' => false],
+                    ['text' => 'زرقاء', 'is_correct' => false],
+                ],
+            ],
+            // صح أو خطأ
+            [
+                'title' => 'أخبره أخوه أن النحلة طائر جميل له ريش.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => false, // خطأ
+            ],
+            // رتب الكلمات
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ الأب',
                 'type' => 'arrange',
@@ -414,35 +401,65 @@ class QuestionSeeder extends Seeder
                     ['text' => 'العسل', 'order' => 7],
                 ],
             ],
-
-            // True/False Questions
+            // اختر الإجابة الصحيحة
             [
-                'title' => 'تخيّل آدم في البداية أن النحلة حشرة سوداء مخيفة.',
-                'type' => 'true_false',
+                'title' => 'من حذّر آدم من وجود نحلة داخل الزهرة؟',
+                'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
-                'is_correct' => true, // صح
+                'options' => [
+                    ['text' => 'والده', 'is_correct' => false],
+                    ['text' => 'أخوه', 'is_correct' => true],
+                    ['text' => 'جدته', 'is_correct' => false],
+                    ['text' => 'أمه', 'is_correct' => false],
+                ],
             ],
+            // اختر الإجابة الصحيحة
             [
-                'title' => 'رسم آدم في النهاية نحلة تجمع الصفات التي عرفها من الجميع.',
-                'type' => 'true_false',
+                'title' => 'ما الذي أحضرته الجدة لآدم؟',
+                'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
-                'is_correct' => true, // صح
+                'options' => [
+                    ['text' => 'قميصًا أزرق', 'is_correct' => false],
+                    ['text' => 'جوارب صفراء منقطة بالأسود', 'is_correct' => true],
+                    ['text' => 'كتابًا عن النحل', 'is_correct' => false],
+                    ['text' => 'قبعة ملونة', 'is_correct' => false],
+                ],
             ],
-            [
-                'title' => 'أخبره أخوه أن النحلة طائر جميل له ريش.',
-                'type' => 'true_false',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'is_correct' => false, // خطأ
-            ],
+            // ========== تم تعليق الأسئلة الزائدة (2 أسئلة) ==========
+            // [
+            //     'title' => 'ماذا جذب آدم في بداية القصة؟',
+            //     'type' => 'choice',
+            //     'xp' => 2,
+            //     'coins' => 1,
+            //     'marks' => 1,
+            //     'language' => 'ar',
+            //     'options' => [
+            //         ['text' => 'صوت العصافير', 'is_correct' => false],
+            //         ['text' => 'رائحة الزهور', 'is_correct' => true],
+            //         ['text' => 'لون الفراشات', 'is_correct' => false],
+            //         ['text' => 'طنين النحل', 'is_correct' => false],
+            //     ],
+            // ],
+            // [
+            //     'title' => 'ماذا فعلت الأم في نهاية القصة؟',
+            //     'type' => 'choice',
+            //     'xp' => 2,
+            //     'coins' => 1,
+            //     'marks' => 1,
+            //     'language' => 'ar',
+            //     'options' => [
+            //         ['text' => 'قدمت العسل لآدم', 'is_correct' => false],
+            //         ['text' => 'عرضت عليه صورة النحلة في كتاب', 'is_correct' => true],
+            //         ['text' => 'ذهبت لتشتري العسل', 'is_correct' => false],
+            //         ['text' => 'طلبت منه نسيان النحل', 'is_correct' => false],
+            //     ],
+            // ],
         ];
     }
 
@@ -452,7 +469,8 @@ class QuestionSeeder extends Seeder
     private function getWhenMyCatLostHerMindQuestions(): array
     {
         return [
-            // Choice Questions
+            // تم إعادة ترتيب الأسئلة واختيار 12 سؤال (7 choice + 2 arrange + 3 true_false)
+            // اختر الإجابة الصحيحة
             [
                 'title' => 'من هو بطل القصة؟',
                 'type' => 'choice',
@@ -467,106 +485,17 @@ class QuestionSeeder extends Seeder
                     ['text' => 'فادي', 'is_correct' => false],
                 ],
             ],
+            // صح أو خطأ
             [
-                'title' => 'ما الشيء الذي كان داخل الصندوق مع القطة؟',
-                'type' => 'choice',
+                'title' => 'عاد رامي إلى المنزل مسرورًا لأن يومه في المدرسة كان سهلًا.',
+                'type' => 'true_false',
                 'xp' => 2,
                 'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
-                'options' => [
-                    ['text' => 'زجاجة سُم', 'is_correct' => true],
-                    ['text' => 'طعام', 'is_correct' => false],
-                    ['text' => 'ماء', 'is_correct' => false],
-                    ['text' => 'وسادة', 'is_correct' => false],
-                ],
+                'is_correct' => false, // خطأ
             ],
-            [
-                'title' => 'ما الذي يرمز إليه الصندوق في القصة؟',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'بيت القطة', 'is_correct' => false],
-                    ['text' => 'تجربة علمية', 'is_correct' => true],
-                    ['text' => 'لعبة للأطفال', 'is_correct' => false],
-                    ['text' => 'مكان للاختباء', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'كيف انتهت القصة؟',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'اختفت القطة نهائيًا', 'is_correct' => false],
-                    ['text' => 'تحولت إلى روبوت', 'is_correct' => false],
-                    ['text' => 'عادت كما كانت', 'is_correct' => true],
-                    ['text' => 'بقيت غاضبة من رامي', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'عاد رامي إلى المنزل وهو يشعر بالتعب من يومٍ __________.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'قصيرٍ', 'is_correct' => false],
-                    ['text' => 'طويلٍ', 'is_correct' => true],
-                    ['text' => 'سهلٍ', 'is_correct' => false],
-                    ['text' => 'غريبٍ', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'لم يجد رامي قطته __________ في أي مكان.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'مشمشَة', 'is_correct' => true],
-                    ['text' => 'مشمسة', 'is_correct' => false],
-                    ['text' => 'مشربة', 'is_correct' => false],
-                    ['text' => 'مشهورة', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'قالت القطة إنها ليست مشمشَة، بل قطة __________.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'شرودنجر', 'is_correct' => true],
-                    ['text' => 'شرودر', 'is_correct' => false],
-                    ['text' => 'شرونجر', 'is_correct' => false],
-                    ['text' => 'شرودينجر', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'دخلت القطة __________ وأغلقته على نفسها.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'السرير', 'is_correct' => false],
-                    ['text' => 'الصندوق', 'is_correct' => true],
-                    ['text' => 'الدولاب', 'is_correct' => false],
-                    ['text' => 'الكرسي', 'is_correct' => false],
-                ],
-            ],
-
-            // Arrange Questions
+            // رتب الكلمات
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ رامي',
                 'type' => 'arrange',
@@ -583,6 +512,47 @@ class QuestionSeeder extends Seeder
                     ['text' => 'المنزل', 'order' => 6],
                 ],
             ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'ما الشيء الذي كان داخل الصندوق مع القطة؟',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'زجاجة سُم', 'is_correct' => true],
+                    ['text' => 'طعام', 'is_correct' => false],
+                    ['text' => 'ماء', 'is_correct' => false],
+                    ['text' => 'وسادة', 'is_correct' => false],
+                ],
+            ],
+            // صح أو خطأ
+            [
+                'title' => 'لم يجد رامي قطته مشمشَة عندما عاد إلى المنزل.',
+                'type' => 'true_false',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'is_correct' => true, // صح
+            ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'ما الذي يرمز إليه الصندوق في القصة؟',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'بيت القطة', 'is_correct' => false],
+                    ['text' => 'تجربة علمية', 'is_correct' => true],
+                    ['text' => 'لعبة للأطفال', 'is_correct' => false],
+                    ['text' => 'مكان للاختباء', 'is_correct' => false],
+                ],
+            ],
+            // رتب الكلمات
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بــ عاد',
                 'type' => 'arrange',
@@ -598,17 +568,22 @@ class QuestionSeeder extends Seeder
                     ['text' => 'مسرورًا', 'order' => 5],
                 ],
             ],
-
-            // True/False Questions
+            // اختر الإجابة الصحيحة
             [
-                'title' => 'عاد رامي إلى المنزل مسرورًا لأن يومه في المدرسة كان سهلًا.',
-                'type' => 'true_false',
+                'title' => 'كيف انتهت القصة؟',
+                'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
-                'is_correct' => false, // خطأ
+                'options' => [
+                    ['text' => 'اختفت القطة نهائيًا', 'is_correct' => false],
+                    ['text' => 'تحولت إلى روبوت', 'is_correct' => false],
+                    ['text' => 'عادت كما كانت', 'is_correct' => true],
+                    ['text' => 'بقيت غاضبة من رامي', 'is_correct' => false],
+                ],
             ],
+            // صح أو خطأ
             [
                 'title' => 'انتهت القصة بعودة مشمشَة إلى طبيعتها ولعبها مع رامي.',
                 'type' => 'true_false',
@@ -618,15 +593,66 @@ class QuestionSeeder extends Seeder
                 'language' => 'ar',
                 'is_correct' => true, // صح
             ],
+            // اختر الإجابة الصحيحة
             [
-                'title' => 'لم يجد رامي قطته مشمشَة عندما عاد إلى المنزل.',
-                'type' => 'true_false',
+                'title' => 'عاد رامي إلى المنزل وهو يشعر بالتعب من يومٍ __________.',
+                'type' => 'choice',
                 'xp' => 2,
                 'coins' => 1,
                 'marks' => 1,
                 'language' => 'ar',
-                'is_correct' => true, // صح
+                'options' => [
+                    ['text' => 'قصيرٍ', 'is_correct' => false],
+                    ['text' => 'طويلٍ', 'is_correct' => true],
+                    ['text' => 'سهلٍ', 'is_correct' => false],
+                    ['text' => 'غريبٍ', 'is_correct' => false],
+                ],
             ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'لم يجد رامي قطته __________ في أي مكان.',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'مشمشَة', 'is_correct' => true],
+                    ['text' => 'مشمسة', 'is_correct' => false],
+                    ['text' => 'مشربة', 'is_correct' => false],
+                    ['text' => 'مشهورة', 'is_correct' => false],
+                ],
+            ],
+            // اختر الإجابة الصحيحة
+            [
+                'title' => 'دخلت القطة __________ وأغلقته على نفسها.',
+                'type' => 'choice',
+                'xp' => 2,
+                'coins' => 1,
+                'marks' => 1,
+                'language' => 'ar',
+                'options' => [
+                    ['text' => 'السرير', 'is_correct' => false],
+                    ['text' => 'الصندوق', 'is_correct' => true],
+                    ['text' => 'الدولاب', 'is_correct' => false],
+                    ['text' => 'الكرسي', 'is_correct' => false],
+                ],
+            ],
+            // ========== تم تعليق الأسئلة الزائدة (1 سؤال) ==========
+            // [
+            //     'title' => 'قالت القطة إنها ليست مشمشَة، بل قطة __________.',
+            //     'type' => 'choice',
+            //     'xp' => 2,
+            //     'coins' => 1,
+            //     'marks' => 1,
+            //     'language' => 'ar',
+            //     'options' => [
+            //         ['text' => 'شرودنجر', 'is_correct' => true],
+            //         ['text' => 'شرودر', 'is_correct' => false],
+            //         ['text' => 'شرونجر', 'is_correct' => false],
+            //         ['text' => 'شرودينجر', 'is_correct' => false],
+            //     ],
+            // ],
         ];
     }
 

@@ -369,7 +369,7 @@ class JourneySeeder extends Seeder
 
     private function createWhyAmISquareQuestions(int $trainingId): void
     {
-        $questions = [
+        $choiceQuestions = [
             [
                 'title' => 'لماذا كان المربّع مختلفًا عن الآخرين؟',
                 'type' => 'choice',
@@ -440,6 +440,9 @@ class JourneySeeder extends Seeder
                     ['text' => 'عادوا إلى المدرسة دون أن يشكروه.', 'is_correct' => false],
                 ],
             ],
+        ];
+
+        $arrangeQuestions = [
             [
                 'title' => 'رتب الكلمات التالية لتصبح جملة مفيدة تبدأ بـــــ بابا',
                 'type' => 'arrange',
@@ -492,6 +495,9 @@ class JourneySeeder extends Seeder
                     ['text' => 'الكبير', 'order' => 6],
                 ],
             ],
+        ];
+
+        $trueFalseQuestions = [
             [
                 'title' => 'وُلد الطفل على شكل مربع في عالم كله دوائر.',
                 'type' => 'true_false',
@@ -521,12 +527,16 @@ class JourneySeeder extends Seeder
             ],
         ];
 
+        // Merge and shuffle to mix question types
+        $questions = array_merge($choiceQuestions, $arrangeQuestions, $trueFalseQuestions);
+        shuffle($questions);
+
         $this->createQuestions($trainingId, $questions);
     }
 
     private function createJourneyQuestions(int $trainingId): void
     {
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'الهمزة المتطرفة تكتب حسب حركة ما قبلها.',
                 'type' => 'true_false',
@@ -555,15 +565,6 @@ class JourneySeeder extends Seeder
                 'is_correct' => true,
             ],
             [
-                'title' => 'الجملة الفعلية تبدأ دائماً بفاعل.',
-                'type' => 'true_false',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'is_correct' => false,
-            ],
-            [
                 'title' => 'الجمع المؤنث السالم ينتهي بـ(ات).',
                 'type' => 'true_false',
                 'xp' => 2,
@@ -572,6 +573,10 @@ class JourneySeeder extends Seeder
                 'language' => 'ar',
                 'is_correct' => true,
             ],
+            // Commented out: الجملة الفعلية تبدأ دائماً بفاعل.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'فعل الأمر من كلمة (كتب) هو:',
                 'type' => 'choice',
@@ -656,34 +661,11 @@ class JourneySeeder extends Seeder
                     ['text' => 'لمّا', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'الكلمة التي تحتوي على همزة متوسطة:',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'سأل', 'is_correct' => false],
-                    ['text' => 'فائدة', 'is_correct' => true],
-                    ['text' => 'سماء', 'is_correct' => false],
-                    ['text' => 'ماء', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'كلمة (حديقة) نوعها:',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'اسم', 'is_correct' => true],
-                    ['text' => 'فعل', 'is_correct' => false],
-                    ['text' => 'حرف', 'is_correct' => false],
-                    ['text' => 'صفة', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: الكلمة التي تحتوي على همزة متوسطة
+            // Commented out: كلمة (حديقة) نوعها
+        ];
+
+        $connectQuestions = [
             [
                 'title' => 'صِل كل كلمة بنوعها:',
                 'type' => 'connect',
@@ -716,12 +698,21 @@ class JourneySeeder extends Seeder
             ],
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 4 true/false, 6 choice, and 2 connect = 12 questions
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 4),
+            array_slice($choiceQuestions, 0, 6),
+            $connectQuestions
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function createSecondStageTraining1Questions(int $trainingId): void
     {
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'القمر أكبر من الشمس.',
                 'type' => 'true_false',
@@ -749,24 +740,11 @@ class JourneySeeder extends Seeder
                 'language' => 'ar',
                 'is_correct' => true,
             ],
-            [
-                'title' => 'أطول نهر في العالم هو نهر الأمازون.',
-                'type' => 'true_false',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'is_correct' => true,
-            ],
-            [
-                'title' => 'البطريق يعيش في الصحراء.',
-                'type' => 'true_false',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'is_correct' => false,
-            ],
+            // Commented out: أطول نهر في العالم هو نهر الأمازون.
+            // Commented out: البطريق يعيش في الصحراء.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'عاصمة دولة مصر هي ____________.',
                 'type' => 'choice',
@@ -837,48 +815,12 @@ class JourneySeeder extends Seeder
                     ['text' => 'النيتروجين', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'أكبر محيطات العالم هو:',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'الأطلسي', 'is_correct' => false],
-                    ['text' => 'الهادي', 'is_correct' => true],
-                    ['text' => 'الهندي', 'is_correct' => false],
-                    ['text' => 'المتجمد الشمالي', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'أين يعيش الجمل؟',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'في الصحراء', 'is_correct' => true],
-                    ['text' => 'في القطب الجنوبي', 'is_correct' => false],
-                    ['text' => 'في الغابة', 'is_correct' => false],
-                    ['text' => 'في الجبال', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'الحيوان الذي يبيض هو:',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'القط', 'is_correct' => false],
-                    ['text' => 'الحصان', 'is_correct' => false],
-                    ['text' => 'الدجاجة', 'is_correct' => true],
-                    ['text' => 'الكلب', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: أكبر محيطات العالم هو
+            // Commented out: أين يعيش الجمل؟
+            // Commented out: الحيوان الذي يبيض هو
+        ];
+
+        $arrangeQuestions = [
             [
                 'title' => 'رتّب الكلمات لتكوين جملة صحيحة: الصحراء – الجمل – دائمًا – الكبيرة – يعيش – في – بسرعة',
                 'type' => 'arrange',
@@ -928,6 +870,9 @@ class JourneySeeder extends Seeder
                     ['text' => 'الأرض', 'order' => 7],
                 ],
             ],
+        ];
+
+        $connectQuestions = [
             [
                 'title' => 'صِلْ بين الاختراع والمخترع:',
                 'type' => 'connect',
@@ -943,12 +888,22 @@ class JourneySeeder extends Seeder
             ],
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 3 true/false, 5 choice, 3 arrange, and 1 connect = 12 questions
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 3),
+            array_slice($choiceQuestions, 0, 5),
+            $arrangeQuestions,
+            $connectQuestions
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function createSecondStageTraining2Questions(int $trainingId): void
     {
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'كلمة (مُهَيْمِن) معناها: المسيطر الحافظ.',
                 'type' => 'true_false',
@@ -977,15 +932,6 @@ class JourneySeeder extends Seeder
                 'is_correct' => true,
             ],
             [
-                'title' => 'الصحابي الذي رافق النبي ﷺ في الهجرة هو: عبد الله بن مسعود.',
-                'type' => 'true_false',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'is_correct' => false,
-            ],
-            [
                 'title' => 'من مظاهر قدرة الله تعالى: خلق الكون، وإحياء الموتى، وإنزال المطر.',
                 'type' => 'true_false',
                 'xp' => 2,
@@ -993,15 +939,6 @@ class JourneySeeder extends Seeder
                 'marks' => 1,
                 'language' => 'ar',
                 'is_correct' => true,
-            ],
-            [
-                'title' => 'رفضت بلقيس دعوة سليمان عليه السلام.',
-                'type' => 'true_false',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'is_correct' => false,
             ],
             [
                 'title' => 'وُلد الرسول محمد ﷺ في مدينة مكة.',
@@ -1012,6 +949,11 @@ class JourneySeeder extends Seeder
                 'language' => 'ar',
                 'is_correct' => true,
             ],
+            // Commented out: الصحابي الذي رافق النبي ﷺ في الهجرة هو: عبد الله بن مسعود.
+            // Commented out: رفضت بلقيس دعوة سليمان عليه السلام.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'مدة دعوة نوح عليه السلام لقومه:',
                 'type' => 'choice',
@@ -1110,28 +1052,23 @@ class JourneySeeder extends Seeder
                     ['text' => 'المسجد النبوي', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'الصلاة المفروضة عددها _____ صلوات يوميًا.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'أربع', 'is_correct' => false],
-                    ['text' => 'خمس', 'is_correct' => true],
-                    ['text' => 'ست', 'is_correct' => false],
-                    ['text' => 'سبع', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: الصلاة المفروضة عددها _____ صلوات يوميًا.
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 5 true/false and 7 choice = 12 questions
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 5),
+            array_slice($choiceQuestions, 0, 7)
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function createSecondStageTraining3Questions(int $trainingId): void
     {
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'مكة المكرمة تقع في المملكة العربية السعودية.',
                 'type' => 'true_false',
@@ -1151,15 +1088,6 @@ class JourneySeeder extends Seeder
                 'is_correct' => true,
             ],
             [
-                'title' => 'الكهرباء تُصنع من الشمس فقط.',
-                'type' => 'true_false',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'is_correct' => false,
-            ],
-            [
                 'title' => 'عدد أيام السنة 365 يومًا.',
                 'type' => 'true_false',
                 'xp' => 2,
@@ -1168,15 +1096,11 @@ class JourneySeeder extends Seeder
                 'language' => 'ar',
                 'is_correct' => true,
             ],
-            [
-                'title' => 'الهواء ليس له وزن.',
-                'type' => 'true_false',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'is_correct' => false,
-            ],
+            // Commented out: الكهرباء تُصنع من الشمس فقط.
+            // Commented out: الهواء ليس له وزن.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'اللون الناتج عن مزج الأحمر والأصفر هو ____________.',
                 'type' => 'choice',
@@ -1234,20 +1158,6 @@ class JourneySeeder extends Seeder
                 ],
             ],
             [
-                'title' => 'الوحدة التي نستخدمها لقياس الوزن هي ____________.',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'اللتر', 'is_correct' => false],
-                    ['text' => 'المتر', 'is_correct' => false],
-                    ['text' => 'الكيلوغرام', 'is_correct' => true],
-                    ['text' => 'الكيلومتر', 'is_correct' => false],
-                ],
-            ],
-            [
                 'title' => 'كم عدد القارات في العالم؟',
                 'type' => 'choice',
                 'xp' => 2,
@@ -1275,34 +1185,12 @@ class JourneySeeder extends Seeder
                     ['text' => 'كوريا الجنوبية', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'الحيوان الذي يُعرف بذكائه الكبير هو:',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'القرد', 'is_correct' => false],
-                    ['text' => 'الدولفين', 'is_correct' => true],
-                    ['text' => 'الفيل', 'is_correct' => false],
-                    ['text' => 'الببغاء', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'من اخترع المصباح الكهربائي؟',
-                'type' => 'choice',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'نيوتن', 'is_correct' => false],
-                    ['text' => 'أديسون', 'is_correct' => true],
-                    ['text' => 'أينشتاين', 'is_correct' => false],
-                    ['text' => 'غراهام بيل', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: الحيوان الذي يُعرف بذكائه الكبير هو
+            // Commented out: من اخترع المصباح الكهربائي؟
+            // Commented out: الوحدة التي نستخدمها لقياس الوزن هي
+        ];
+
+        $arrangeQuestions = [
             [
                 'title' => 'رتّب الكلمات لتكوين جملة صحيحة: القطب – الجنوبي – في – البطاريق – الحيوان – تعيش – حديقة',
                 'type' => 'arrange',
@@ -1318,22 +1206,10 @@ class JourneySeeder extends Seeder
                     ['text' => 'الجنوبي', 'order' => 5],
                 ],
             ],
-            [
-                'title' => 'رتّب الكلمات لتكوين جملة صحيحة: من – الإنسان – ملعب – يتكون – كثيرة – جسم – عظام',
-                'type' => 'arrange',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'language' => 'ar',
-                'options' => [
-                    ['text' => 'يتكون', 'order' => 1],
-                    ['text' => 'جسم', 'order' => 2],
-                    ['text' => 'الإنسان', 'order' => 3],
-                    ['text' => 'من', 'order' => 4],
-                    ['text' => 'عظام', 'order' => 5],
-                    ['text' => 'كثيرة', 'order' => 6],
-                ],
-            ],
+            // Commented out: رتّب الكلمات لتكوين جملة صحيحة: من – الإنسان – ملعب – يتكون – كثيرة – جسم – عظام
+        ];
+
+        $connectQuestions = [
             [
                 'title' => 'صِلْ بين الحيوان وبيئته المناسبة:',
                 'type' => 'connect',
@@ -1349,7 +1225,17 @@ class JourneySeeder extends Seeder
             ],
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 3 true/false, 6 choice, 1 arrange, and 1 connect = 11 questions (within 10-12 range)
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 3),
+            array_slice($choiceQuestions, 0, 6),
+            array_slice($arrangeQuestions, 0, 1),
+            $connectQuestions
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function createQuestions(int $trainingId, array $questions): void
@@ -1495,15 +1381,15 @@ class JourneySeeder extends Seeder
 
     private function createRecyclingQuestions(int $trainingId): void
     {
-        $totalXp = 30;
-        $totalCoins = 15;
-        $totalMarks = 30;
-        $questionsCount = 15;
+        $totalXp = 24;
+        $totalCoins = 12;
+        $totalMarks = 24;
+        $questionsCount = 12;
         $xpPerQuestion = 2;
         $coinsPerQuestion = 1;
         $marksPerQuestion = 1;
 
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'عاد رامي من المدرسة دون رغبة في تطبيق الدرس.',
                 'type' => 'true_false',
@@ -1531,24 +1417,11 @@ class JourneySeeder extends Seeder
                 'marks' => $marksPerQuestion,
                 'is_correct' => true,
             ],
-            [
-                'title' => 'لم يستعن رامي بأي شخص أثناء تنفيذ التجربة.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => $xpPerQuestion,
-                'coins' => $coinsPerQuestion,
-                'marks' => $marksPerQuestion,
-                'is_correct' => false,
-            ],
-            [
-                'title' => 'لم يهتم رامي بمتابعة كمية الطعام داخل أداة الإطعام.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => $xpPerQuestion,
-                'coins' => $coinsPerQuestion,
-                'marks' => $marksPerQuestion,
-                'is_correct' => false,
-            ],
+            // Commented out: لم يستعن رامي بأي شخص أثناء تنفيذ التجربة.
+            // Commented out: لم يهتم رامي بمتابعة كمية الطعام داخل أداة الإطعام.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'عاد رامي من المدرسة وهو يشعر بـ _________ لتطبيق درس إعادة التدوير.',
                 'type' => 'choice',
@@ -1675,23 +1548,18 @@ class JourneySeeder extends Seeder
                     ['text' => 'ليدخل الهواء إليها', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'ما أحد العوامل التي أخذها رامي في الاعتبار لضمان نجاح التجربة؟',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => $xpPerQuestion,
-                'coins' => $coinsPerQuestion,
-                'marks' => $marksPerQuestion,
-                'options' => [
-                    ['text' => 'نوع لون الزجاجة', 'is_correct' => false],
-                    ['text' => 'درجات الحرارة', 'is_correct' => false],
-                    ['text' => 'أنواع الأشجار في منطقته', 'is_correct' => true],
-                    ['text' => 'سرعة الرياح', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: ما أحد العوامل التي أخذها رامي في الاعتبار لضمان نجاح التجربة؟
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 3 true/false and 9 choice = 12 questions
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 3),
+            array_slice($choiceQuestions, 0, 9)
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function createThirdStageTraining1(): ExamTraining
@@ -1717,7 +1585,7 @@ class JourneySeeder extends Seeder
 
     private function createThirdStageTraining1Questions(int $trainingId): void
     {
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'الضمائر مثل: هو – هي – نحن تُعدّ أسماء.',
                 'type' => 'true_false',
@@ -1745,24 +1613,11 @@ class JourneySeeder extends Seeder
                 'marks' => 1,
                 'is_correct' => true,
             ],
-            [
-                'title' => 'الصفة تأتي قبل الموصوف دائمًا.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => false,
-            ],
-            [
-                'title' => 'يا محمدُ: كلمة (محمد) منادى منصوب.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => false,
-            ],
+            // Commented out: الصفة تأتي قبل الموصوف دائمًا.
+            // Commented out: يا محمدُ: كلمة (محمد) منادى منصوب.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'جمع كلمة (كتاب) هو ____________.',
                 'type' => 'choice',
@@ -1847,34 +1702,11 @@ class JourneySeeder extends Seeder
                     ['text' => 'الكتاب', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'معنى كلمة (استيقظ):',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'نام', 'is_correct' => false],
-                    ['text' => 'استيقظ', 'is_correct' => true],
-                    ['text' => 'شرب', 'is_correct' => false],
-                    ['text' => 'ركض', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'الجملة التي تبدأ باسم تسمّى:',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'جملة أمرية', 'is_correct' => false],
-                    ['text' => 'جملة فعلية', 'is_correct' => false],
-                    ['text' => 'جملة اسمية', 'is_correct' => true],
-                    ['text' => 'جملة استفهامية', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: معنى كلمة (استيقظ)
+            // Commented out: الجملة التي تبدأ باسم تسمّى
+        ];
+
+        $connectQuestions = [
             [
                 'title' => 'صِل الفعل بالفاعل المناسب:',
                 'type' => 'connect',
@@ -1907,7 +1739,16 @@ class JourneySeeder extends Seeder
             ],
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 3 true/false, 6 choice, and 2 connect = 11 questions
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 3),
+            array_slice($choiceQuestions, 0, 6),
+            $connectQuestions
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function createThirdStageTraining2(): ExamTraining
@@ -1933,7 +1774,7 @@ class JourneySeeder extends Seeder
 
     private function createThirdStageTraining2Questions(int $trainingId): void
     {
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'يحتاج النبات إلى ضوء الشمس لصنع غذائه.',
                 'type' => 'true_false',
@@ -1961,24 +1802,11 @@ class JourneySeeder extends Seeder
                 'marks' => 1,
                 'is_correct' => true,
             ],
-            [
-                'title' => 'يتجمّد الماء عند درجة 0 م°.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => true,
-            ],
-            [
-                'title' => 'ينتقل الصوت أسرع من الضوء.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => false,
-            ],
+            // Commented out: يتجمّد الماء عند درجة 0 م°.
+            // Commented out: ينتقل الصوت أسرع من الضوء.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'ما الذي تحتاجه الحيوانات للبقاء على قيد الحياة؟',
                 'type' => 'choice',
@@ -2063,90 +1891,15 @@ class JourneySeeder extends Seeder
                     ['text' => 'تكثيفها', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'عملية تحول الماء إلى بخار تسمى:',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'التجمد', 'is_correct' => false],
-                    ['text' => 'التكاثف', 'is_correct' => false],
-                    ['text' => 'التبخر', 'is_correct' => true],
-                    ['text' => 'التسامي', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'الطاقة القادمة من الشمس تسمى طاقة:',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'حرارية', 'is_correct' => false],
-                    ['text' => 'شمسية', 'is_correct' => true],
-                    ['text' => 'صوتية', 'is_correct' => false],
-                    ['text' => 'كهربائية', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'يتنفس الإنسان ___ ويطلق ثاني أكسيد الكربون.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'الأكسجين', 'is_correct' => true],
-                    ['text' => 'النيتروجين', 'is_correct' => false],
-                    ['text' => 'الهيدروجين', 'is_correct' => false],
-                    ['text' => 'الهيليوم', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => '___ مركز المجموعة الشمسية.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'الأرض', 'is_correct' => false],
-                    ['text' => 'القمر', 'is_correct' => false],
-                    ['text' => 'الشمس', 'is_correct' => true],
-                    ['text' => 'المشتري', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'حالات المادة ثلاث: صلب وسائل و___',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'خشب', 'is_correct' => false],
-                    ['text' => 'غاز', 'is_correct' => true],
-                    ['text' => 'بخار', 'is_correct' => false],
-                    ['text' => 'سائل متجمد', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'المطر والثلج والبرد هي أشكال من ___',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'التكاثف', 'is_correct' => false],
-                    ['text' => 'الهطول', 'is_correct' => true],
-                    ['text' => 'التبخر', 'is_correct' => false],
-                    ['text' => 'التسامي', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: عملية تحول الماء إلى بخار تسمى
+            // Commented out: الطاقة القادمة من الشمس تسمى طاقة
+            // Commented out: يتنفس الإنسان ___ ويطلق ثاني أكسيد الكربون
+            // Commented out: ___ مركز المجموعة الشمسية
+            // Commented out: حالات المادة ثلاث: صلب وسائل و___
+            // Commented out: المطر والثلج والبرد هي أشكال من ___
+        ];
+
+        $connectQuestions = [
             [
                 'title' => 'صِل الكلمة بما يناسبها',
                 'type' => 'connect',
@@ -2179,7 +1932,16 @@ class JourneySeeder extends Seeder
             ],
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 3 true/false, 6 choice, and 2 connect = 11 questions
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 3),
+            array_slice($choiceQuestions, 0, 6),
+            $connectQuestions
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function addFourthStageTraining1(JourneyStage $stage): void
@@ -2227,7 +1989,7 @@ class JourneySeeder extends Seeder
 
     private function createFourthStageTraining1Questions(int $trainingId): void
     {
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'قال تعالى: ﴿… لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ …﴾ هذه آية من آية الكرسي.',
                 'type' => 'true_false',
@@ -2264,33 +2026,12 @@ class JourneySeeder extends Seeder
                 'marks' => 1,
                 'is_correct' => true,
             ],
-            [
-                'title' => 'أبو بكر الصديق رضي الله عنه كان يختم القرآن في: الصلاة وقيام الليل.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => true,
-            ],
-            [
-                'title' => 'من فضل تعلم القرآن الكريم أنه يرفع الدرجات في الدنيا والآخرة.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => true,
-            ],
-            [
-                'title' => 'كان النمرود ملكًا ظالمًا، وكان سيدنا إبراهيم عليه السلام يناقشه بالحجة.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => true,
-            ],
+            // Commented out: أبو بكر الصديق رضي الله عنه كان يختم القرآن في: الصلاة وقيام الليل.
+            // Commented out: من فضل تعلم القرآن الكريم أنه يرفع الدرجات في الدنيا والآخرة.
+            // Commented out: كان النمرود ملكًا ظالمًا، وكان سيدنا إبراهيم عليه السلام يناقشه بالحجة.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'عدد آيات سورة العلق:',
                 'type' => 'choice',
@@ -2389,23 +2130,18 @@ class JourneySeeder extends Seeder
                     ['text' => 'الشجاع', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'الهجرة النبوية كانت من مكة إلى _____.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'الطائف', 'is_correct' => false],
-                    ['text' => 'القدس', 'is_correct' => false],
-                    ['text' => 'المدينة المنورة', 'is_correct' => true],
-                    ['text' => 'اليمن', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: الهجرة النبوية كانت من مكة إلى _____.
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 4 true/false and 7 choice = 11 questions
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 4),
+            array_slice($choiceQuestions, 0, 7)
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function createFourthStageTraining2(): ExamTraining
@@ -2431,7 +2167,7 @@ class JourneySeeder extends Seeder
 
     private function createFourthStageTraining2Questions(int $trainingId): void
     {
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'القلب يضخ الدم داخل الجسم.',
                 'type' => 'true_false',
@@ -2459,24 +2195,11 @@ class JourneySeeder extends Seeder
                 'marks' => 1,
                 'is_correct' => true,
             ],
-            [
-                'title' => 'تحتاج الحيوانات إلى الهواء للبقاء.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => true,
-            ],
-            [
-                'title' => 'الضوء ينتقل أسرع من الصوت.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => true,
-            ],
+            // Commented out: تحتاج الحيوانات إلى الهواء للبقاء.
+            // Commented out: الضوء ينتقل أسرع من الصوت.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'أي غاز تُطلقه النباتات خلال عملية البناء الضوئي؟',
                 'type' => 'choice',
@@ -2561,90 +2284,15 @@ class JourneySeeder extends Seeder
                     ['text' => 'الغاز الطبيعي', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'أي مما يلي يعد شكلاً من أشكال الهطول؟',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'التكاثف', 'is_correct' => false],
-                    ['text' => 'الثلج', 'is_correct' => true],
-                    ['text' => 'التبخر', 'is_correct' => false],
-                    ['text' => 'التسامي', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'الجزء من النبات الذي يقوم بصنع الغذاء:',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'الجذر', 'is_correct' => false],
-                    ['text' => 'الساق', 'is_correct' => false],
-                    ['text' => 'الورقة', 'is_correct' => true],
-                    ['text' => 'البذرة', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'أي جسم في الفضاء يدور حول الشمس؟',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'قمر', 'is_correct' => false],
-                    ['text' => 'صخرة', 'is_correct' => false],
-                    ['text' => 'كوكب', 'is_correct' => true],
-                    ['text' => 'نيزك', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'الهيكل العظمي يحمي الجسم ويعطيه ___',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'الغذاء', 'is_correct' => false],
-                    ['text' => 'الطاقة', 'is_correct' => false],
-                    ['text' => 'النمو', 'is_correct' => false],
-                    ['text' => 'الشكل', 'is_correct' => true],
-                ],
-            ],
-            [
-                'title' => 'تتكون الكائنات الحية من وحدات صغيرة تسمى ___',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'ذرات', 'is_correct' => false],
-                    ['text' => 'خلايا', 'is_correct' => true],
-                    ['text' => 'أحجار', 'is_correct' => false],
-                    ['text' => 'أملاح', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'عملية تحول الغاز إلى سائل تسمى ___',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'تجمد', 'is_correct' => false],
-                    ['text' => 'تكاثف', 'is_correct' => true],
-                    ['text' => 'تبخر', 'is_correct' => false],
-                    ['text' => 'تسامي', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: أي مما يلي يعد شكلاً من أشكال الهطول؟
+            // Commented out: الجزء من النبات الذي يقوم بصنع الغذاء
+            // Commented out: أي جسم في الفضاء يدور حول الشمس؟
+            // Commented out: الهيكل العظمي يحمي الجسم ويعطيه ___
+            // Commented out: تتكون الكائنات الحية من وحدات صغيرة تسمى ___
+            // Commented out: عملية تحول الغاز إلى سائل تسمى ___
+        ];
+
+        $connectQuestions = [
             [
                 'title' => 'صِل الكلمة بما يناسبها',
                 'type' => 'connect',
@@ -2675,24 +2323,19 @@ class JourneySeeder extends Seeder
                     ['left' => 'زعانف', 'right' => 'سمكة', 'xp' => 2, 'coins' => 1, 'marks' => 1],
                 ],
             ],
-            [
-                'title' => 'صِل الكلمة بما يناسبها',
-                'type' => 'connect',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'pairs' => [
-                    ['left' => 'سائل', 'right' => 'انصهار', 'xp' => 2, 'coins' => 1, 'marks' => 1],
-                    ['left' => 'صلب', 'right' => 'تجمد', 'xp' => 2, 'coins' => 1, 'marks' => 1],
-                    ['left' => 'غاز', 'right' => 'تبخر', 'xp' => 2, 'coins' => 1, 'marks' => 1],
-                    ['left' => 'حرارة', 'right' => 'تسخين', 'xp' => 2, 'coins' => 1, 'marks' => 1],
-                    ['left' => 'برودة', 'right' => 'تبريد', 'xp' => 2, 'coins' => 1, 'marks' => 1],
-                ],
-            ],
+            // Commented out: صِل الكلمة بما يناسبها (third connect question)
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 3 true/false, 6 choice, and 2 connect = 11 questions
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 3),
+            array_slice($choiceQuestions, 0, 6),
+            $connectQuestions
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function addFifthStageTraining1(JourneyStage $stage): void
@@ -2729,7 +2372,7 @@ class JourneySeeder extends Seeder
 
     private function createFifthStageTraining1Questions(int $trainingId): void
     {
-        $questions = [
+        $trueFalseQuestions = [
             [
                 'title' => 'القمر جسم يعكس ضوء الشمس ولا يضيء من نفسه.',
                 'type' => 'true_false',
@@ -2757,42 +2400,13 @@ class JourneySeeder extends Seeder
                 'marks' => 1,
                 'is_correct' => true,
             ],
-            [
-                'title' => 'الفعل المضارع يدل على حدث وقع في الماضي.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => false,
-            ],
-            [
-                'title' => 'اليابان تقع في قارة آسيا.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => true,
-            ],
-            [
-                'title' => 'العضلات تساعد الجسم على الحركة.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => true,
-            ],
-            [
-                'title' => 'الهواء لا يحتوي على أي غازات.',
-                'type' => 'true_false',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'is_correct' => false,
-            ],
+            // Commented out: الفعل المضارع يدل على حدث وقع في الماضي.
+            // Commented out: اليابان تقع في قارة آسيا.
+            // Commented out: العضلات تساعد الجسم على الحركة.
+            // Commented out: الهواء لا يحتوي على أي غازات.
+        ];
+
+        $choiceQuestions = [
             [
                 'title' => 'أكبر كوكب في المجموعة الشمسية هو:',
                 'type' => 'choice',
@@ -2891,160 +2505,20 @@ class JourneySeeder extends Seeder
                     ['text' => 'الذهب', 'is_correct' => false],
                 ],
             ],
-            [
-                'title' => 'العملية التي يتحول فيها الجليد إلى ماء تسمّى:',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'تجمد', 'is_correct' => false],
-                    ['text' => 'انصهار', 'is_correct' => true],
-                    ['text' => 'تبخر', 'is_correct' => false],
-                    ['text' => 'تكاثف', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'القارة التي تُعرف بالقارة السمراء:',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'آسيا', 'is_correct' => false],
-                    ['text' => 'أفريقيا', 'is_correct' => true],
-                    ['text' => 'أوروبا', 'is_correct' => false],
-                    ['text' => 'أستراليا', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'الجهاز المسؤول عن ضخ الدم في جسم الإنسان:',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'الرئتان', 'is_correct' => false],
-                    ['text' => 'الكبد', 'is_correct' => false],
-                    ['text' => 'القلب', 'is_correct' => true],
-                    ['text' => 'الكلى', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'أكبر محيط في العالم هو ______.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'الأطلسي', 'is_correct' => false],
-                    ['text' => 'المتجمد الشمالي', 'is_correct' => false],
-                    ['text' => 'الهندي', 'is_correct' => false],
-                    ['text' => 'الهادئ', 'is_correct' => true],
-                ],
-            ],
-            [
-                'title' => 'عدد أيام الأسبوع هو ______.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => '5', 'is_correct' => false],
-                    ['text' => '6', 'is_correct' => false],
-                    ['text' => '7', 'is_correct' => true],
-                    ['text' => '8', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'الحيوان الملقّب بملك الغابة هو ______.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'النمر', 'is_correct' => false],
-                    ['text' => 'الأسد', 'is_correct' => true],
-                    ['text' => 'الغزال', 'is_correct' => false],
-                    ['text' => 'الذئب', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'العنصر الذي نتنفسه للبقاء هو ______.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'النيتروجين', 'is_correct' => false],
-                    ['text' => 'ثاني أكسيد الكربون', 'is_correct' => false],
-                    ['text' => 'الأكسجين', 'is_correct' => true],
-                    ['text' => 'الهيدروجين', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'العملية التي يصنع فيها النبات غذاءه تسمّى ______.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'التنفس', 'is_correct' => false],
-                    ['text' => 'البناء الضوئي', 'is_correct' => true],
-                    ['text' => 'الامتصاص', 'is_correct' => false],
-                    ['text' => 'التكاثر', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'أسرع وسيلة نقل مما يلي هي ______.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'السيارة', 'is_correct' => false],
-                    ['text' => 'الطائرة', 'is_correct' => true],
-                    ['text' => 'القطار', 'is_correct' => false],
-                    ['text' => 'الدراجة', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'شكل الأرض هو ______.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => 'مكعب', 'is_correct' => false],
-                    ['text' => 'دائري', 'is_correct' => false],
-                    ['text' => 'كروي مفلطح', 'is_correct' => true],
-                    ['text' => 'هرمي', 'is_correct' => false],
-                ],
-            ],
-            [
-                'title' => 'عدد قارات العالم هو ______.',
-                'type' => 'choice',
-                'language' => 'ar',
-                'xp' => 2,
-                'coins' => 1,
-                'marks' => 1,
-                'options' => [
-                    ['text' => '5', 'is_correct' => false],
-                    ['text' => '6', 'is_correct' => false],
-                    ['text' => '7', 'is_correct' => true],
-                    ['text' => '8', 'is_correct' => false],
-                ],
-            ],
+            // Commented out: العملية التي يتحول فيها الجليد إلى ماء تسمّى
+            // Commented out: القارة التي تُعرف بالقارة السمراء
+            // Commented out: الجهاز المسؤول عن ضخ الدم في جسم الإنسان
+            // Commented out: أكبر محيط في العالم هو ______
+            // Commented out: عدد أيام الأسبوع هو ______
+            // Commented out: الحيوان الملقّب بملك الغابة هو ______
+            // Commented out: العنصر الذي نتنفسه للبقاء هو ______
+            // Commented out: العملية التي يصنع فيها النبات غذاءه تسمّى ______
+            // Commented out: أسرع وسيلة نقل مما يلي هي ______
+            // Commented out: شكل الأرض هو ______
+            // Commented out: عدد قارات العالم هو ______
+        ];
+
+        $connectQuestions = [
             [
                 'title' => 'صِل الفعل بالفاعل المناسب:',
                 'type' => 'connect',
@@ -3077,7 +2551,16 @@ class JourneySeeder extends Seeder
             ],
         ];
 
-        $this->createQuestions($trainingId, $questions);
+        // Take 3 true/false, 7 choice, and 2 connect = 12 questions
+        $selectedQuestions = array_merge(
+            array_slice($trueFalseQuestions, 0, 3),
+            array_slice($choiceQuestions, 0, 7),
+            $connectQuestions
+        );
+
+        shuffle($selectedQuestions); // Shuffle to mix types
+
+        $this->createQuestions($trainingId, $selectedQuestions);
     }
 
     private function titleToSlug(string $title): string

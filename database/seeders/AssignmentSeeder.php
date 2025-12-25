@@ -62,9 +62,10 @@ class AssignmentSeeder extends Seeder
             'total_xp' => 40,
             'total_coins' => 20,
             'total_marks' => 40,
-            'questions_count' => 20,
+            'questions_count' => 12,
             'questions' => [
-                // اختر الإجابة الصحيحة (8 أسئلة)
+                // تم إعادة ترتيب الأسئلة واختيار 12 سؤال (7 choice + 5 true_false)
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'تسمى مجموعة المكونات الحية وغير الحية المرتبطة بعلاقات متبادلة في منطقة معينة بـ:',
                     'type' => 'choice',
@@ -76,17 +77,14 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'البيئة', 'is_correct' => true],
                     ],
                 ],
+                // صح أو خطأ
                 [
-                    'title' => 'تتكاثر نباتات مثل الخنشار باستخدام:',
-                    'type' => 'choice',
+                    'title' => 'يعتبر النحل من المفصليات المفيدة للإنسان، لكن العقرب ليس كذلك.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
                     'language' => 'ar',
-                    'options' => [
-                        ['text' => 'البذور', 'is_correct' => false],
-                        ['text' => 'المخاريط', 'is_correct' => false],
-                        ['text' => 'الأوراق', 'is_correct' => false],
-                        ['text' => 'الأبواغ', 'is_correct' => true],
-                    ],
                 ],
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'المادة النقية المكونة من نوع واحد من الذرات فقط هي:',
                     'type' => 'choice',
@@ -98,62 +96,14 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'الركيزة', 'is_correct' => false],
                     ],
                 ],
+                // صح أو خطأ
                 [
-                    'title' => 'أحد العنصرين المكونين لمركب أكسيد الحديد (Fe₂O₃) هو:',
-                    'type' => 'choice',
+                    'title' => 'الماء هو مثال لمورد طبيعي غير متجدد لأنه يوجد بكميات محدودة.',
+                    'type' => 'true_false',
+                    'is_correct' => false,
                     'language' => 'ar',
-                    'options' => [
-                        ['text' => 'الكربون', 'is_correct' => false],
-                        ['text' => 'الكبريت', 'is_correct' => false],
-                        ['text' => 'الحديد', 'is_correct' => true],
-                        ['text' => 'الصوديوم', 'is_correct' => false],
-                    ],
                 ],
-                [
-                    'title' => 'الوقود الذي يسبب ارتفاع الحرارة في المدن الصناعية وتغير المناخ هو الوقود:',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'النباتي', 'is_correct' => false],
-                        ['text' => 'الكربوني', 'is_correct' => false],
-                        ['text' => 'الأحفوري', 'is_correct' => true],
-                        ['text' => 'النووي', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'العدسة المحدبة تستخدم في إشعال النار لأنها تقوم بـ ………… الضوء في نقطة واحدة:',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'تشتيت', 'is_correct' => false],
-                        ['text' => 'تفرقة', 'is_correct' => false],
-                        ['text' => 'جمع', 'is_correct' => true],
-                        ['text' => 'عكس', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'يتم سماع الصوت نتيجة اهتزاز:',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'القوقعة', 'is_correct' => false],
-                        ['text' => 'العظمة', 'is_correct' => false],
-                        ['text' => 'طبلة الأذن', 'is_correct' => true],
-                        ['text' => 'أذن', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'أي مما يلي يُعد من الكائنات الحية المنتجة؟',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'الفطر', 'is_correct' => false],
-                        ['text' => 'الأسد', 'is_correct' => false],
-                        ['text' => 'النبات', 'is_correct' => true],
-                        ['text' => 'الإنسان', 'is_correct' => false],
-                    ],
-                ],
-                // أكمل الفراغ (6 أسئلة)
+                // أكمل الفراغ
                 [
                     'title' => 'النباتات الخضراء تقوم بعملية تصنيع الغذاء في عملية تسمى ____________.',
                     'type' => 'choice',
@@ -165,6 +115,33 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'التكاثر', 'is_correct' => false],
                     ],
                 ],
+                // صح أو خطأ
+                [
+                    'title' => 'قوس المطر ينتج عن انكسار الضوء داخل قطرات الماء.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
+                    'language' => 'ar',
+                ],
+                // اختر الإجابة الصحيحة
+                [
+                    'title' => 'العدسة المحدبة تستخدم في إشعال النار لأنها تقوم بـ ………… الضوء في نقطة واحدة:',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'تشتيت', 'is_correct' => false],
+                        ['text' => 'تفرقة', 'is_correct' => false],
+                        ['text' => 'جمع', 'is_correct' => true],
+                        ['text' => 'عكس', 'is_correct' => false],
+                    ],
+                ],
+                // صح أو خطأ
+                [
+                    'title' => 'جميع الكائنات الحية التي تعيش في منطقة واحدة تشكل معاً جماعة حيوية.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
+                    'language' => 'ar',
+                ],
+                // أكمل الفراغ
                 [
                     'title' => 'تنتقل الطاقة في السلسلة الغذائية من المنتجين إلى ____________ .',
                     'type' => 'choice',
@@ -176,28 +153,14 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'الشمس', 'is_correct' => false],
                     ],
                 ],
+                // صح أو خطأ
                 [
-                    'title' => 'المادة التي لا يمكن تجزئتها إلى مواد أبسط تُسمى ____________.',
-                    'type' => 'choice',
+                    'title' => 'الزلازل والبراكين تسبب تغيرات بطيئة جداً في تضاريس الأرض.',
+                    'type' => 'true_false',
+                    'is_correct' => false,
                     'language' => 'ar',
-                    'options' => [
-                        ['text' => 'المركب', 'is_correct' => false],
-                        ['text' => 'الخليط', 'is_correct' => false],
-                        ['text' => 'المحلول', 'is_correct' => false],
-                        ['text' => 'العنصر', 'is_correct' => true],
-                    ],
                 ],
-                [
-                    'title' => 'تتحرك الموجات الصوتية في الهواء على شكل ____________ .',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'موجات ضوئية', 'is_correct' => false],
-                        ['text' => 'حرارة', 'is_correct' => false],
-                        ['text' => 'اهتزازات', 'is_correct' => true],
-                        ['text' => 'انكسارات', 'is_correct' => false],
-                    ],
-                ],
+                // أكمل الفراغ
                 [
                     'title' => 'يحدث الصدأ للحديد عندما يتفاعل مع الماء و___________ .',
                     'type' => 'choice',
@@ -209,54 +172,102 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'الأكسجين', 'is_correct' => true],
                     ],
                 ],
+                // اختر الإجابة الصحيحة
                 [
-                    'title' => 'نوع من الطاقة ناتج عن حركة الأجسام يسمى طاقة ____________.',
+                    'title' => 'أي مما يلي يُعد من الكائنات الحية المنتجة؟',
                     'type' => 'choice',
                     'language' => 'ar',
                     'options' => [
-                        ['text' => 'ضوئية', 'is_correct' => false],
-                        ['text' => 'حرارية', 'is_correct' => false],
-                        ['text' => 'كهربائية', 'is_correct' => false],
-                        ['text' => 'حركية', 'is_correct' => true],
+                        ['text' => 'الفطر', 'is_correct' => false],
+                        ['text' => 'الأسد', 'is_correct' => false],
+                        ['text' => 'النبات', 'is_correct' => true],
+                        ['text' => 'الإنسان', 'is_correct' => false],
                     ],
                 ],
-                // صح أو خطأ (6 أسئلة)
-                [
-                    'title' => 'يعتبر النحل من المفصليات المفيدة للإنسان، لكن العقرب ليس كذلك.',
-                    'type' => 'true_false',
-                    'is_correct' => true,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'الماء هو مثال لمورد طبيعي غير متجدد لأنه يوجد بكميات محدودة.',
-                    'type' => 'true_false',
-                    'is_correct' => false,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'عند تكون المركب فإنه يحتفظ بصفات مكوناته الأصلية.',
-                    'type' => 'true_false',
-                    'is_correct' => false,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'الزلازل والبراكين تسبب تغيرات بطيئة جداً في تضاريس الأرض.',
-                    'type' => 'true_false',
-                    'is_correct' => false,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'قوس المطر ينتج عن انكسار الضوء داخل قطرات الماء.',
-                    'type' => 'true_false',
-                    'is_correct' => true,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'جميع الكائنات الحية التي تعيش في منطقة واحدة تشكل معاً جماعة حيوية.',
-                    'type' => 'true_false',
-                    'is_correct' => true,
-                    'language' => 'ar',
-                ],
+                // ========== تم تعليق الأسئلة الزائدة (8 أسئلة) ==========
+                // [
+                //     'title' => 'تتكاثر نباتات مثل الخنشار باستخدام:',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'البذور', 'is_correct' => false],
+                //         ['text' => 'المخاريط', 'is_correct' => false],
+                //         ['text' => 'الأوراق', 'is_correct' => false],
+                //         ['text' => 'الأبواغ', 'is_correct' => true],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'أحد العنصرين المكونين لمركب أكسيد الحديد (Fe₂O₃) هو:',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'الكربون', 'is_correct' => false],
+                //         ['text' => 'الكبريت', 'is_correct' => false],
+                //         ['text' => 'الحديد', 'is_correct' => true],
+                //         ['text' => 'الصوديوم', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'الوقود الذي يسبب ارتفاع الحرارة في المدن الصناعية وتغير المناخ هو الوقود:',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'النباتي', 'is_correct' => false],
+                //         ['text' => 'الكربوني', 'is_correct' => false],
+                //         ['text' => 'الأحفوري', 'is_correct' => true],
+                //         ['text' => 'النووي', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'يتم سماع الصوت نتيجة اهتزاز:',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'القوقعة', 'is_correct' => false],
+                //         ['text' => 'العظمة', 'is_correct' => false],
+                //         ['text' => 'طبلة الأذن', 'is_correct' => true],
+                //         ['text' => 'أذن', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'المادة التي لا يمكن تجزئتها إلى مواد أبسط تُسمى ____________.',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'المركب', 'is_correct' => false],
+                //         ['text' => 'الخليط', 'is_correct' => false],
+                //         ['text' => 'المحلول', 'is_correct' => false],
+                //         ['text' => 'العنصر', 'is_correct' => true],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'تتحرك الموجات الصوتية في الهواء على شكل ____________ .',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'موجات ضوئية', 'is_correct' => false],
+                //         ['text' => 'حرارة', 'is_correct' => false],
+                //         ['text' => 'اهتزازات', 'is_correct' => true],
+                //         ['text' => 'انكسارات', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'نوع من الطاقة ناتج عن حركة الأجسام يسمى طاقة ____________.',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'ضوئية', 'is_correct' => false],
+                //         ['text' => 'حرارية', 'is_correct' => false],
+                //         ['text' => 'كهربائية', 'is_correct' => false],
+                //         ['text' => 'حركية', 'is_correct' => true],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'عند تكون المركب فإنه يحتفظ بصفات مكوناته الأصلية.',
+                //     'type' => 'true_false',
+                //     'is_correct' => false,
+                //     'language' => 'ar',
+                // ],
             ],
         ];
     }
@@ -274,118 +285,17 @@ class AssignmentSeeder extends Seeder
             'total_xp' => 40,
             'total_coins' => 20,
             'total_marks' => 40,
-            'questions_count' => 20,
+            'questions_count' => 12,
             'questions' => [
-                // صح أو خطأ (5 أسئلة)
+                // تم إعادة ترتيب الأسئلة واختيار 12 سؤال (4 true_false + 8 choice)
+                // صح أو خطأ
                 [
                     'title' => 'الجملة الاسمية تبدأ باسم.',
                     'type' => 'true_false',
                     'is_correct' => true,
                     'language' => 'ar',
                 ],
-                [
-                    'title' => 'الفعل المضارع يدل على حدث وقع في الماضي.',
-                    'type' => 'true_false',
-                    'is_correct' => false,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'الضمير (هو) يعود على المفرد المذكر الغائب.',
-                    'type' => 'true_false',
-                    'is_correct' => true,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'الفاعل دائمًا يأتي بعد الفعل.',
-                    'type' => 'true_false',
-                    'is_correct' => false,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'المثنى يدل على شخصين أو شيئين.',
-                    'type' => 'true_false',
-                    'is_correct' => true,
-                    'language' => 'ar',
-                ],
-                // أكمل الفراغ (6 أسئلة)
-                [
-                    'title' => 'الفعل الماضي يدل على حدث ________.',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'سيقع', 'is_correct' => false],
-                        ['text' => 'يقع الآن', 'is_correct' => false],
-                        ['text' => 'وقع سابقًا', 'is_correct' => true],
-                        ['text' => 'لم يقع', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'الضمير (نحن) يدل على ________.',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'المفرد المذكر', 'is_correct' => false],
-                        ['text' => 'المفرد المؤنث', 'is_correct' => false],
-                        ['text' => 'الجماعة المتكلمة', 'is_correct' => true],
-                        ['text' => 'الغائب', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'جمع كلمة (ولد) هو ________.',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'أولاد', 'is_correct' => true],
-                        ['text' => 'ولدان', 'is_correct' => false],
-                        ['text' => 'ولود', 'is_correct' => false],
-                        ['text' => 'وليد', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'نوع كلمة (مسرور) هو ________.',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'فعل', 'is_correct' => false],
-                        ['text' => 'اسم فاعل', 'is_correct' => false],
-                        ['text' => 'اسم مفعول', 'is_correct' => false],
-                        ['text' => 'صفة', 'is_correct' => true],
-                    ],
-                ],
-                [
-                    'title' => 'الفاعل في الجملة هو من ________ الفعل.',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'يقع عليه', 'is_correct' => false],
-                        ['text' => 'يقوم به', 'is_correct' => true],
-                        ['text' => 'ينتهي به', 'is_correct' => false],
-                        ['text' => 'يصفه', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'المبتدأ هو ________ الجملة الاسمية.',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'أول كلمة', 'is_correct' => true],
-                        ['text' => 'آخر كلمة', 'is_correct' => false],
-                        ['text' => 'الفعل', 'is_correct' => false],
-                        ['text' => 'الضمير', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'جمع المؤنث السالم ينتهي غالبًا بـ ________.',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'ان', 'is_correct' => false],
-                        ['text' => 'ون', 'is_correct' => false],
-                        ['text' => 'ات', 'is_correct' => true],
-                        ['text' => 'ين', 'is_correct' => false],
-                    ],
-                ],
-                // اختر الإجابة الصحيحة (9 أسئلة)
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'الفعل المضارع في الجملة: (يكتبُ الطفلُ الدرسَ) هو:',
                     'type' => 'choice',
@@ -397,6 +307,45 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'كتاب', 'is_correct' => false],
                     ],
                 ],
+                // صح أو خطأ
+                [
+                    'title' => 'الفعل المضارع يدل على حدث وقع في الماضي.',
+                    'type' => 'true_false',
+                    'is_correct' => false,
+                    'language' => 'ar',
+                ],
+                // أكمل الفراغ
+                [
+                    'title' => 'الفعل الماضي يدل على حدث ________.',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'سيقع', 'is_correct' => false],
+                        ['text' => 'يقع الآن', 'is_correct' => false],
+                        ['text' => 'وقع سابقًا', 'is_correct' => true],
+                        ['text' => 'لم يقع', 'is_correct' => false],
+                    ],
+                ],
+                // صح أو خطأ
+                [
+                    'title' => 'الضمير (هو) يعود على المفرد المذكر الغائب.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
+                    'language' => 'ar',
+                ],
+                // أكمل الفراغ
+                [
+                    'title' => 'الضمير (نحن) يدل على ________.',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'المفرد المذكر', 'is_correct' => false],
+                        ['text' => 'المفرد المؤنث', 'is_correct' => false],
+                        ['text' => 'الجماعة المتكلمة', 'is_correct' => true],
+                        ['text' => 'الغائب', 'is_correct' => false],
+                    ],
+                ],
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'الكلمة التي تحتوي على همزة قطع هي:',
                     'type' => 'choice',
@@ -408,17 +357,26 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'اجلس', 'is_correct' => false],
                     ],
                 ],
+                // صح أو خطأ
                 [
-                    'title' => 'معنى كلمة (واسع):',
+                    'title' => 'المثنى يدل على شخصين أو شيئين.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
+                    'language' => 'ar',
+                ],
+                // أكمل الفراغ
+                [
+                    'title' => 'جمع كلمة (ولد) هو ________.',
                     'type' => 'choice',
                     'language' => 'ar',
                     'options' => [
-                        ['text' => 'ضيق', 'is_correct' => false],
-                        ['text' => 'كبير المساحة', 'is_correct' => true],
-                        ['text' => 'قصير', 'is_correct' => false],
-                        ['text' => 'صغير', 'is_correct' => false],
+                        ['text' => 'أولاد', 'is_correct' => true],
+                        ['text' => 'ولدان', 'is_correct' => false],
+                        ['text' => 'ولود', 'is_correct' => false],
+                        ['text' => 'وليد', 'is_correct' => false],
                     ],
                 ],
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'الفاعل في جملة: (سافرَ الرجلُ).',
                     'type' => 'choice',
@@ -430,17 +388,19 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'هو', 'is_correct' => false],
                     ],
                 ],
+                // أكمل الفراغ
                 [
-                    'title' => 'الكلمة التي تعد اسم مفعول هي:',
+                    'title' => 'المبتدأ هو ________ الجملة الاسمية.',
                     'type' => 'choice',
                     'language' => 'ar',
                     'options' => [
-                        ['text' => 'مكتوب', 'is_correct' => true],
-                        ['text' => 'كاتب', 'is_correct' => false],
-                        ['text' => 'لاعب', 'is_correct' => false],
-                        ['text' => 'نائم', 'is_correct' => false],
+                        ['text' => 'أول كلمة', 'is_correct' => true],
+                        ['text' => 'آخر كلمة', 'is_correct' => false],
+                        ['text' => 'الفعل', 'is_correct' => false],
+                        ['text' => 'الضمير', 'is_correct' => false],
                     ],
                 ],
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'أي الجمل التالية جملة فعلية؟',
                     'type' => 'choice',
@@ -452,28 +412,90 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'الشجرةُ طويلةٌ', 'is_correct' => false],
                     ],
                 ],
-                [
-                    'title' => 'مرادف كلمة (سريع):',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'بطيء', 'is_correct' => false],
-                        ['text' => 'قوي', 'is_correct' => false],
-                        ['text' => 'نشيط', 'is_correct' => false],
-                        ['text' => 'حثيث', 'is_correct' => true],
-                    ],
-                ],
-                [
-                    'title' => 'ضد كلمة (قريب):',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'بعيد', 'is_correct' => true],
-                        ['text' => 'آخر', 'is_correct' => false],
-                        ['text' => 'ضيق', 'is_correct' => false],
-                        ['text' => 'قليل', 'is_correct' => false],
-                    ],
-                ],
+                // ========== تم تعليق الأسئلة الزائدة (8 أسئلة) ==========
+                // [
+                //     'title' => 'الفاعل دائمًا يأتي بعد الفعل.',
+                //     'type' => 'true_false',
+                //     'is_correct' => false,
+                //     'language' => 'ar',
+                // ],
+                // [
+                //     'title' => 'نوع كلمة (مسرور) هو ________.',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'فعل', 'is_correct' => false],
+                //         ['text' => 'اسم فاعل', 'is_correct' => false],
+                //         ['text' => 'اسم مفعول', 'is_correct' => false],
+                //         ['text' => 'صفة', 'is_correct' => true],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'الفاعل في الجملة هو من ________ الفعل.',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'يقع عليه', 'is_correct' => false],
+                //         ['text' => 'يقوم به', 'is_correct' => true],
+                //         ['text' => 'ينتهي به', 'is_correct' => false],
+                //         ['text' => 'يصفه', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'جمع المؤنث السالم ينتهي غالبًا بـ ________.',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'ان', 'is_correct' => false],
+                //         ['text' => 'ون', 'is_correct' => false],
+                //         ['text' => 'ات', 'is_correct' => true],
+                //         ['text' => 'ين', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'معنى كلمة (واسع):',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'ضيق', 'is_correct' => false],
+                //         ['text' => 'كبير المساحة', 'is_correct' => true],
+                //         ['text' => 'قصير', 'is_correct' => false],
+                //         ['text' => 'صغير', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'الكلمة التي تعد اسم مفعول هي:',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'مكتوب', 'is_correct' => true],
+                //         ['text' => 'كاتب', 'is_correct' => false],
+                //         ['text' => 'لاعب', 'is_correct' => false],
+                //         ['text' => 'نائم', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'مرادف كلمة (سريع):',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'بطيء', 'is_correct' => false],
+                //         ['text' => 'قوي', 'is_correct' => false],
+                //         ['text' => 'نشيط', 'is_correct' => false],
+                //         ['text' => 'حثيث', 'is_correct' => true],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'ضد كلمة (قريب):',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'بعيد', 'is_correct' => true],
+                //         ['text' => 'آخر', 'is_correct' => false],
+                //         ['text' => 'ضيق', 'is_correct' => false],
+                //         ['text' => 'قليل', 'is_correct' => false],
+                //     ],
+                // ],
             ],
         ];
     }
@@ -491,40 +513,17 @@ class AssignmentSeeder extends Seeder
             'total_xp' => 50,
             'total_coins' => 25,
             'total_marks' => 50,
-            'questions_count' => 25,
+            'questions_count' => 12,
             'questions' => [
-                // صح أو خطأ (5 أسئلة)
+                // تم إعادة ترتيب الأسئلة واختيار 12 سؤال (3 true_false + 5 choice + 4 arrange)
+                // صح أو خطأ
                 [
                     'title' => 'The word "cat" is a noun.',
                     'type' => 'true_false',
                     'is_correct' => true,
                     'language' => 'en',
                 ],
-                [
-                    'title' => 'Adjectives describe nouns.',
-                    'type' => 'true_false',
-                    'is_correct' => true,
-                    'language' => 'en',
-                ],
-                [
-                    'title' => 'The verb "run" is in the past tense.',
-                    'type' => 'true_false',
-                    'is_correct' => false,
-                    'language' => 'en',
-                ],
-                [
-                    'title' => 'A sentence must start with a capital letter.',
-                    'type' => 'true_false',
-                    'is_correct' => true,
-                    'language' => 'en',
-                ],
-                [
-                    'title' => 'The opposite of "big" is "tall."',
-                    'type' => 'true_false',
-                    'is_correct' => false,
-                    'language' => 'en',
-                ],
-                // أكمل الفراغ (7 أسئلة)
+                // أكمل الفراغ
                 [
                     'title' => 'The plural of "child" is ________.',
                     'type' => 'choice',
@@ -536,162 +535,7 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'childen', 'is_correct' => false],
                     ],
                 ],
-                [
-                    'title' => 'She ________ to school every day.',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'go', 'is_correct' => false],
-                        ['text' => 'goes', 'is_correct' => true],
-                        ['text' => 'went', 'is_correct' => false],
-                        ['text' => 'going', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'My favorite color is ________.',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'fast', 'is_correct' => false],
-                        ['text' => 'blue', 'is_correct' => true],
-                        ['text' => 'run', 'is_correct' => false],
-                        ['text' => 'slowly', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'The opposite of "happy" is ________.',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'Sad', 'is_correct' => true],
-                        ['text' => 'Glad', 'is_correct' => false],
-                        ['text' => 'Smile', 'is_correct' => false],
-                        ['text' => 'kind', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'We ________ pizza yesterday.',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'Eat', 'is_correct' => false],
-                        ['text' => 'Eating', 'is_correct' => false],
-                        ['text' => 'Ate', 'is_correct' => true],
-                        ['text' => 'Eats', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'A ________ is a place where we read books.',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'School', 'is_correct' => false],
-                        ['text' => 'Library', 'is_correct' => true],
-                        ['text' => 'Hospital', 'is_correct' => false],
-                        ['text' => 'Park', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'They are ________ soccer now.',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'Play', 'is_correct' => false],
-                        ['text' => 'Played', 'is_correct' => false],
-                        ['text' => 'Plays', 'is_correct' => false],
-                        ['text' => 'Playing', 'is_correct' => true],
-                    ],
-                ],
-                // اختر الإجابة الصحيحة (8 أسئلة)
-                [
-                    'title' => 'Which word is an adjective?',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'Quickly', 'is_correct' => false],
-                        ['text' => 'Beautiful', 'is_correct' => true],
-                        ['text' => 'Run', 'is_correct' => false],
-                        ['text' => 'Boy', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'Which sentence is in the past tense?',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'I play football', 'is_correct' => false],
-                        ['text' => 'I am playing football.', 'is_correct' => false],
-                        ['text' => 'I played football', 'is_correct' => true],
-                        ['text' => 'I will play football.', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'What is the correct plural of "box"?',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'Boxs', 'is_correct' => false],
-                        ['text' => 'Boxies', 'is_correct' => false],
-                        ['text' => 'Boxes', 'is_correct' => true],
-                        ['text' => 'Boxen', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => '"He is a smart boy." The word "smart" is a:',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'Noun', 'is_correct' => false],
-                        ['text' => 'Verb', 'is_correct' => false],
-                        ['text' => 'Adjective', 'is_correct' => true],
-                        ['text' => 'Adverb', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'Which word is a verb?',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'Teacher', 'is_correct' => false],
-                        ['text' => 'Dance', 'is_correct' => true],
-                        ['text' => 'Table', 'is_correct' => false],
-                        ['text' => 'Happy', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => '"The cat is under the table." The word "under" is a:',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'Noun', 'is_correct' => false],
-                        ['text' => 'Verb', 'is_correct' => false],
-                        ['text' => 'Preposition', 'is_correct' => true],
-                        ['text' => 'Adjective', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'Which of the following is a complete sentence?',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'The big', 'is_correct' => false],
-                        ['text' => 'Running fast', 'is_correct' => false],
-                        ['text' => 'The dog barked', 'is_correct' => true],
-                        ['text' => 'The blue', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'What is the correct possessive form? "The bag of Sara"',
-                    'type' => 'choice',
-                    'language' => 'en',
-                    'options' => [
-                        ['text' => 'Saras bag', 'is_correct' => false],
-                        ['text' => 'Sara bag', 'is_correct' => false],
-                        ['text' => 'Sara\'s bag', 'is_correct' => true],
-                        ['text' => 'Saran bag', 'is_correct' => false],
-                    ],
-                ],
-                // أعد ترتيب الكلمات (5 أسئلة)
+                // أعد ترتيب الكلمات
                 [
                     'title' => '( playing – is – she – tennis – blue )',
                     'type' => 'arrange',
@@ -703,6 +547,26 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'tennis', 'order' => 4],
                     ],
                 ],
+                // صح أو خطأ
+                [
+                    'title' => 'Adjectives describe nouns.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
+                    'language' => 'en',
+                ],
+                // أكمل الفراغ
+                [
+                    'title' => 'She ________ to school every day.',
+                    'type' => 'choice',
+                    'language' => 'en',
+                    'options' => [
+                        ['text' => 'go', 'is_correct' => false],
+                        ['text' => 'goes', 'is_correct' => true],
+                        ['text' => 'went', 'is_correct' => false],
+                        ['text' => 'going', 'is_correct' => false],
+                    ],
+                ],
+                // أعد ترتيب الكلمات
                 [
                     'title' => '( school – to – they – go – fast – the )',
                     'type' => 'arrange',
@@ -714,6 +578,26 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'school', 'order' => 4],
                     ],
                 ],
+                // اختر الإجابة الصحيحة
+                [
+                    'title' => 'Which word is an adjective?',
+                    'type' => 'choice',
+                    'language' => 'en',
+                    'options' => [
+                        ['text' => 'Quickly', 'is_correct' => false],
+                        ['text' => 'Beautiful', 'is_correct' => true],
+                        ['text' => 'Run', 'is_correct' => false],
+                        ['text' => 'Boy', 'is_correct' => false],
+                    ],
+                ],
+                // صح أو خطأ
+                [
+                    'title' => 'A sentence must start with a capital letter.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
+                    'language' => 'en',
+                ],
+                // أعد ترتيب الكلمات
                 [
                     'title' => '( cat – the – sleeping – is – happy – very )',
                     'type' => 'arrange',
@@ -725,6 +609,19 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'sleeping', 'order' => 4],
                     ],
                 ],
+                // أكمل الفراغ
+                [
+                    'title' => 'The opposite of "happy" is ________.',
+                    'type' => 'choice',
+                    'language' => 'en',
+                    'options' => [
+                        ['text' => 'Sad', 'is_correct' => true],
+                        ['text' => 'Glad', 'is_correct' => false],
+                        ['text' => 'Smile', 'is_correct' => false],
+                        ['text' => 'kind', 'is_correct' => false],
+                    ],
+                ],
+                // أعد ترتيب الكلمات
                 [
                     'title' => '( book – reading – I – am – blue – the )',
                     'type' => 'arrange',
@@ -737,18 +634,153 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'book', 'order' => 5],
                     ],
                 ],
+                // اختر الإجابة الصحيحة
                 [
-                    'title' => '( eats – every – breakfast – he – tall – day )',
-                    'type' => 'arrange',
+                    'title' => 'Which sentence is in the past tense?',
+                    'type' => 'choice',
                     'language' => 'en',
                     'options' => [
-                        ['text' => 'He', 'order' => 1],
-                        ['text' => 'eats', 'order' => 2],
-                        ['text' => 'breakfast', 'order' => 3],
-                        ['text' => 'every', 'order' => 4],
-                        ['text' => 'day', 'order' => 5],
+                        ['text' => 'I play football', 'is_correct' => false],
+                        ['text' => 'I am playing football.', 'is_correct' => false],
+                        ['text' => 'I played football', 'is_correct' => true],
+                        ['text' => 'I will play football.', 'is_correct' => false],
                     ],
                 ],
+                // ========== تم تعليق الأسئلة الزائدة (13 سؤال) ==========
+                // [
+                //     'title' => 'The verb "run" is in the past tense.',
+                //     'type' => 'true_false',
+                //     'is_correct' => false,
+                //     'language' => 'en',
+                // ],
+                // [
+                //     'title' => 'The opposite of "big" is "tall."',
+                //     'type' => 'true_false',
+                //     'is_correct' => false,
+                //     'language' => 'en',
+                // ],
+                // [
+                //     'title' => 'My favorite color is ________.',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'fast', 'is_correct' => false],
+                //         ['text' => 'blue', 'is_correct' => true],
+                //         ['text' => 'run', 'is_correct' => false],
+                //         ['text' => 'slowly', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'We ________ pizza yesterday.',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'Eat', 'is_correct' => false],
+                //         ['text' => 'Eating', 'is_correct' => false],
+                //         ['text' => 'Ate', 'is_correct' => true],
+                //         ['text' => 'Eats', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'A ________ is a place where we read books.',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'School', 'is_correct' => false],
+                //         ['text' => 'Library', 'is_correct' => true],
+                //         ['text' => 'Hospital', 'is_correct' => false],
+                //         ['text' => 'Park', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'They are ________ soccer now.',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'Play', 'is_correct' => false],
+                //         ['text' => 'Played', 'is_correct' => false],
+                //         ['text' => 'Plays', 'is_correct' => false],
+                //         ['text' => 'Playing', 'is_correct' => true],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'What is the correct plural of "box"?',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'Boxs', 'is_correct' => false],
+                //         ['text' => 'Boxies', 'is_correct' => false],
+                //         ['text' => 'Boxes', 'is_correct' => true],
+                //         ['text' => 'Boxen', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => '"He is a smart boy." The word "smart" is a:',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'Noun', 'is_correct' => false],
+                //         ['text' => 'Verb', 'is_correct' => false],
+                //         ['text' => 'Adjective', 'is_correct' => true],
+                //         ['text' => 'Adverb', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'Which word is a verb?',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'Teacher', 'is_correct' => false],
+                //         ['text' => 'Dance', 'is_correct' => true],
+                //         ['text' => 'Table', 'is_correct' => false],
+                //         ['text' => 'Happy', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => '"The cat is under the table." The word "under" is a:',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'Noun', 'is_correct' => false],
+                //         ['text' => 'Verb', 'is_correct' => false],
+                //         ['text' => 'Preposition', 'is_correct' => true],
+                //         ['text' => 'Adjective', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'Which of the following is a complete sentence?',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'The big', 'is_correct' => false],
+                //         ['text' => 'Running fast', 'is_correct' => false],
+                //         ['text' => 'The dog barked', 'is_correct' => true],
+                //         ['text' => 'The blue', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'What is the correct possessive form? "The bag of Sara"',
+                //     'type' => 'choice',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'Saras bag', 'is_correct' => false],
+                //         ['text' => 'Sara bag', 'is_correct' => false],
+                //         ['text' => 'Sara\'s bag', 'is_correct' => true],
+                //         ['text' => 'Saran bag', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => '( eats – every – breakfast – he – tall – day )',
+                //     'type' => 'arrange',
+                //     'language' => 'en',
+                //     'options' => [
+                //         ['text' => 'He', 'order' => 1],
+                //         ['text' => 'eats', 'order' => 2],
+                //         ['text' => 'breakfast', 'order' => 3],
+                //         ['text' => 'every', 'order' => 4],
+                //         ['text' => 'day', 'order' => 5],
+                //     ],
+                // ],
             ],
         ];
     }
@@ -765,34 +797,17 @@ class AssignmentSeeder extends Seeder
             'total_xp' => 32,
             'total_coins' => 16,
             'total_marks' => 32,
-            'questions_count' => 16,
+            'questions_count' => 12,
             'questions' => [
-                // صح أو خطأ (4 أسئلة)
+                // تم إعادة ترتيب الأسئلة واختيار 12 سؤال (3 true_false + 9 choice)
+                // صح أو خطأ
                 [
                     'title' => 'اسم الفاعل يدل على من يقوم بالفعل.',
                     'type' => 'true_false',
                     'is_correct' => true,
                     'language' => 'ar',
                 ],
-                [
-                    'title' => 'يُصاغ اسم الفاعل من الفعل الثلاثي على وزن فاعل.',
-                    'type' => 'true_false',
-                    'is_correct' => true,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'كلمة "مسافر" ليست اسم فاعل.',
-                    'type' => 'true_false',
-                    'is_correct' => false,
-                    'language' => 'ar',
-                ],
-                [
-                    'title' => 'اسم الفاعل دائمًا يكون منصوبًا.',
-                    'type' => 'true_false',
-                    'is_correct' => false,
-                    'language' => 'ar',
-                ],
-                // أكمل الفراغ (4 أسئلة)
+                // أكمل الفراغ
                 [
                     'title' => 'اسم الفاعل من الفعل (لعب) هو ________.',
                     'type' => 'choice',
@@ -804,40 +819,14 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'لعبة', 'is_correct' => false],
                     ],
                 ],
+                // صح أو خطأ
                 [
-                    'title' => 'كلمة (ناجح) تُعد ________.',
-                    'type' => 'choice',
+                    'title' => 'يُصاغ اسم الفاعل من الفعل الثلاثي على وزن فاعل.',
+                    'type' => 'true_false',
+                    'is_correct' => true,
                     'language' => 'ar',
-                    'options' => [
-                        ['text' => 'فعلًا ماضيًا', 'is_correct' => false],
-                        ['text' => 'اسم مفعول', 'is_correct' => false],
-                        ['text' => 'اسم فاعل', 'is_correct' => true],
-                        ['text' => 'ظرفًا', 'is_correct' => false],
-                    ],
                 ],
-                [
-                    'title' => 'اسم الفاعل من الفعل (سمع) هو ________.',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'مسموع', 'is_correct' => false],
-                        ['text' => 'سمع', 'is_correct' => false],
-                        ['text' => 'يسمع', 'is_correct' => false],
-                        ['text' => 'سامع', 'is_correct' => true],
-                    ],
-                ],
-                [
-                    'title' => 'صيغة اسم الفاعل من الفعل الثلاثي تأتي غالبًا على وزن ________.',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'فعيل', 'is_correct' => false],
-                        ['text' => 'فاعل', 'is_correct' => true],
-                        ['text' => 'مفعول', 'is_correct' => false],
-                        ['text' => 'فاعلة', 'is_correct' => false],
-                    ],
-                ],
-                // اختر الإجابة الصحيحة (6 أسئلة)
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'اسم الفاعل من الفعل (جلس) هو:',
                     'type' => 'choice',
@@ -849,6 +838,26 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'يجلس', 'is_correct' => false],
                     ],
                 ],
+                // أكمل الفراغ
+                [
+                    'title' => 'كلمة (ناجح) تُعد ________.',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'فعلًا ماضيًا', 'is_correct' => false],
+                        ['text' => 'اسم مفعول', 'is_correct' => false],
+                        ['text' => 'اسم فاعل', 'is_correct' => true],
+                        ['text' => 'ظرفًا', 'is_correct' => false],
+                    ],
+                ],
+                // صح أو خطأ
+                [
+                    'title' => 'كلمة "مسافر" ليست اسم فاعل.',
+                    'type' => 'true_false',
+                    'is_correct' => false,
+                    'language' => 'ar',
+                ],
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'كلمة (راكض) تدل على:',
                     'type' => 'choice',
@@ -860,6 +869,19 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'آلة', 'is_correct' => false],
                     ],
                 ],
+                // أكمل الفراغ
+                [
+                    'title' => 'اسم الفاعل من الفعل (سمع) هو ________.',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'مسموع', 'is_correct' => false],
+                        ['text' => 'سمع', 'is_correct' => false],
+                        ['text' => 'يسمع', 'is_correct' => false],
+                        ['text' => 'سامع', 'is_correct' => true],
+                    ],
+                ],
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'أي الكلمات التالية ليست اسم فاعل؟',
                     'type' => 'choice',
@@ -871,6 +893,19 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'سامع', 'is_correct' => false],
                     ],
                 ],
+                // أكمل الفراغ
+                [
+                    'title' => 'صيغة اسم الفاعل من الفعل الثلاثي تأتي غالبًا على وزن ________.',
+                    'type' => 'choice',
+                    'language' => 'ar',
+                    'options' => [
+                        ['text' => 'فعيل', 'is_correct' => false],
+                        ['text' => 'فاعل', 'is_correct' => true],
+                        ['text' => 'مفعول', 'is_correct' => false],
+                        ['text' => 'فاعلة', 'is_correct' => false],
+                    ],
+                ],
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'اسم الفاعل من الفعل (فتح) هو:',
                     'type' => 'choice',
@@ -882,6 +917,7 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'يفْتَح', 'is_correct' => false],
                     ],
                 ],
+                // اختر الإجابة الصحيحة
                 [
                     'title' => 'أي الجمل التالية تحتوي على اسم فاعل؟',
                     'type' => 'choice',
@@ -893,40 +929,46 @@ class AssignmentSeeder extends Seeder
                         ['text' => 'كان الجوُّ جميلًا', 'is_correct' => false],
                     ],
                 ],
-                [
-                    'title' => 'أي من التالي مثال لاسم فاعل يدل على مهنة؟',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'طائر', 'is_correct' => false],
-                        ['text' => 'كاتب', 'is_correct' => true],
-                        ['text' => 'ساجد', 'is_correct' => false],
-                        ['text' => 'نائم', 'is_correct' => false],
-                    ],
-                ],
-                // وصّل اسم الفاعل بالفعل المناسب (2 أسئلة - تم تحويلها لاختيار من متعدد)
-                [
-                    'title' => 'اسم الفاعل من الفعل (نصرَ) هو:',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'ناصرٌ', 'is_correct' => true],
-                        ['text' => 'منصور', 'is_correct' => false],
-                        ['text' => 'ينصر', 'is_correct' => false],
-                        ['text' => 'نصر', 'is_correct' => false],
-                    ],
-                ],
-                [
-                    'title' => 'اسم الفاعل من الفعل (حفظَ) هو:',
-                    'type' => 'choice',
-                    'language' => 'ar',
-                    'options' => [
-                        ['text' => 'حافظٌ', 'is_correct' => true],
-                        ['text' => 'محفوظ', 'is_correct' => false],
-                        ['text' => 'يحفظ', 'is_correct' => false],
-                        ['text' => 'حفظ', 'is_correct' => false],
-                    ],
-                ],
+                // ========== تم تعليق الأسئلة الزائدة (4 أسئلة) ==========
+                // [
+                //     'title' => 'اسم الفاعل دائمًا يكون منصوبًا.',
+                //     'type' => 'true_false',
+                //     'is_correct' => false,
+                //     'language' => 'ar',
+                // ],
+                // [
+                //     'title' => 'أي من التالي مثال لاسم فاعل يدل على مهنة؟',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'طائر', 'is_correct' => false],
+                //         ['text' => 'كاتب', 'is_correct' => true],
+                //         ['text' => 'ساجد', 'is_correct' => false],
+                //         ['text' => 'نائم', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'اسم الفاعل من الفعل (نصرَ) هو:',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'ناصرٌ', 'is_correct' => true],
+                //         ['text' => 'منصور', 'is_correct' => false],
+                //         ['text' => 'ينصر', 'is_correct' => false],
+                //         ['text' => 'نصر', 'is_correct' => false],
+                //     ],
+                // ],
+                // [
+                //     'title' => 'اسم الفاعل من الفعل (حفظَ) هو:',
+                //     'type' => 'choice',
+                //     'language' => 'ar',
+                //     'options' => [
+                //         ['text' => 'حافظٌ', 'is_correct' => true],
+                //         ['text' => 'محفوظ', 'is_correct' => false],
+                //         ['text' => 'يحفظ', 'is_correct' => false],
+                //         ['text' => 'حفظ', 'is_correct' => false],
+                //     ],
+                // ],
             ],
         ];
     }
@@ -1462,7 +1504,8 @@ class AssignmentSeeder extends Seeder
     {
         $questions = [];
 
-        // Question 1: About the main character
+        // تم إعادة ترتيب الأسئلة واختيار 12 سؤال (9 choice + 3 true_false)
+        // اختر الإجابة الصحيحة
         $questions[] = [
             'title' => 'ما اسم الشخصية الرئيسية في القصة؟',
             'type' => 'choice',
@@ -1478,7 +1521,18 @@ class AssignmentSeeder extends Seeder
             ],
         ];
 
-        // Question 2: About what attracted آدم
+        // صح أو خطأ
+        $questions[] = [
+            'title' => 'العسل يأتي من النحلة.',
+            'type' => 'true_false',
+            'is_correct' => true,
+            'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
+        ];
+
+        // اختر الإجابة الصحيحة
         $questions[] = [
             'title' => 'ما الذي جذب آدم في البداية؟',
             'type' => 'choice',
@@ -1494,7 +1548,7 @@ class AssignmentSeeder extends Seeder
             ],
         ];
 
-        // Question 3: About the bee description (brother)
+        // اختر الإجابة الصحيحة
         $questions[] = [
             'title' => 'كيف وصف أخ آدم النحلة في البداية؟',
             'type' => 'choice',
@@ -1510,18 +1564,18 @@ class AssignmentSeeder extends Seeder
             ],
         ];
 
-        // Question 4: True/False about honey
+        // صح أو خطأ
         $questions[] = [
-            'title' => 'العسل يأتي من النحلة.',
+            'title' => 'النحلة تشبه الذبابة تماماً.',
             'type' => 'true_false',
-            'is_correct' => true,
+            'is_correct' => false,
             'language' => 'ar',
             'xp' => 2,
             'coins' => 1,
             'marks' => 1,
         ];
 
-        // Question 5: About what آدم thought about honey
+        // اختر الإجابة الصحيحة
         $questions[] = [
             'title' => 'ماذا كان يعتقد آدم عن مصدر العسل في البداية؟',
             'type' => 'choice',
@@ -1537,7 +1591,7 @@ class AssignmentSeeder extends Seeder
             ],
         ];
 
-        // Question 6: About the father's explanation
+        // اختر الإجابة الصحيحة
         $questions[] = [
             'title' => 'كيف وصف الأب النحلة؟',
             'type' => 'choice',
@@ -1553,7 +1607,18 @@ class AssignmentSeeder extends Seeder
             ],
         ];
 
-        // Question 7: About the grandmother's gift
+        // صح أو خطأ
+        $questions[] = [
+            'title' => 'النحلة لها إبرة صغيرة.',
+            'type' => 'true_false',
+            'is_correct' => true,
+            'language' => 'ar',
+            'xp' => 2,
+            'coins' => 1,
+            'marks' => 1,
+        ];
+
+        // اختر الإجابة الصحيحة
         $questions[] = [
             'title' => 'ماذا أهدت الجدة لآدم؟',
             'type' => 'choice',
@@ -1569,7 +1634,7 @@ class AssignmentSeeder extends Seeder
             ],
         ];
 
-        // Question 8: About bee colors
+        // اختر الإجابة الصحيحة
         $questions[] = [
             'title' => 'ما ألوان النحلة الحقيقية؟',
             'type' => 'choice',
@@ -1585,18 +1650,7 @@ class AssignmentSeeder extends Seeder
             ],
         ];
 
-        // Question 9: True/False about bee appearance
-        $questions[] = [
-            'title' => 'النحلة تشبه الذبابة تماماً.',
-            'type' => 'true_false',
-            'is_correct' => false,
-            'language' => 'ar',
-            'xp' => 2,
-            'coins' => 1,
-            'marks' => 1,
-        ];
-
-        // Question 10: About what آدم asked his mother
+        // اختر الإجابة الصحيحة
         $questions[] = [
             'title' => 'ماذا سأل آدم والدته؟',
             'type' => 'choice',
@@ -1612,23 +1666,7 @@ class AssignmentSeeder extends Seeder
             ],
         ];
 
-        // Question 11: About the mother's answer
-        $questions[] = [
-            'title' => 'ماذا قالت الأم لآدم؟',
-            'type' => 'choice',
-            'language' => 'ar',
-            'xp' => 2,
-            'coins' => 1,
-            'marks' => 1,
-            'options' => [
-                ['text' => 'أخوك مخطئ', 'is_correct' => false],
-                ['text' => 'لا أحد مخطئ، كل منهم وصف النحلة بشكل صحيح من جانب واحد فقط', 'is_correct' => true],
-                ['text' => 'والدك مخطئ', 'is_correct' => false],
-                ['text' => 'جدتك مخطئة', 'is_correct' => false],
-            ],
-        ];
-
-        // Question 12: About how آدم learned the truth
+        // اختر الإجابة الصحيحة
         $questions[] = [
             'title' => 'كيف عرف آدم شكل النحلة الحقيقي؟',
             'type' => 'choice',
@@ -1644,48 +1682,49 @@ class AssignmentSeeder extends Seeder
             ],
         ];
 
-        // Question 13: True/False about bee characteristics
-        $questions[] = [
-            'title' => 'النحلة لها إبرة صغيرة.',
-            'type' => 'true_false',
-            'is_correct' => true,
-            'language' => 'ar',
-            'xp' => 2,
-            'coins' => 1,
-            'marks' => 1,
-        ];
-
-        // Question 14: About what bees eat
-        $questions[] = [
-            'title' => 'ماذا تأكل النحلة؟',
-            'type' => 'choice',
-            'language' => 'ar',
-            'xp' => 2,
-            'coins' => 1,
-            'marks' => 1,
-            'options' => [
-                ['text' => 'اللحوم', 'is_correct' => false],
-                ['text' => 'من الزهور', 'is_correct' => true],
-                ['text' => 'الأوراق', 'is_correct' => false],
-                ['text' => 'الفواكه', 'is_correct' => false],
-            ],
-        ];
-
-        // Question 15: About bee's purpose
-        $questions[] = [
-            'title' => 'لماذا تأكل النحلة من الزهور؟',
-            'type' => 'choice',
-            'language' => 'ar',
-            'xp' => 2,
-            'coins' => 1,
-            'marks' => 1,
-            'options' => [
-                ['text' => 'لأنها جائعة', 'is_correct' => false],
-                ['text' => 'كي تصنع العسل', 'is_correct' => true],
-                ['text' => 'لأنها تحب الزهور', 'is_correct' => false],
-                ['text' => 'لأنها لا تجد طعاماً آخر', 'is_correct' => false],
-            ],
-        ];
+        // ========== تم تعليق الأسئلة الزائدة (3 أسئلة) ==========
+        // $questions[] = [
+        //     'title' => 'ماذا قالت الأم لآدم؟',
+        //     'type' => 'choice',
+        //     'language' => 'ar',
+        //     'xp' => 2,
+        //     'coins' => 1,
+        //     'marks' => 1,
+        //     'options' => [
+        //         ['text' => 'أخوك مخطئ', 'is_correct' => false],
+        //         ['text' => 'لا أحد مخطئ، كل منهم وصف النحلة بشكل صحيح من جانب واحد فقط', 'is_correct' => true],
+        //         ['text' => 'والدك مخطئ', 'is_correct' => false],
+        //         ['text' => 'جدتك مخطئة', 'is_correct' => false],
+        //     ],
+        // ],
+        // $questions[] = [
+        //     'title' => 'ماذا تأكل النحلة؟',
+        //     'type' => 'choice',
+        //     'language' => 'ar',
+        //     'xp' => 2,
+        //     'coins' => 1,
+        //     'marks' => 1,
+        //     'options' => [
+        //         ['text' => 'اللحوم', 'is_correct' => false],
+        //         ['text' => 'من الزهور', 'is_correct' => true],
+        //         ['text' => 'الأوراق', 'is_correct' => false],
+        //         ['text' => 'الفواكه', 'is_correct' => false],
+        //     ],
+        // ],
+        // $questions[] = [
+        //     'title' => 'لماذا تأكل النحلة من الزهور؟',
+        //     'type' => 'choice',
+        //     'language' => 'ar',
+        //     'xp' => 2,
+        //     'coins' => 1,
+        //     'marks' => 1,
+        //     'options' => [
+        //         ['text' => 'لأنها جائعة', 'is_correct' => false],
+        //         ['text' => 'كي تصنع العسل', 'is_correct' => true],
+        //         ['text' => 'لأنها تحب الزهور', 'is_correct' => false],
+        //         ['text' => 'لأنها لا تجد طعاماً آخر', 'is_correct' => false],
+        //     ],
+        // ],
 
         return $questions;
     }
