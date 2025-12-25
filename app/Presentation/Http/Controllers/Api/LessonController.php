@@ -29,8 +29,30 @@ class LessonController extends Controller
         // Get paginated lessons from facade
         $lessons = $this->lessonFacade->getLessons($dto);
 
+        // Preload attempts for all trainings to avoid N+1 queries
+        $trainIds = collect($lessons->items())->pluck('train_id')->filter()->unique()->values()->toArray();
+        
+        if (!empty($trainIds)) {
+            $attempts = \App\Infrastructure\Models\ExamAttempt::where('student_id', $studentId)
+                ->whereIn('exam_training_id', $trainIds)
+                ->orderBy('exam_training_id')
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->groupBy('exam_training_id')
+                ->map(function ($group) {
+                    return $group->first(); // Get latest attempt for each training
+                })
+                ->keyBy('exam_training_id'); // Key by exam_training_id for easy lookup
+            
+            // Set attempts cache in resource
+            LessonResource::setAttemptsCache($attempts->all());
+        }
+
         // Transform lessons using resource
         $lessonsCollection = LessonResource::collection($lessons->items());
+
+        // Reset cache after processing
+        LessonResource::resetCache();
 
         // Return paginated response
         return ApiResponse::success([
