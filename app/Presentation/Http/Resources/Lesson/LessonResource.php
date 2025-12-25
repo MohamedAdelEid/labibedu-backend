@@ -2,21 +2,35 @@
 
 namespace App\Presentation\Http\Resources\Lesson;
 
+use App\Domain\Enums\AttemptStatus;
+use App\Infrastructure\Models\ExamAttempt;
 use App\Presentation\Http\Resources\Library\BookResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class LessonResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
         $trainingStatus = null;
+
+        // Get training status if train_id exists
         if ($this->train_id) {
-            $trainingStatus = $this->getLatestAttempt($this->train_id);
+            $latestAttempt = $this->getLatestAttempt($this->train_id);
+
+            if ($latestAttempt) {
+                // Convert enum status to string status
+                if ($latestAttempt->isFinished()) {
+                    $trainingStatus = 'completed';
+                } elseif ($latestAttempt->isInProgress()) {
+                    $trainingStatus = 'in_progress';
+                }
+            } else {
+                $trainingStatus = 'not_started';
+            }
         }
-        if ($trainingStatus) {
-            $trainingStatus = $trainingStatus->status->value;
-        }
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -48,6 +62,25 @@ class LessonResource extends JsonResource
                 });
             }),
         ];
+    }
+
+    /**
+     * Get latest attempt for training
+     */
+    private function getLatestAttempt(int $trainingId): ?ExamAttempt
+    {
+        $user = Auth::user();
+
+        if (!$user || !$user->student) {
+            return null;
+        }
+
+        $studentId = $user->student->id;
+
+        return ExamAttempt::where('student_id', $studentId)
+            ->where('exam_training_id', $trainingId)
+            ->latest()
+            ->first();
     }
 }
 
