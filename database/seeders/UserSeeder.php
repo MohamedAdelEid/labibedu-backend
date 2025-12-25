@@ -60,9 +60,9 @@ class UserSeeder extends Seeder
                 'date_of_birth' => '2010-02-02',
             ],
             [
-                'name' => 'Ashraf Abu Al-Fatah',
-                'user_name' => 'ashraf_abu_al-fatah',
-                'email' => 'ashraf_abu_al-fatah@student.com',
+                'name' => 'Ashraf Abd Al-Fatah',
+                'user_name' => 'ashraf_abd_al-fatah',
+                'email' => 'ashraf_abd_al-fatah@student.com',
                 'school_id' => 1,
                 'classroom_id' => 3, // Grade 5
                 'group_id' => 7,
