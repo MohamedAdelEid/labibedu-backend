@@ -2,40 +2,21 @@
 
 namespace App\Presentation\Http\Resources\Lesson;
 
-use App\Domain\Enums\AttemptStatus;
-use App\Infrastructure\Models\ExamAttempt;
 use App\Presentation\Http\Resources\Library\BookResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LessonResource extends JsonResource
 {
-    /**
-     * Static cache for attempts to avoid N+1 queries within the same request
-     * Keyed by exam_training_id
-     */
-    private static ?array $attemptsCache = null;
-
     public function toArray(Request $request): array
     {
         $trainingStatus = null;
-
-        // Get training status if train_id exists
         if ($this->train_id) {
-            $latestAttempt = $this->getLatestAttempt($this->train_id);
-
-            if ($latestAttempt) {
-                // Use the model's helper methods to check status
-                if ($latestAttempt->isFinished()) {
-                    $trainingStatus = 'completed';
-                } elseif ($latestAttempt->isInProgress()) {
-                    $trainingStatus = 'in_progress';
-                }
-            } else {
-                $trainingStatus = 'not_started';
-            }
+            $trainingStatus = $this->getLatestAttempt($this->train_id);
         }
-
+        if ($trainingStatus) {
+            $trainingStatus = $trainingStatus->status->value;
+        }
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -67,41 +48,6 @@ class LessonResource extends JsonResource
                 });
             }),
         ];
-    }
-
-    /**
-     * Get latest attempt for training from cache
-     */
-    private function getLatestAttempt(int $trainingId): ?ExamAttempt
-    {
-        if (self::$attemptsCache === null) {
-            return null;
-        }
-
-        return self::$attemptsCache[$trainingId] ?? null;
-    }
-
-    /**
-     * Set attempts cache (called from controller to batch load attempts)
-     */
-    public static function setAttemptsCache(array $attempts): void
-    {
-        self::$attemptsCache = [];
-        foreach ($attempts as $key => $attempt) {
-            if ($attempt instanceof ExamAttempt) {
-                // Use exam_training_id as key
-                $trainingId = $attempt->exam_training_id;
-                self::$attemptsCache[$trainingId] = $attempt;
-            }
-        }
-    }
-
-    /**
-     * Reset cache (useful for testing or when processing multiple collections)
-     */
-    public static function resetCache(): void
-    {
-        self::$attemptsCache = null;
     }
 }
 
