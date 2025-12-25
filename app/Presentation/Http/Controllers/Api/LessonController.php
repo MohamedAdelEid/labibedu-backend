@@ -31,21 +31,26 @@ class LessonController extends Controller
 
         // Preload attempts for all trainings to avoid N+1 queries
         $trainIds = collect($lessons->items())->pluck('train_id')->filter()->unique()->values()->toArray();
-        
+
         if (!empty($trainIds)) {
-            $attempts = \App\Infrastructure\Models\ExamAttempt::where('student_id', $studentId)
+            // Get all attempts for these trainings, ordered by id desc to get latest first
+            $allAttempts = \App\Infrastructure\Models\ExamAttempt::where('student_id', $studentId)
                 ->whereIn('exam_training_id', $trainIds)
-                ->orderBy('exam_training_id')
-                ->orderBy('created_at', 'desc')
-                ->get()
+                ->orderBy('id', 'desc')
+                ->get();
+
+            // Group by exam_training_id and get the first (latest) attempt for each
+            $attempts = $allAttempts
                 ->groupBy('exam_training_id')
                 ->map(function ($group) {
-                    return $group->first(); // Get latest attempt for each training
+                    // First item is the latest (because we ordered by id desc)
+                    return $group->first();
                 })
-                ->keyBy('exam_training_id'); // Key by exam_training_id for easy lookup
-            
-            // Set attempts cache in resource
-            LessonResource::setAttemptsCache($attempts->all());
+                ->filter() // Remove any null values
+                ->toArray(); // Convert to array with proper keys
+
+            // Set attempts cache in resource (keyed by exam_training_id)
+            LessonResource::setAttemptsCache($attempts);
         }
 
         // Transform lessons using resource

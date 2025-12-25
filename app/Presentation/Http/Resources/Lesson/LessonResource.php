@@ -15,26 +15,27 @@ class LessonResource extends JsonResource
      * Keyed by exam_training_id
      */
     private static ?array $attemptsCache = null;
-    
+
     public function toArray(Request $request): array
     {
         $trainingStatus = null;
-        
+
         // Get training status if train_id exists
         if ($this->train_id) {
             $latestAttempt = $this->getLatestAttempt($this->train_id);
-            
+
             if ($latestAttempt) {
-                if ($latestAttempt->status === AttemptStatus::FINISHED) {
+                // Use the model's helper methods to check status
+                if ($latestAttempt->isFinished()) {
                     $trainingStatus = 'completed';
-                } elseif ($latestAttempt->status === AttemptStatus::IN_PROGRESS) {
+                } elseif ($latestAttempt->isInProgress()) {
                     $trainingStatus = 'in_progress';
                 }
             } else {
                 $trainingStatus = 'not_started';
             }
         }
-        
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -67,28 +68,34 @@ class LessonResource extends JsonResource
             }),
         ];
     }
-    
+
     /**
      * Get latest attempt for training from cache
      */
     private function getLatestAttempt(int $trainingId): ?ExamAttempt
     {
+        if (self::$attemptsCache === null) {
+            return null;
+        }
+
         return self::$attemptsCache[$trainingId] ?? null;
     }
-    
+
     /**
      * Set attempts cache (called from controller to batch load attempts)
      */
     public static function setAttemptsCache(array $attempts): void
     {
         self::$attemptsCache = [];
-        foreach ($attempts as $attempt) {
+        foreach ($attempts as $key => $attempt) {
             if ($attempt instanceof ExamAttempt) {
-                self::$attemptsCache[$attempt->exam_training_id] = $attempt;
+                // Use exam_training_id as key
+                $trainingId = $attempt->exam_training_id;
+                self::$attemptsCache[$trainingId] = $attempt;
             }
         }
     }
-    
+
     /**
      * Reset cache (useful for testing or when processing multiple collections)
      */
