@@ -30,6 +30,7 @@ class UserResource extends JsonResource
             $data['isFirstTime'] = $this->student->is_first_time ?? true;
             $data['currentStep'] = $this->getCurrentStep();
             $data['language'] = $this->student->language?->value ?? 'ar';
+            $data['theme'] = $this->student->theme?->value ?? 'minimal';
         }
 
         return $data;
