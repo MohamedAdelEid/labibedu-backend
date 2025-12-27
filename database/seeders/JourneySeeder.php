@@ -93,7 +93,7 @@ class JourneySeeder extends Seeder
         ]);
 
         $this->addBookWhyAmISquare($stage);
-        $this->addJourneyTraining($stage);
+        // $this->addJourneyTraining($stage);
     }
 
     private function createSecondStage(JourneyLevel $level): void
