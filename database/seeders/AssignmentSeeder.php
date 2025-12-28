@@ -8,6 +8,7 @@ use App\Infrastructure\Models\Question;
 use App\Infrastructure\Models\QuestionOption;
 use App\Infrastructure\Models\Book;
 use App\Infrastructure\Models\Page;
+use App\Infrastructure\Models\Student;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -1027,19 +1028,23 @@ class AssignmentSeeder extends Seeder
             'end_date' => Carbon::now()->addDays(14),
         ]);
 
-        // Attach student ID 1 to the assignment
-        $studentId = 1;
-        DB::table('assignment_student')->insert([
-            'assignment_id' => $assignment->id,
-            'student_id' => $studentId,
-            'status' => 'not_started',
-            'assigned_at' => Carbon::now(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
+        // Attach all students to the assignment
+        $students = Student::all();
+        $assignedCount = 0;
+        foreach ($students as $student) {
+            DB::table('assignment_student')->insert([
+                'assignment_id' => $assignment->id,
+                'student_id' => $student->id,
+                'status' => 'not_started',
+                'assigned_at' => Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+            $assignedCount++;
+        }
 
         $this->command->info("   ✅ Created assignment: {$assignment->title_ar}");
-        $this->command->info("   👤 Assigned to student ID: {$studentId}");
+        $this->command->info("   👤 Assigned to {$assignedCount} students");
         $this->command->newLine();
     }
 
@@ -1480,20 +1485,24 @@ class AssignmentSeeder extends Seeder
             'end_date' => Carbon::now()->addDays(14),
         ]);
 
-        // Attach student ID 1 to the assignment
-        $studentId = 1;
-        DB::table('assignment_student')->insert([
-            'assignment_id' => $assignment->id,
-            'student_id' => $studentId,
-            'status' => 'not_started',
-            'assigned_at' => Carbon::now(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
+        // Attach all students to the assignment
+        $students = Student::all();
+        $assignedCount = 0;
+        foreach ($students as $student) {
+            DB::table('assignment_student')->insert([
+                'assignment_id' => $assignment->id,
+                'student_id' => $student->id,
+                'status' => 'not_started',
+                'assigned_at' => Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+            $assignedCount++;
+        }
 
         $this->command->info("   ✅ Created assignment: {$assignment->title_ar}");
         $this->command->info("   📚 Assignment type: book (related to book ID: {$book->id})");
-        $this->command->info("   👤 Assigned to student ID: {$studentId}");
+        $this->command->info("   👤 Assigned to {$assignedCount} students");
         $this->command->newLine();
     }
 
