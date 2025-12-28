@@ -6,6 +6,7 @@ use App\Infrastructure\Models\Book;
 use App\Infrastructure\Models\Page;
 use App\Infrastructure\Models\ExamTraining;
 use App\Infrastructure\Models\StudentBook;
+use App\Infrastructure\Models\Student;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -25,8 +26,11 @@ class BookSeeder extends Seeder
             $this->createBook($bookData);
         }
 
-        // Assign all books to student ID 1
-        $this->assignAllBooksToStudent(1);
+        // Assign all books to all students
+        $students = Student::all();
+        foreach ($students as $student) {
+            $this->assignAllBooksToStudent($student->id);
+        }
 
         $this->command->info('✅ Books seeded successfully!');
         $this->command->info('📊 Total books created: ' . count($booksData));

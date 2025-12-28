@@ -143,39 +143,39 @@ class AvatarSeeder extends Seeder
             Avatar::create($avatarData);
         }
 
-        // Get student with ID 1
-        $student = Student::find(1);
+        // Get all students
+        $students = Student::all();
 
-        if ($student) {
+        // Get avatars once (they're the same for all students)
+        $firstLabibAvatar = Avatar::where('category_id', $labibCategory->id)->first();
+        $firstTwoDinosaurAvatars = Avatar::where('category_id', $dinosaurCategory->id)->limit(2)->get();
+        $firstRobotAvatar = Avatar::where('category_id', $robotCategory->id)->first();
+
+        // Assign avatars to all students
+        foreach ($students as $student) {
             // Purchase first avatar from Labib category
-            $firstLabibAvatar = Avatar::where('category_id', $labibCategory->id)->first();
             $student->avatars()->attach($firstLabibAvatar->id, ['purchased_at' => now()]);
             // $student->coins -= $firstLabibAvatar->coins;
 
             // Purchase first two avatars from Dinosaur category
-            $firstTwoDinosaurAvatars = Avatar::where('category_id', $dinosaurCategory->id)->limit(2)->get();
             foreach ($firstTwoDinosaurAvatars as $avatar) {
                 $student->avatars()->attach($avatar->id, ['purchased_at' => now()]);
                 // $student->coins -= $avatar->coins;
             }
 
             // Purchase first avatar from Robot category
-            $firstRobotAvatar = Avatar::where('category_id', $robotCategory->id)->first();
             $student->avatars()->attach($firstRobotAvatar->id, ['purchased_at' => now()]);
             // $student->coins -= $firstRobotAvatar->coins;
 
             // Set first Labib avatar as active
             $student->active_avatar_id = $firstLabibAvatar->id;
 
+            // Reset coins to 15 for all students
+            $student->coins = 15;
+
             $student->save();
         }
 
-        // Reset coins to 15 for user1 (user_name = 'user1')
-        $user1 = User::where('user_name', 'user1')->first();
-        if ($user1 && $user1->student) {
-            $user1->student->coins = 15;
-            $user1->student->save();
-            $this->command->info('✅ Reset coins to 15 for user1');
-        }
+        $this->command->info('✅ Assigned avatars and reset coins to 15 for all students');
     }
 }
