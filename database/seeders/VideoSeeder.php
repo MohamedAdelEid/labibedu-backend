@@ -15,7 +15,7 @@ class VideoSeeder extends Seeder
             [
                 'title_ar' => 'إعادة التدوير',
                 'title_en' => 'Recycling',
-                'url' => 'https://youtu.be/stVbDrPusiw',
+                'url' => 'https://youtu.be/0X7UToCxKUU?si=oYHQf0m8V2x4m4JQ',
                 'duration' => 180, // 3 minutes in seconds
                 'xp' => 100,
                 'coins' => 80,
@@ -27,7 +27,7 @@ class VideoSeeder extends Seeder
             [
                 'title_ar' => 'إعادة التدوير',
                 'title_en' => 'Recycling',
-                'url' => 'https://youtu.be/stVbDrPusiw',
+                'url' => 'https://youtu.be/0X7UToCxKUU?si=oYHQf0m8V2x4m4JQ',
                 'duration' => 180, // 3 minutes in seconds
                 'xp' => 100,
                 'coins' => 80,
