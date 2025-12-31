@@ -822,7 +822,7 @@ class JourneySeeder extends Seeder
 
         $arrangeQuestions = [
             [
-                'title' => 'رتّب الكلمات لتكوين جملة صحيحة: الصحراء – الجمل – دائمًا – الكبيرة – يعيش – في – بسرعة',
+                'title' => 'رتب الكلمات التالية تبدأ بكلمة يعيش',
                 'type' => 'arrange',
                 'xp' => 2,
                 'coins' => 1,
@@ -837,7 +837,7 @@ class JourneySeeder extends Seeder
                 ],
             ],
             [
-                'title' => 'رتّب الكلمات لتكوين جملة صحيحة: الشمس – الجميلة – كل يوم – بسرعة – حول – تدور – الأرض',
+                'title' => 'رتب الكلمات التالية تبدأ بكلمة تدور',
                 'type' => 'arrange',
                 'xp' => 2,
                 'coins' => 1,
@@ -854,7 +854,7 @@ class JourneySeeder extends Seeder
                 ],
             ],
             [
-                'title' => 'رتّب الكلمات لتكوين جملة صحيحة: محيط – ماء – الهادي – الأكبر – الأرض – في – الكرة',
+                'title' => 'رتب الكلمات التالية تبدأ بكلمة محيط',
                 'type' => 'arrange',
                 'xp' => 2,
                 'coins' => 1,
@@ -1192,7 +1192,7 @@ class JourneySeeder extends Seeder
 
         $arrangeQuestions = [
             [
-                'title' => 'رتّب الكلمات لتكوين جملة صحيحة: القطب – الجنوبي – في – البطاريق – الحيوان – تعيش – حديقة',
+                'title' => 'رتب الكلمات التالية تبدأ بكلمة تعيش',
                 'type' => 'arrange',
                 'xp' => 2,
                 'coins' => 1,
