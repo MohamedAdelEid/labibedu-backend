@@ -100,9 +100,9 @@ class ExamService
                 throw new Exception('Exam has not started yet.');
             }
 
-            if ($examTraining->hasEnded()) {
-                throw new Exception('Exam has already ended.');
-            }
+            // if ($examTraining->hasEnded()) {
+            //     throw new Exception('Exam has already ended.');
+            // }
         }
 
         $existingAttempt = $this->examAttemptRepository->findLatestAttempt($studentId, $examId);
